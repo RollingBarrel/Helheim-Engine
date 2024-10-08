@@ -8,6 +8,7 @@ class GameObject;
 class TextComponent;
 class ImageComponent;
 class ButtonComponent;
+class Transform2DComponent;
 
 class Buff {
 public:
@@ -43,9 +44,7 @@ public:
 
 private:
     void Controls();
-    std::string GetBuffTitle(const Buff& buff);
     std::string GetBuffDescription(const Buff& buff);
-    unsigned int GetImage(const Buff& buff);
 
     void CardClick();
     void CardHover();
@@ -60,32 +59,68 @@ private:
     void OnCard3HoverOn();
     void OnCard3HoverOff();
 
+    void SetSpeedBoxes();
+    void SetHealthBoxes();
+    void SetDamageBoxes();
+
     std::vector<std::vector<Buff>> mBuffSelection;
     std::vector<Buff> mCurrentBuffs;
 
     GameObject* mCard1GO = nullptr;
-    ImageComponent* mCard1Image = nullptr;
-    TextComponent* mCard1TitleText = nullptr;
     TextComponent* mCard1Text = nullptr;
-    ImageComponent* mCard1BuffImage = nullptr;
     ButtonComponent* mCard1Btn = nullptr;
+    GameObject* mCard1Hover = nullptr;
+    ImageComponent* mCard1Image = nullptr;
+    bool mCard1Hovered = false;
 
     GameObject* mCard2GO = nullptr;
-    ImageComponent* mCard2Image = nullptr;
-    TextComponent* mCard2TitleText = nullptr;
     TextComponent* mCard2Text = nullptr;
-    ImageComponent* mCard2BuffImage = nullptr;
     ButtonComponent* mCard2Btn = nullptr;
+    GameObject* mCard2Hover = nullptr;
+    ImageComponent* mCard2Image = nullptr;
+    bool mCard2Hovered = false;
 
     GameObject* mCard3GO = nullptr;
-    ImageComponent* mCard3Image = nullptr;
-    TextComponent* mCard3TitleText = nullptr;
     TextComponent* mCard3Text = nullptr;
-    ImageComponent* mCard3BuffImage = nullptr;
     ButtonComponent* mCard3Btn = nullptr;
+    GameObject* mCard3Hover = nullptr;
+    ImageComponent* mCard3Image = nullptr;
+    bool mCard3Hovered = false;
 
     TimerScript mClickTimout;
     bool mTimeout = false;
 
     int mCurrentBuff = 0;
+    float mTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
+
+    // Speed buff
+    int mSpeedLvl = 0;
+    GameObject* mSpeedBox1 = nullptr;
+    GameObject* mSpeedBox2 = nullptr;
+    GameObject* mSpeedBox3 = nullptr;
+    GameObject* mSpeedBox4 = nullptr;
+    GameObject* mSpeedBox5 = nullptr;
+    GameObject* mSpeedBox6 = nullptr;
+    GameObject* mSpeedBox7 = nullptr;
+
+    // Health buff
+    int mHealthLvl = 0;
+    GameObject* mHealthBox1 = nullptr;
+    GameObject* mHealthBox2 = nullptr;
+    GameObject* mHealthBox3 = nullptr;
+    GameObject* mHealthBox4 = nullptr;
+    GameObject* mHealthBox5 = nullptr;
+    GameObject* mHealthBox6 = nullptr;
+    GameObject* mHealthBox7 = nullptr;
+
+    // Dmg buff
+    int mDmgLvl = 0;
+    GameObject* mDmgBox1 = nullptr;
+    GameObject* mDmgBox2 = nullptr;
+    GameObject* mDmgBox3 = nullptr;
+    GameObject* mDmgBox4 = nullptr;
+    GameObject* mDmgBox5 = nullptr;
+    GameObject* mDmgBox6 = nullptr;
+    GameObject* mDmgBox7 = nullptr;
 };

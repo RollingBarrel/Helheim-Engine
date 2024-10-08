@@ -24,6 +24,9 @@ private:
 
 	float2 SetMovingDirection();
 
+	float ComputeMoveAnge(float3 mouseDir);
+	std::string GetTriggerFromAngle(float angle);
+
 	float3 mCameraFront;
 	float3 mMoveDirection;
 

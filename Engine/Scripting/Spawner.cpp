@@ -11,8 +11,8 @@ CREATE(Spawner)
 	MEMBER(MemberType::INT, mPoolType);
 	MEMBER(MemberType::FLOAT, mParticlesTime);
 	MEMBER(MemberType::GAMEOBJECT, mParticlesGO);
-	MEMBER(MemberType::FLOAT, mSpawnDelay);
 	MEMBER(MemberType::BOOL, mOnlyOnce);
+	MEMBER(MemberType::INT, mEnemiesPerRound);
 	END_CREATE;
 }
 
@@ -21,20 +21,20 @@ Spawner::Spawner(GameObject* owner) : Script(owner) {}
 void Spawner::Start()
 {
 	mPoolManager = GameManager::GetInstance()->GetPoolManager();
-
+	mParticlesOn = true;
 }
 
 void Spawner::Update()
 {
-
+	
 	if (mSpawnedCounter>0)
 	{
-		if (mParticlesGO)
+		if (mParticlesOn and mParticlesGO)
 		{
+			mParticlesGO->SetEnabled(false);
 			mParticlesGO->SetEnabled(true);
+			mParticlesOn = false;
 		}
-
-	
 
 		if (mSpawnDelayTimer.Delay(mSpawnDelay))
 		{			
@@ -46,10 +46,7 @@ void Spawner::Update()
 				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
 				enemy->SetEnabled(true);
 				enemyScript->Init();
-				if (mParticlesGO)
-				{
-					mParticlesGO->SetEnabled(false);
-				}
+
 				if(mOnlyOnce)
 				{
 					mIsActive = false;
@@ -57,6 +54,7 @@ void Spawner::Update()
 					return;
 				}
 				--mSpawnedCounter;
+				mParticlesOn = true;
 			}
 		}
 	}
@@ -64,11 +62,11 @@ void Spawner::Update()
 
 bool Spawner::Spawn()
 {
-		if (mIsActive)
-		{	
-			++mSpawnedCounter;
-			return true;
-		}
+	if (mIsActive)
+	{	
+		++mSpawnedCounter;
+		return true;
+	}
 	return false;
 }
 

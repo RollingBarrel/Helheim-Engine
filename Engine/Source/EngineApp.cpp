@@ -67,8 +67,6 @@ EngineApplication::~EngineApplication()
 
 bool EngineApplication::Init()
 {
-	mEngineTimer = new Timer();
-	mGameTimer = new Timer();
 	mCurrentTimer = mEngineTimer;
 	mEngineTimer->Start();
 	//#else
@@ -124,7 +122,6 @@ bool EngineApplication::CleanUp()
 void EngineApplication::Start()
 {
 	mIsPlayMode = true;
-
 	SetCurrentClock(EngineApp->GetGameClock());
 	scene->Save(std::string("InternalAssets/Scenes/" + std::string("TemporalScene")).c_str());	//TODO: Change to Importfile
 	engineScriptManager->StartScripts();
@@ -134,7 +131,7 @@ void EngineApplication::Start()
 void EngineApplication::Stop()
 {
 	mIsPlayMode = false;
-
+	App->GetWindow()->SetCursor(0);
 	mEngineTimer->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
 	mGameTimer->Stop();
 	SetCurrentClock(EngineApp->GetEngineClock());

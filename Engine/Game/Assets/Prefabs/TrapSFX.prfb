@@ -2,15 +2,196 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 553542095,
+                "UID": 1235255628,
                 "ParentUID": 1,
                 "Name": "TrapSFX",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
+                    -0.000003298744559288025,
+                    0.15153372287750245,
+                    -0.000030517578125
+                ],
+                "Rotation": [
+                    -0.6304477453231812,
+                    0.32032063603401186,
+                    0.32032063603401186,
+                    0.6304477453231812
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.20000000298023225
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 30.0,
+                        "MaxParticles": 20,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.10000000149011612,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.5,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 7.0,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 2.0,
+                                "MaxValue": 2.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1970995954,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.30000001192092898,
+                            "UVScroll": 0.6000000238418579,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 3.0,
+                                    "MaxValue": 2.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.02144772559404373,
+                                        "Color": [
+                                            1.0,
+                                            1.0,
+                                            1.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.11528126895427704,
+                                        "Color": [
+                                            0.8669522404670715,
+                                            0.9639999866485596,
+                                            0.030848003923892976,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.44772109389305117,
+                                        "Color": [
+                                            1.0,
+                                            0.8160000443458557,
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.6836467385292053,
+                                        "Color": [
+                                            1.0,
+                                            0.9599999785423279,
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.9490615725517273,
+                                        "Color": [
+                                            1.0,
+                                            0.0,
+                                            0.0,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1240755687,
+                "ParentUID": 1235255628,
+                "Name": "PointLight",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
                     0.0,
                     0.0,
-                    0.0
+                    0.4000000059604645
                 ],
                 "Rotation": [
                     0.0,
@@ -29,118 +210,20 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ComponentType": 15,
+                        "ComponentType": 1,
                         "IsEnabled": true,
-                        "Image": 801896237,
-                        "Delay": 0.0,
-                        "Duration": 0.10000000149011612,
-                        "EmissionRate": 200.0,
-                        "MaxParticles": 1100,
-                        "Looping": true,
-                        "StretchedBillboard": true,
-                        "StretchedRatio": 2.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 1.0,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 2,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.699999988079071,
-                        "ShapeSize": [
-                            2.0,
-                            2.0,
-                            2.0
+                        "Position": [
+                            -0.000003298744559288025,
+                            0.2315448820590973,
+                            -0.0000416660332120955
                         ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": false,
-                        "BlendMode": 1,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 2.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": true,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        1.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.3725000023841858,
-                                        0.6800000071525574
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.5699999928474426,
-                                        0.48500001430511477
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.8774999976158142,
-                                        0.06499999761581421
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        0.004999995231628418
-                                    ]
-                                }
-                            ]
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": true,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        1.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.5924999713897705,
-                                        0.4449999928474426
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.7875000238418579,
-                                        0.04500001668930054
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        0.0
-                                    ]
-                                }
-                            ]
-                        },
-                        "Color Gradient": [
-                            {
-                                "Time": 0.48484861850738528,
-                                "Color": [
-                                    1.0,
-                                    0.671999990940094,
-                                    0.0,
-                                    1.0
-                                ]
-                            }
-                        ]
+                        "Radius": 3.5,
+                        "Color": [
+                            1.0,
+                            0.21599996089935304,
+                            0.0
+                        ],
+                        "Intensity": 30.0
                     }
                 ]
             }

@@ -13,9 +13,12 @@ public:
 	EnemyExplosive(GameObject* owner) : Enemy(owner) {}
 	~EnemyExplosive() {}
 
+	void Update() override;
 	void Start() override;
 	void Charge() override;
 	void Attack() override;
+	void Death() override;
+	void TakeDamage(float damage) override;
 
 private:
 	void ChargeWarningArea();
@@ -23,7 +26,13 @@ private:
 	float mExplosionRadius = 5.0f;
 	GameObject* mExplosionWarningGO = nullptr;
 	GameObject* mExplosionParticle = nullptr;
-	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
 	PlayerController* playerScript = nullptr;
+
+	int mChargeSound = -1;
+	int mAttackSound = -1;
+	int mStepSound = -1;
+
+	bool mChargePlaying = false;
+	bool mExplosionPlaying = false;
 
 };

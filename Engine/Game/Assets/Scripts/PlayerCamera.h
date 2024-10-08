@@ -16,6 +16,12 @@ public:
     void Update() override;
     void ActivateShake(float duration, float positionOffsetStrength);
 
+    void SetDistanceToPlayer(float dist) { mDistanceToPlayer = dist; }
+    float GetDistanceToPlayer() const { return mDistanceToPlayer; }
+
+    void SetOffset(float offset) { mOffset.x = offset; }
+    float GetOffset() const { return mOffset.x; }
+
 private:
     void Shake();
     
@@ -30,5 +36,7 @@ private:
     TimerScript mShakeTimer;
     float mShakeDuration = 0.0f;
     float mShakePositionOffsetStrength = 0.0f;
+
+    float3 mOffset = float3::zero;
 };
 

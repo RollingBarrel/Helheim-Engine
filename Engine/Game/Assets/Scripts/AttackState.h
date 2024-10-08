@@ -26,7 +26,6 @@ private:
 	float mAttackTimer = 0.0f;
 
     float3 mDashDirection;
-    float mEnergyCost = 10.0f;
     float mCooldownModifier = 1.f;
 
     float mComboTimer = 0.0f;

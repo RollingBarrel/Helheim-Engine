@@ -12,6 +12,7 @@ class EnemyPool;
 class PoolManager;
 class PlayerCamera;
 class Timer;
+class CinematicCamera;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -35,11 +36,11 @@ public:
     HudController* GetHud() const { return mHudController; }
     bool UsingController() const;
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
-    PoolManager* GetPoolManager() const;
+    PoolManager* GetPoolManager() const; 
+    GameObject* GetPlayerCameraObject() { return mPlayerCameraGO; }
 
-    bool IsPaused() { return mPaused; }
+    bool IsPaused() const { return mPaused; }
     void SetPaused(bool value, bool screen);
-
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea);
 
@@ -48,8 +49,25 @@ public:
     void HitStopTime(float time);
     void HitStop();
     void HitStop(float duration);
-    bool IsStopped() { return mStopActive; };
+    bool IsStopped() const { return mStopActive; };
 
+    void ActivateSecondTutorial();
+    void UnlockSecondary();
+    void UnlockUltimate(bool unlock);
+    void UnlockGrenade(bool unlock);
+    
+    void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
+    void PauseBackgroundAudio(bool pause); 
+
+    void HandleBossAudio(int stage);
+
+    void RegisterPlayerKill();
+    void PlayPlayerFootStepSound();
+    void ActivateBossCamera(float targetDistance);
+    void BossCameraMovement();
+
+    bool IsPlayingCinematic() { return mPlayingCinematic; }
+    bool IsDialogueActive() const { return mDialogue; }
 private:
     void PrepareAudio();
     void StartAudio();
@@ -72,10 +90,20 @@ private:
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
     GameObject* mPoolManager = nullptr;
+    GameObject* mFirstTutorial = nullptr;
+    GameObject* mSecondTutorial = nullptr;
     TimerScript mHitStopTimer;
+    TimerScript mLoadTimer;
+    TimerScript mLoadSecondTimer;
     Timer* mGameTimer = nullptr;
 
+    GameObject* mCinematicManagerGO = nullptr;
+    CinematicCamera* mCinematicCamera = nullptr;
+
+    bool mPlayingCinematic = false;
+
     bool mPaused = false;
+    bool mPauseScreen = false;
 
     bool mStopActive = false;
     float mDefaultHitStopTime = 0.0f;
@@ -86,8 +114,16 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
+
+    int mGameOverAudio = -1;
     int mLastAudioID = -1;
 
     bool mLoadLevel = false;
     const char* mLevelName = nullptr;
+
+    bool mIsFightingBoss = false;
+    bool mCameraLerp = false;
+    float mBossCameraTarget = 11.0f;
+
+    bool mDialogue = true;
 };

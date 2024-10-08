@@ -2,6 +2,7 @@
 #define _COMPONENT_SPOTLIGHT_H_
 #include "Component.h"
 #include "Geometry/Frustum.h"
+#include "float3.h"
 
 typedef struct SpotLight {
 
@@ -34,7 +35,6 @@ public:
 	void Disable() override;
 
 	const SpotLight& GetData() const { return mData; }
-	const float* GetPosition() const;
 	const float* GetDirection() const { return mData.aimD; };
 	const float* GetColor() const { return mData.color; }
 	void SetColor(float col[3]);
@@ -52,6 +52,8 @@ public:
 	void SetBias(float bias);
 	int GetIndex() const { return mData.shadowIndex; }
 	void SetShadowIndex(int index);
+	bool GetVolumetric() const { return mVolumetric; }
+	void SetVolumetric(bool newValue);
 
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
 
@@ -64,6 +66,7 @@ private:
 
 	bool mCastShadow = false;
 	float mBias;
+	bool mVolumetric = false;
 };
 
 #endif //_COMPONENT_SPOTLIGHT_H_

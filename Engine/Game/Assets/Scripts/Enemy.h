@@ -6,9 +6,10 @@
 #include "TimerScript.h"
 
 class GameObject;
+class Component;
 class AnimationComponent;
 class AIAgentComponent;
-class Component;
+class BoxColliderComponent;
 
 enum class EnemyState
 {
@@ -17,7 +18,12 @@ enum class EnemyState
 	CHARGE,
 	ATTACK,
 	FLEE,
-	DEATH
+	DEATH,
+	//Boss States
+	CHARGING_BULLET_HELL,
+	CHARGING_LASER,
+	DOWN,
+	PHASE
 };
 
 
@@ -38,14 +44,17 @@ public:
 	virtual void Paralyzed(float percentage, bool paralyzed);
 	virtual void SetAttracted(bool attracted);
 
+	void ActivateUltVFX();
+
 protected:
 	virtual void Idle();
 	virtual void Chase();
 	virtual void Charge();
 	virtual void Attack();
 	virtual void Flee();
-	virtual void PlayStepAudio() {};
+	virtual void PlayStepAudio();
 	virtual void PlayAttackAudio() {};
+	void RotateHorizontally(const float3& target, float speed);
 
 	bool IsPlayerInRange(float range);
 	bool IsPlayerReachable();
@@ -66,14 +75,15 @@ protected:
 	float mAttackDamage = 2.0f;
 
 	//DropRates
-	int mShieldDropRate = 20;
-	int mRedEnergyDropRate = 35;
-	int mBlueEnergyDropRate = 45;
+	int mShieldDropRate = 15;
+	int mRedEnergyDropRate = 45;
+	int mBlueEnergyDropRate = 80;
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	GameObject* mPlayer = nullptr;
 	AnimationComponent* mAnimationComponent = nullptr;
 	AIAgentComponent* mAiAgentComponent = nullptr;
+	BoxColliderComponent* mCollider = nullptr;
 
 	//Timers
 	TimerScript mChargeDurationTimer;
@@ -84,13 +94,15 @@ protected:
 	float mAttackCoolDown = 1.0f;
 	TimerScript mDisengageTimer;
 	float mDisengageTime = 1.0f;
-	TimerScript mDeathTimer;
-	float mDeathTime = 1.4f;
-	TimerScript  mHitEffectTimer;
+
+	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
-	float mFleeToAttackTime = 1.0f;
-
+	float mFleeToAttackTime = 1.25f;
+	TimerScript mDeathTimer;
+	float mVanishingTime = 0.0f;
+	float mDeathTime = 1.4f;
+	bool mFirstAttack = true;
 
 	//Transition Times
 	float mIdleTransitionDuration = 0.2f;
@@ -99,14 +111,20 @@ protected:
 	float mAttackTransitionDuration = 0.2f;
 	float mDeathTransitionDuration = 0.2f;
 
+
 	//Movement
 	float3 mEnemyCollisionDirection = float3::zero;
+	bool mIsFleeing = false;
+	// Step Sound
+	TimerScript mStepTimer;
+	float mStepDuration = 0.0f;
 
 
 	//Hit Effect
 	bool mHit = false;
 	std::vector<Component*> mMeshComponents;
 	std::vector <float4> mOgColors;
+	GameObject* mUltHitEffectGO = nullptr;
 	// DEBUFF
 	bool mBeAttracted = false;
 
@@ -115,4 +133,6 @@ protected:
 	TimerScript mParalyzedTimerScript;
 	float mParalysisSeverityLevel = 1.0f;
 
+
+	bool mDeathAudioPlayed = false;
 };

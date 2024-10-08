@@ -7,6 +7,10 @@
         "BattleArea",
         "Trap",
         "Drop",
-        "LineFinal"
+        "LineFinal",
+        "DoorArea",
+        "Bridge",
+        "Collectible",
+        "Rat"
     ]
 }

@@ -1,0 +1,24 @@
+{
+    "Name": "door closed level 2 4",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        0.0,
+        0.0
+    ],
+    "BaseColorTex": 1680713444,
+    "MetallicRoughTex": 1680713445,
+    "NormalTex": 1680713446,
+    "EmissiveTex": 1680713447,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

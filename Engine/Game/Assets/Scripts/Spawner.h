@@ -18,16 +18,16 @@ public:
 
 	bool IsActive() const { return mIsActive; }
 	PoolType GetEnemyType() const { return mPoolType; }
+	int GetEnemiesPerRound() const { return mEnemiesPerRound; }
 	void Active(bool active) { mIsActive = active; }
-
 
 private:
 	bool mOnlyOnce = false;
 	bool mIsActive = false;
 	int mSpawnedCounter = 0;
-
+	int mEnemiesPerRound = 1;
 	TimerScript mSpawnDelayTimer;
-	float mSpawnDelay = 0.25f;
+	float mSpawnDelay = 1.25f;
 
 	PoolType mPoolType = PoolType::FIRST;
 	PoolManager* mPoolManager = nullptr;

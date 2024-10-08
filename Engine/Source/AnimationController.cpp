@@ -12,21 +12,31 @@
 
 #include "Globals.h"
 
-AnimationController::AnimationController(ResourceAnimation* animation) {
-	mCurrentAnimation = animation;
-	mAnimationUID = animation->GetUID();
+AnimationController::AnimationController(unsigned int uid) 
+{
+	mCurrentAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(uid, Resource::Type::Animation));
+	assert(mCurrentAnimation);
 	mLoop = false;
 
 	mCurrentTime = 0.1f;
 	mStartTime = 0.1f;
-	mEndTime = animation->GetDuration();
+	mEndTime = mCurrentAnimation->GetDuration();
+}
+
+AnimationController::AnimationController(const AnimationController& other):
+	mCurrentTime(other.mCurrentTime), mStartTime(other.mStartTime), mEndTime(other.mEndTime), 
+	mStartTransitionTime(other.mStartTransitionTime), mTransitionDuration(other.mTransitionDuration), mTransition(other.mTransition), mClipStartTime(other.mClipStartTime),
+	mCurrentTransitionTime(other.mCurrentTransitionTime), mSpeed(other.mSpeed), mLoop(other.mLoop)
+{
+	mCurrentAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.GetAnimationUID(), Resource::Type::Animation));
+	assert(mCurrentAnimation);
 }
 
 AnimationController::~AnimationController()
 {
-	if (mAnimationUID != 0)
+	if (mCurrentAnimation)
 	{
-		App->GetResource()->ReleaseResource(mAnimationUID);
+		App->GetResource()->ReleaseResource(mCurrentAnimation->GetUID());
 	}
 }
 
@@ -58,9 +68,8 @@ void AnimationController::Update()
 
 void AnimationController::Restart()
 {
-	
-	mCurrentTime = 0.1f;
-	//mCurrentTime = mStartTime;
+	EndBlending();
+	mCurrentTime = 0.024f;
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda)
@@ -104,14 +113,10 @@ void AnimationController::SetEndTime(float time)
 
 void AnimationController::EndBlending()
 {
+	mTransition = false;
 	mCurrentTime = mClipStartTime;
 	mCurrentTransitionTime = 0.0f;
 
-}
-
-unsigned int AnimationController::GetAnimationUID() const
-{
-	return mAnimationUID;
 }
 
 void AnimationController::GetTransform(GameObject* model)
@@ -130,7 +135,6 @@ void AnimationController::GetTransform(GameObject* model)
 			return;
 		}
 
-
 		static float lambda;
 		static int keyIndex;
 
@@ -140,14 +144,14 @@ void AnimationController::GetTransform(GameObject* model)
 
 			model->SetLocalPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
 		}
+
 		if (channel->hasRotation)
 		{
+
 			CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
 			model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
-		//if (channel->hasTranslation || channel->hasRotation)
-		//	model->SetLocalScale(model->GetLocalScale());
 	}
 
 }
@@ -194,22 +198,29 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 			}
 			if (channel->hasRotation)
 			{
-				CalculateIndexAndLambda(channel, "Rotation", mStartTransitionTime, keyIndex, lambda);
-
-				std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
-				auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mClipStartTime);
-
-				if (upperBoundIterator != rotTimeStampsVector.end())
+				if (model->GetName() != "Hips")
 				{
-					newClipIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
-				}
-				else
-				{
-					newClipIndex = channel->numPositions - 1;
-				}
+					CalculateIndexAndLambda(channel, "Rotation", mStartTransitionTime, keyIndex, lambda);
 
-				model->SetLocalRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
-			}
+					std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+					auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mClipStartTime);
+
+					if (upperBoundIterator != rotTimeStampsVector.end())
+					{
+						newClipIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+					}
+					else
+					{
+						newClipIndex = channel->numPositions - 1;
+					}
+
+					model->SetLocalRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
+				}
+				//else
+				//{
+				//	LOG("PACO")
+				//}
+			}	
 			//if(channel->hasTranslation || channel->hasRotation)
 			//	model->SetLocalScale(model->GetLocalScale());
 		}

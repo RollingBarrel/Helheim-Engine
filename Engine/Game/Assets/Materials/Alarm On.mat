@@ -1,0 +1,24 @@
+{
+    "Name": "Alarm On",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        0.0,
+        0.0
+    ],
+    "BaseColorTex": 80636480,
+    "MetallicRoughTex": 80636481,
+    "NormalTex": 80636482,
+    "EmissiveTex": 80636483,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

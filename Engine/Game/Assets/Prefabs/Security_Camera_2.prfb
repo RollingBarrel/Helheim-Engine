@@ -1,0 +1,299 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 708252620,
+                "ParentUID": 1,
+                "Name": "Security_Camera_2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    3.5999999046325685,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.20000000298023225,
+                    0.20000000298023225,
+                    0.20000000298023225
+                ],
+                "Tag": "DoorArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            8.0,
+                            4.0,
+                            8.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1673826269,
+                "ParentUID": 708252620,
+                "Name": "OB_security_camera_arm",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.74114990234375,
+                    -0.294677734375,
+                    0.46700286865234377
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 473954053,
+                "ParentUID": 1673826269,
+                "Name": "OB_security_camera_arm",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 349128361,
+                        "MaterialID": 349128366,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1407919768,
+                "ParentUID": 708252620,
+                "Name": "Pivot",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0975341796875,
+                    -0.03271484375,
+                    0.461578369140625
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "SecurityCameraFollower",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mMaxDistance",
+                                "MemberType": 1,
+                                "VariableData": 15.0
+                            },
+                            {
+                                "VariableName": "mTurningOnOffTime",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mMaxLightIntesity",
+                                "MemberType": 1,
+                                "VariableData": 20.0
+                            },
+                            {
+                                "VariableName": "mMaxLightRange",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 202965219,
+                "ParentUID": 1407919768,
+                "Name": "OB_security_camera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.00018310546875,
+                    0.591033935546875,
+                    -2.6809616088867189
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1151829828,
+                "ParentUID": 202965219,
+                "Name": "OB_security_camera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 349128367,
+                        "MaterialID": 349128366,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 2114966742,
+                "ParentUID": 202965219,
+                "Name": "Light",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.4972076416015625,
+                    0.03814697265625,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.6551408171653748,
+                            3.7192931175231935,
+                            0.09235236048698425,
+                            20.0
+                        ],
+                        "Direction": [
+                            1.0,
+                            0.0,
+                            -1.1920927533992654e-7,
+                            0.9396926164627075
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.9396926164627075
+                        ],
+                        "Range": 10.0,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "isVolumetric": true
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,673 @@
+{
+    "Scene": {
+        "Name": "Natalia2.vfx",
+        "GameObjects": [
+            {
+                "UID": 94707479,
+                "ParentUID": 1,
+                "Name": "VFX_Charged_Range_Attack",
+                "Enabled": true,
+                "Translation": [
+                    3.740000009536743,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 616509934,
+                "ParentUID": 94707479,
+                "Name": "Lines",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 635794951,
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 801896237,
+                        "Delay": 1.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 29.0,
+                        "MaxParticles": 114,
+                        "Looping": true,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 7.800000190734863,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.20000000298023225,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": []
+                    }
+                ]
+            },
+            {
+                "UID": 1915344501,
+                "ParentUID": 1,
+                "Name": "VFX_Sparks",
+                "Enabled": true,
+                "Translation": [
+                    1.2999999523162842,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 726829911,
+                "ParentUID": 1915344501,
+                "Name": "Electricity",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1775101742,
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1185432205,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 195,
+                        "Looping": true,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 1.7999999523162842,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.10000000149011612,
+                            "MaxValue": 0.15000000596046449
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeAngle": 0.10000000149011612,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 0.5
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 8.0
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.02604166604578495,
+                                "Color": [
+                                    0.197809636592865,
+                                    0.48258551955223086,
+                                    0.8100775480270386,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5286458134651184,
+                                "Color": [
+                                    0.197809636592865,
+                                    0.6819283962249756,
+                                    0.8100775480270386,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 493151851,
+                "ParentUID": 1915344501,
+                "Name": "Sparks",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 509930512,
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 801896237,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 1000,
+                        "Looping": true,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.10000000149011612,
+                            "MaxValue": 0.15000000596046449
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeAngle": 0.10000000149011612,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 2.0
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 4.0,
+                                "MaxValue": 12.0
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.02604166604578495,
+                                "Color": [
+                                    0.19607843458652497,
+                                    0.48235294222831728,
+                                    0.8117647171020508,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1090666725,
+                "ParentUID": 1,
+                "Name": "VFX_Smoke",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1134061296,
+                "ParentUID": 1090666725,
+                "Name": "Smoke",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.002617990830913186,
+                    0.0,
+                    0.9999966025352478
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 27708025,
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1710132398,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 100.0,
+                        "MaxParticles": 197,
+                        "Looping": true,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.800000011920929,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.800000011920929,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.0010000000474974514,
+                        "ShapeAngle": 0.5,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 5,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "Factor": 0.800000011920929,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.15000000596046449,
+                                "MaxValue": 0.5
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": []
+                    }
+                ]
+            },
+            {
+                "UID": 1952220792,
+                "ParentUID": 1,
+                "Name": "VFX_Fog",
+                "Enabled": true,
+                "Translation": [
+                    -1.25,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1967467791,
+                "ParentUID": 1952220792,
+                "Name": "Fog",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1973246334,
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1692786283,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 143,
+                        "Looping": true,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 5.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 21.584999084472658,
+                        "ShapeSize": [
+                            0.5,
+                            0.5,
+                            0.5
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 2.0
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.009999999776482582,
+                                "MaxValue": 0.20000000298023225
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": []
+                    }
+                ]
+            },
+            {
+                "UID": 1932440580,
+                "ParentUID": 94707479,
+                "Name": "Sparks",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1951655976,
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2041935686,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 5.0,
+                        "MaxParticles": 114,
+                        "Looping": true,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "Factor": 1.0,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.03750000149011612,
+                                        0.6949999928474426
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.23999999463558198,
+                                        0.6399999856948853
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.35249999165534975,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.512499988079071,
+                                        0.4599999785423279
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6700000166893005,
+                                        0.3100000023841858
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7250000238418579,
+                                        0.23500001430511475
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8224999904632568,
+                                        0.009999990463256836
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "Factor": 1.0,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": []
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -16,6 +16,9 @@ AnimationStateMachine::AnimationStateMachine(unsigned int animationUid = 0)
 	mStates[0].mLoop = true;
 }
 
+AnimationStateMachine::AnimationStateMachine(const AnimationStateMachine& other): 
+	mStates(other.mStates), mTransitions(other.mTransitions), mName(other.mName), mResourceUID(other.mResourceUID), mAnimationUID(other.mAnimationUID) {}
+
 
 AnimationStateMachine::~AnimationStateMachine()
 {
@@ -111,6 +114,18 @@ void AnimationStateMachine::DeleteState(int index)
 	}
 
 	mStates.erase(mStates.begin() + index);
+}
+
+const std::vector<std::string> AnimationStateMachine::GetStateNames() const
+{
+	// // O: insert return statement here
+	std::vector<std::string> names;
+	for (AnimationState state : mStates)
+	{
+		names.push_back(state.mName);
+	}
+
+	return names;
 }
 
 void AnimationStateMachine::AddTransition(const std::string& sourceName, const std::string& targetName, const std::string& trigger)

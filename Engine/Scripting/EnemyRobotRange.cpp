@@ -8,6 +8,7 @@
 #include "PoolManager.h"
 #include "AudioManager.h"
 #include "Bullet.h"
+#include "PlayerController.h"
 
 #include "ColorGradient.h"
 
@@ -24,7 +25,8 @@ CREATE(EnemyRobotRange)
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
-
+    SEPARATOR("VFX");
+    MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
     END_CREATE;
 }
 
@@ -32,20 +34,28 @@ void EnemyRobotRange::Start()
 {
     Enemy::Start();
     mDisengageTime = 0.5f;
-
+    mAttackCoolDown = 1.0f;
     // COLLIDER
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotRange::OnCollisionEnter, this, std::placeholders::_1)));
     }
-
+    mDeathAudioPlayed = false;
 }
 
 void EnemyRobotRange::Attack()
 {
-    Enemy::Attack();
-
+    mAiAgentComponent->PauseCrowdNavigation();
+    mAiAgentComponent->StartCrowdNavigation();
+    bool playerReachable = IsPlayerReachable();
+    
+    if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
+    {
+        mFirstAttack = true;
+        mAttackCoolDownTimer.Reset();
+        mCurrentState = EnemyState::CHASE;
+    }
     float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
     direction.y = 0;
     direction.Normalize();
@@ -56,15 +66,19 @@ void EnemyRobotRange::Attack()
         mGameObject->SetWorldRotation(float3(0, angle, 0));
 
     }
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
+    if (mFirstAttack || mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
-        mAnimationComponent->OnRestart();
+        mFirstAttack = false;
+       
         RangeAttack();
-        if (IsPlayerInRange(mAttackDistance / 2.0f))
-        {
-            mCurrentState = EnemyState::FLEE;
-        }
+        mAnimationComponent->RestartStateAnimation();
     }
+    //if (IsPlayerInRange(mAttackDistance * 0.3f))
+    //{
+    //    mFirstAttack = true;
+    //    mAttackCoolDownTimer.Reset();
+    //    mCurrentState = EnemyState::FLEE;
+    //}
 }
 
 void EnemyRobotRange::RangeAttack()
@@ -81,11 +95,28 @@ void EnemyRobotRange::RangeAttack()
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
 }
 
+void EnemyRobotRange::TakeDamage(float damage)
+{
+    Enemy::TakeDamage(damage);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
+}
+
+void EnemyRobotRange::Death()
+{
+    Enemy::Death(); 
+    if (!mDeathAudioPlayed)
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_DEATH, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
+        mDeathAudioPlayed = true;
+    }
+}
+
 void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetTag() == "Door")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
     {
-        mEnemyCollisionDirection = collisionData->collisionNormal;
-        //LOG("HOLA")
+        mAiAgentComponent->FleeFromTarget(collisionData->collidedWith->GetWorldPosition());
+        mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+        mIsFleeing = true;
     }
 }

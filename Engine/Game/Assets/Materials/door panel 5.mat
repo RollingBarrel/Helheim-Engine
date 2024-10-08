@@ -1,0 +1,24 @@
+{
+    "Name": "door panel 5",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        0.0,
+        0.0
+    ],
+    "BaseColorTex": 1680713450,
+    "MetallicRoughTex": 1680713451,
+    "NormalTex": 1680713452,
+    "EmissiveTex": 1680713453,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

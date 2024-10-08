@@ -166,5 +166,5 @@ void PreciseTimer::SetLowestFps() {
 
 void PreciseTimer::SetVsyncStatus(bool vsyncStatus) {
 	mEnabledVsync = vsyncStatus;
-	SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
+	SDL_GL_SetSwapInterval((mEnabledVsync) ? 1 : 0);
 }

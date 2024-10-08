@@ -22,6 +22,9 @@ CREATE(EnemyRobotMelee)
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
+    SEPARATOR("VFX");
+    MEMBER(MemberType::GAMEOBJECT, mSwordTrail);
+    MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
     END_CREATE;
 }
 
@@ -29,22 +32,53 @@ void EnemyRobotMelee::Start()
 {
     Enemy::Start();
     mDisengageTime = 0.1f;
+    mChargeDuration = 0.4f;
+    mAttackDistance = 1.5f;
+    mSwordTrail->SetEnabled(false);
+    mDeathAudioPlayed = false;
 }
 
 void EnemyRobotMelee::Charge()
 {
-    Enemy::Charge();
+    mAiAgentComponent->PauseCrowdNavigation();
+    mAiAgentComponent->StartCrowdNavigation();
+    if (!IsPlayerReachable() && mDisengageTimer.Delay(mDisengageTime))
+    {
+
+        mCurrentState = EnemyState::CHASE;
+        mSwordTrail->SetEnabled(false);
+        mFirstAttack = true;
+        return;
+
+    }
+    mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
+    mAnimationComponent->RestartStateAnimation();
+    if (mFirstAttack &&  mFirstAttackTimer.Delay(mFirstAttackTime))
+    {
+        mFirstAttack = false;
+        mCurrentState = EnemyState::ATTACK;
+        mSwordTrail->SetEnabled(true);
+
+    }
+    else if (!mFirstAttack && mChargeDurationTimer.Delay(mChargeDuration))
+	{
+        
+ 		mCurrentState = EnemyState::ATTACK;
+        mSwordTrail->SetEnabled(true);
+
+	}
     mGameObject->LookAt(mPlayer->GetWorldPosition());
 }
 
 void EnemyRobotMelee::Attack()
 {
-    Enemy::Attack();
-    
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
+    mAnimationComponent->SetIsPlaying(true);
+    mAttackTime += App->GetDt();
+
+   static bool attack = true ;
+    if ( attack && mAttackTime>=0.2f)
     {
-        mAnimationComponent->OnRestart();
-        PlayMeleeAudio();
+        attack = false;
         float3 playerPosition = mPlayer->GetWorldPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
         float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
@@ -56,30 +90,39 @@ void EnemyRobotMelee::Attack()
             PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (playerScript != nullptr)
             {
+                PlayMeleeAudio();
                 playerScript->TakeDamage(mMeeleDamage);
                 GameManager::GetInstance()->HitStop();
             }
         }
     }
+    if (!attack && mAttackTime >= 0.5f)
+    {
+        attack = true;
+        mCurrentState = EnemyState::CHARGE;
+        mAttackTime = 0.0f;
+        
+    }
 }
 
-void EnemyRobotMelee::PlayStepAudio()
+void EnemyRobotMelee::Death()
 {
-    // TODO: play sound according the animation
-    mStepTimer += App->GetDt();
-    if (mStepTimer >= mStepCooldown)
+    Enemy::Death(); 
+    if (!mDeathAudioPlayed)
     {
-        mStepTimer = 0;
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_DEATH, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
+        mDeathAudioPlayed = true;
+        mSwordTrail->SetEnabled(false);
     }
+}
+
+void EnemyRobotMelee::TakeDamage(float damage)
+{
+    Enemy::TakeDamage(damage);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyRobotMelee::PlayMeleeAudio()
 {
-    const char* parameterName = "Speed";
-    //GameManager::GetInstance()->GetAudio()->PlayOneShot(
-    //    SFX::MEELEE,
-    //    mGameObject->GetWorldPosition(),
-    //    { { parameterName, 0.0f } }
-    //);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_SLASH, mGameObject->GetWorldPosition());
 }

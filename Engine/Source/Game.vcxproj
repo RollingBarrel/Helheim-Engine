@@ -156,6 +156,13 @@
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="ModuleGame.h" />
+    <ClInclude Include="resource1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Game\InternalAssets\Chrysalis_new.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

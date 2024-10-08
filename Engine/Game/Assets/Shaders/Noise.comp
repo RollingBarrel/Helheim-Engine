@@ -5,7 +5,7 @@
 uniform layout(binding = 0, r32f) restrict writeonly image2D resultImage;
 
 // Simplex 2D noise
-//
+
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
 float snoise(vec2 v){
@@ -45,8 +45,8 @@ void main()
 		float freq = 0.007;
 		float maxAmp = 0.0;
 		float amp = 1.0;
-
-		for (uint i = 0; i<16; ++i)
+		
+		for (uint i = 0; i<8; ++i)
 		{
 			noise += snoise(vec2(float(gl_GlobalInvocationID.x) * freq, float(gl_GlobalInvocationID.y) * freq)) * amp;
 			maxAmp += amp;
@@ -55,6 +55,8 @@ void main()
 		}
 		noise /= maxAmp;
 		noise = noise * 0.5 + 0.5;
+		
+		//float noise = snoise(vec2(gl_GlobalInvocationID.xy));
 		imageStore(resultImage, ivec2(gl_GlobalInvocationID.xy), vec4(noise));
 	}
 }

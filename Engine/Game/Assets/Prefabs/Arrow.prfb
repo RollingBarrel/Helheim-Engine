@@ -1,0 +1,58 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 173027508,
+                "ParentUID": 1,
+                "Name": "Arrow",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    51.6138801574707,
+                    0.03704240545630455,
+                    8.445873260498047
+                ],
+                "Rotation": [
+                    -0.5,
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Scale": [
+                    4.0,
+                    4.0,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 1815462347,
+                        "EmisiveName": "Alpha_Arrow.png",
+                        "EmisiveColor": [
+                            0.6127451062202454,
+                            0.6127451062202454,
+                            0.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            }
+        ]
+    }
+}

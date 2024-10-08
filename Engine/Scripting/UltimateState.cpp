@@ -8,6 +8,8 @@
 #include "ScriptComponent.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "ModuleScene.h"
+#include "PlayerStats.h"
 
 UltimateState::UltimateState(PlayerController* player, float cooldown, float duration) : State(player, cooldown)
 {
@@ -26,12 +28,8 @@ UltimateState::~UltimateState()
 StateType UltimateState::HandleInput()
 {
 	//Keep returning ultimate until timer reaches end 
-	if (!mTimer.Delay(mUltimateDuration))
-		return StateType::ULTIMATE;
-	else 
-		return StateType::AIM; 
-	//}
-	
+	if (!mTimer.Delay(mUltimateDuration)) return StateType::ULTIMATE;
+	else return StateType::AIM;
 }
 
 void UltimateState::Update()
@@ -44,21 +42,27 @@ void UltimateState::Enter()
 	mUltimateScript->mDamageTick = mPlayerController->GetUltimateDamageTick();
 	mUltimateScript->mInterval = mPlayerController->GetUltimateDamageInterval();
 	mUltimateDuration = mPlayerController->GetUltimateDuration();
-	//mPlayerController->SetUltimateResource(0);
 	mPlayerController->EnableUltimate(true);
-	mPlayerController->SetMovementSpeed(mPlayerController->GetUltimateSlow());
+	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed()*mPlayerController->GetUltimateSlow());
+
 }
 
 void UltimateState::Exit()
 {
 	mPlayerController->EnableUltimate(false);
-	mPlayerController->SetMovementSpeed(1.0f/ mPlayerController->GetUltimateSlow());
+	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed());
 	SetCooldown(mPlayerController->GetUltimateCooldown());
 
 	if (GameManager::GetInstance()->GetHud())
 	{
-		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mPlayerController->GetUltimateCooldown());
+		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(0.0f);
 	}
+
+	mPlayerController->EnableLaser(true);
+	mPlayerController->UseUltimateResource();
+	mPlayerController->SetSpineAnimation("tAim", 0.3f);
+
+
 }
 
 StateType UltimateState::GetType()
@@ -68,7 +72,12 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown)) return true;
+	if (mPlayerController->GetUltimateGO() && mPlayerController->IsUltimateUnlocked() && mPlayerController->GetUltimateResource() >= 100
+		&& (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
+		)
+	{
+		return true;
+	}
 	return false;
 }
 

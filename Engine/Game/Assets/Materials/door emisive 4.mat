@@ -1,0 +1,24 @@
+{
+    "Name": "door emisive 4",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        0.0,
+        0.0
+    ],
+    "BaseColorTex": 1570432666,
+    "MetallicRoughTex": 1570432667,
+    "NormalTex": 1570432668,
+    "EmissiveTex": 1570432669,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

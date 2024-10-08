@@ -39,7 +39,7 @@ bool ModuleDetourNavigation::Init()
 
 update_status ModuleDetourNavigation::Update(float dt)
 {
-	if (mCrowd && App->IsPlayMode())
+	if (mCrowd && App->IsPlayMode() && !App->IsPause())
 	{
 		if (mCrowd->getAgentCount() > 0)
 		{

@@ -46,10 +46,12 @@ public:
     void SetText(std::string text) { mText = text; }
     void SetTextColor(float3 color) { mColor = color; }
     void SetAlignment(TextAlignment alignment) { mAlignment = alignment; }
+    void SetTextFont(std::string font);
+    void SetFontSize(int fontSize);
 
 private:
     void InitFreeType();
-    void LoadFont(const std::string& fontPath);
+    void LoadFont();
     void CreateBuffers();
 
     void RenderText(const std::string& text);
@@ -71,6 +73,7 @@ private:
     int mLineSpacing = 0;
     int mLineWidth = 0;
     TextAlignment mAlignment = TextAlignment::LEFT;
+    std::string mFontName = "Assets\\Fonts\\Akshar-Regular.ttf";
 
     float3 mColor = float3(1.f,1.f,1.f);
     float mAlpha = 1.0f;

@@ -9,7 +9,8 @@
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
 #include "MeshRendererComponent.h"
-
+#include "AnimationComponent.h"
+#include <algorithm> 
 #include "glew.h"
 
 #include "PlayerStats.h"
@@ -195,6 +196,14 @@ void ModuleScene::Save(const char* sceneName) const
 	fogObj.AddFloat("Density", App->GetOpenGL()->GetFogDensity());
 	fogObj.AddFloat("HeightFallof", App->GetOpenGL()->GetFogHeightFallof());
 	fogObj.AddFloat("MaxFog", App->GetOpenGL()->GetMaxFog());
+	JsonObject volObject = scene.AddNewJsonObject("Volumetric");
+	volObject.AddFloat("BaseExtCoeff", App->GetOpenGL()->GetVolBaseExtCoeff());
+	volObject.AddFloat("NoiseAmount", App->GetOpenGL()->GetVolNoiseAmount());
+	volObject.AddFloat("VolIntensity", App->GetOpenGL()->GetVolIntensity());
+	volObject.AddFloat("Anisotropy", App->GetOpenGL()->GetVolAnisotropy());
+	volObject.AddFloat("StepSize", App->GetOpenGL()->GetVolStepSize());
+	volObject.AddInt("MaxSteps", App->GetOpenGL()->GetVolMaxSteps());
+
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -294,11 +303,33 @@ void ModuleScene::Load(const char* sceneName)
 		}
 		else
 		{
+			//Default Values
 			float fogCol[3] = { 1.0f,1.0f,1.0f };
 			App->GetOpenGL()->SetFogColor(fogCol);
 			App->GetOpenGL()->SetFogDensity(0.009f);
 			App->GetOpenGL()->SetFogHeightFallof(0.0f);
 			App->GetOpenGL()->SetMaxFog(0.0f);
+		}
+
+		if (scene.HasMember("Volumetric"))
+		{
+			JsonObject volObj = scene.GetJsonObject("Volumetric");
+			App->GetOpenGL()->SetVolBaseExtCoeff(volObj.GetFloat("BaseExtCoeff"));
+			App->GetOpenGL()->SetVolNoiseAmount(volObj.GetFloat("NoiseAmount"));
+			App->GetOpenGL()->SetVolIntensity(volObj.GetFloat("VolIntensity"));
+			App->GetOpenGL()->SetVolAnisotropy(volObj.GetFloat("Anisotropy"));
+			App->GetOpenGL()->SetVolStepSize(volObj.GetFloat("StepSize"));
+			App->GetOpenGL()->SetVolMaxSteps(volObj.GetInt("MaxSteps"));
+		}
+		else
+		{
+			//Default Values
+			App->GetOpenGL()->SetVolBaseExtCoeff(0.04f);
+			App->GetOpenGL()->SetVolNoiseAmount(1.0f);
+			App->GetOpenGL()->SetVolIntensity(1.0f);
+			App->GetOpenGL()->SetVolAnisotropy(0.35f);
+			App->GetOpenGL()->SetVolStepSize(1.0f);
+			App->GetOpenGL()->SetVolMaxSteps(16);
 		}
 
 		App->GetScriptManager()->AwakeScripts();
@@ -524,6 +555,20 @@ GameObject* ModuleScene::Find(const char* name) const
 	return nullptr;
 }
 
+const void ModuleScene::FilterGameObjects(std::string& filter, std::vector<GameObject*>& filteredElements) const
+{
+	std::transform(filter.begin(), filter.end(), filter.begin(), ::toupper);
+	for (GameObject* go : mSceneGO)
+	{
+		std::string name = go->GetName();
+		std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+		if(name.find(filter) != std::string::npos)
+		{
+			filteredElements.push_back(go);
+		}
+	}
+}
+
 GameObject* ModuleScene::Find(unsigned int UID) const
 {
 	if (UID == 1)
@@ -587,13 +632,18 @@ GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
 {
 	std::unordered_map<const GameObject*, GameObject*> originalToNew;
 	std::vector<MeshRendererComponent*>mRenderers;
-	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	std::vector<AnimationComponent*>mAnimations;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers, &mAnimations);
 	for (MeshRendererComponent* mRend : mRenderers)
 	{
 		if (mRend->HasSkinning())
 		{
 			mRend->UpdateSkeletonObjects(originalToNew);
 		}
+	}
+	for (AnimationComponent* mAnim : mAnimations)
+	{
+		mAnim->SetObjects(originalToNew);
 	}
 	AddGameObjectToDuplicate(duplicatedGameObject);
 

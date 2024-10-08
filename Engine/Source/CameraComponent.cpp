@@ -13,60 +13,44 @@
 
 CameraComponent::CameraComponent(GameObject* owner) :Component(owner, ComponentType::CAMERA)
 {
-    mFrustum.pos = owner->GetWorldPosition();
-    mFrustum.type = FrustumType::PerspectiveFrustum;
-    mFrustum.nearPlaneDistance = 0.01f;
-    mFrustum.farPlaneDistance = 1000.0f;
+	Reset();
 
-    float w = static_cast<float>(App->GetWindow()->GetWidth());
-    float h = static_cast<float>(App->GetWindow()->GetHeight());
-    mAspectRatio = w / h;
-    mFrustum.verticalFov = math::pi / 4.0f;
-    mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * mAspectRatio);
+	mFrustum.front = mOwner->GetFront();
+	mFrustum.up = mOwner->GetUp();
 
-    mFrustum.front = mOwner->GetFront();
-    mFrustum.up = mOwner->GetUp();
-
-    App->GetCamera()->AddEnabledCamera(this);
+	App->GetCamera()->AddEnabledCamera(this);
 }
 
 CameraComponent::CameraComponent(const CameraComponent& original, GameObject* owner)
 	:Component(owner, ComponentType::CAMERA)
 {
 	mFrustum = original.mFrustum;
-    mAspectRatio = original.mFrustum.AspectRatio();
-    App->GetCamera()->AddEnabledCamera(this);
+	mAspectRatio = original.mFrustum.AspectRatio();
+	App->GetCamera()->AddEnabledCamera(this);
 }
 
 CameraComponent::~CameraComponent()
 {
-   App->GetCamera()->RemoveEnabledCamera(this); 
+	App->GetCamera()->RemoveEnabledCamera(this);
 }
 
 void CameraComponent::Enable()
 {
-    App->GetCamera()->AddEnabledCamera(this);
+	App->GetCamera()->AddEnabledCamera(this);
 }
 
 void CameraComponent::Disable()
 {
-    App->GetCamera()->RemoveEnabledCamera(this);
+	App->GetCamera()->RemoveEnabledCamera(this);
 }
 
 void CameraComponent::Update()
 {
-    if (mOwner->HasUpdatedTransform())
-    {
-        float3 position = mOwner->GetWorldPosition();
-        mFrustum.pos = position;
-
-
-        mFrustum.pos = mOwner->GetWorldPosition();
-        mFrustum.front = mOwner->GetFront();
-        mFrustum.up = mOwner->GetUp();
-        App->GetOpenGL()->SetOpenGlCameraUniforms();
-
-    }
+	if (!mHasUpdatedFrustum || mOwner->HasUpdatedTransform())
+	{
+		mHasUpdatedFrustum = false;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
+	}
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const
@@ -76,81 +60,79 @@ Component* CameraComponent::Clone(GameObject* owner) const
 
 void CameraComponent::Reset()
 {
-    mFrustum.type = FrustumType::PerspectiveFrustum;
-    mFrustum.nearPlaneDistance = 0.01f;
-    mFrustum.farPlaneDistance = 1000.0f;
+	mHasUpdatedFrustum = false;
+	mFrustum.type = FrustumType::PerspectiveFrustum;
+	mFrustum.nearPlaneDistance = 0.01f;
+	mFrustum.farPlaneDistance = 1000.0f;
 
-    float w = static_cast<float>(App->GetWindow()->GetWidth());
-    float h = static_cast<float>(App->GetWindow()->GetHeight());
-    mAspectRatio = w / h;
-    mFrustum.verticalFov = math::pi / 4.0f;
-    mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * mAspectRatio);
-
+	float w = static_cast<float>(App->GetWindow()->GetWidth());
+	float h = static_cast<float>(App->GetWindow()->GetHeight());
+	mAspectRatio = w / h;
+	mFrustum.verticalFov = math::pi / 4.0f;
+	mFrustum.horizontalFov = 2.f * atanf(tanf(mFrustum.verticalFov * 0.5f) * mAspectRatio);
 }
 
 void CameraComponent::SetFOV(float value)
 {
-    mFrustum.horizontalFov = math::DegToRad(value);
-    mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
+	mHasUpdatedFrustum = false;
+	mFrustum.horizontalFov = math::DegToRad(value);
+	mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
 }
 
 void CameraComponent::SetAspectRatio(float value)
 {
-    mAspectRatio = value;
-    mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
-
+	mHasUpdatedFrustum = false;
+	mAspectRatio = value;
+	mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
 }
 
-void CameraComponent::SetNearPlane(float value) 
+void CameraComponent::SetNearPlane(float value)
 {
-    mFrustum.nearPlaneDistance = value;
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
+	mHasUpdatedFrustum = false;
+	mFrustum.nearPlaneDistance = value;
 }
-void CameraComponent::SetFarPlane(float value) 
-{ 
-    mFrustum.farPlaneDistance = value;
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
-
+void CameraComponent::SetFarPlane(float value)
+{
+	mHasUpdatedFrustum = false;
+	mFrustum.farPlaneDistance = value;
 }
 
 void CameraComponent::Save(JsonObject& obj) const
 {
-    Component::Save(obj);
+	Component::Save(obj);
 
-    obj.AddFloat("AspectRatio", mAspectRatio);
-    obj.AddFloat("FieldOfView", math::RadToDeg(mFrustum.horizontalFov));
-    obj.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
-    obj.AddFloat("FarPlane", mFrustum.farPlaneDistance);
-    obj.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
+	obj.AddFloat("AspectRatio", mAspectRatio);
+	obj.AddFloat("FieldOfView", math::RadToDeg(mFrustum.horizontalFov));
+	obj.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
+	obj.AddFloat("FarPlane", mFrustum.farPlaneDistance);
+	obj.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
 }
 
 void CameraComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    Component::Load(data, uidPointerMap);
-    if (data.HasMember("AspectRatio"))
-    {
-        mAspectRatio = data.GetFloat("AspectRatio");
-    }
-    if (data.HasMember("FieldOfView"))
-    {
-        SetFOV(data.GetFloat("FieldOfView"));
-    }
-    if (data.HasMember("NearPlane"))
-    {
-        mFrustum.nearPlaneDistance = data.GetFloat("NearPlane");
-    }
-    if (data.HasMember("FarPlane"))
-    {
-        mFrustum.farPlaneDistance = data.GetFloat("FarPlane"); 
-    }
+	Component::Load(data, uidPointerMap);
+	if (data.HasMember("AspectRatio")) mAspectRatio = data.GetFloat("AspectRatio");
+	if (data.HasMember("FieldOfView")) SetFOV(data.GetFloat("FieldOfView"));
+	if (data.HasMember("NearPlane"))  mFrustum.nearPlaneDistance = data.GetFloat("NearPlane");
+	if (data.HasMember("FarPlane")) mFrustum.farPlaneDistance = data.GetFloat("FarPlane");
+	if (data.HasMember("IsOrtographic"))
+	{
+		if (data.GetBool("IsOrtographic")) mFrustum.type = FrustumType::OrthographicFrustum;
+	}
 
-    if (data.HasMember("IsOrtographic"))
-    {
-        if(data.GetBool("IsOrtographic"))   
-            mFrustum.type = FrustumType::OrthographicFrustum;      
-    }
+	mHasUpdatedFrustum = false;
+}
 
-    App->GetOpenGL()->SetOpenGlCameraUniforms();
+void CameraComponent::UpdateFrustum() const
+{
+	if (!mHasUpdatedFrustum || mOwner->HasUpdatedTransform())
+	{
+		mHasUpdatedFrustum = true;
+		float3 position = mOwner->GetWorldPosition();
+		mFrustum.pos = position;
+
+		mFrustum.pos = mOwner->GetWorldPosition();
+		mFrustum.front = mOwner->GetFront();
+		mFrustum.up = mOwner->GetUp();
+	}
 }

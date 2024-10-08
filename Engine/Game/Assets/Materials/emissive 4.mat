@@ -1,0 +1,24 @@
+{
+    "Name": "emissive 4",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        0.0,
+        0.0
+    ],
+    "BaseColorTex": 1728744985,
+    "MetallicRoughTex": 1728744986,
+    "NormalTex": 1728744987,
+    "EmissiveTex": 1728744988,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

@@ -32,5 +32,3 @@ void Bat::HitEffect(GameObject* enemy)
     }
     LOG("apply special effects bat");
 }
-
-

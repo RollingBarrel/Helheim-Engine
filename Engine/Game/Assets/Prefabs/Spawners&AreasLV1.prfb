@@ -2,8 +2,774 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 109034488,
-                "ParentUID": 384896792,
+                "UID": 1922465687,
+                "ParentUID": 1,
+                "Name": "Spawners&AreasLV1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1977605519,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea4-4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -123.64346313476563,
+                    0.0,
+                    -0.6093485355377197
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 8
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 1839521520
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1839521520,
+                "ParentUID": 1977605519,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1866186363,
+                "ParentUID": 1839521520,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1874610504,
+                "ParentUID": 1839521520,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 2026409840,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea4-3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -114.27018737792969,
+                    0.0,
+                    3.0763869285583498
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 7
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 202249176
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 202249176,
+                "ParentUID": 2026409840,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 229053261,
+                "ParentUID": 202249176,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 235876119,
+                "ParentUID": 202249176,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 2068043198,
+                "ParentUID": 1922465687,
                 "Name": "BattleArea1",
                 "Enabled": true,
                 "Active": true,
@@ -52,12 +818,12 @@
                             {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
-                                "VariableData": 1757936167
+                                "VariableData": 25548019
                             },
                             {
                                 "VariableName": "mSpawnerGO2",
                                 "MemberType": 3,
-                                "VariableData": 712598669
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "mSpawnerGO3",
@@ -70,12 +836,7 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mMaxSimulNumEnemies",
-                                "MemberType": 0,
-                                "VariableData": 2
-                            },
-                            {
-                                "VariableName": "mTotalNumEnemies",
+                                "VariableName": "mWavesRounds",
                                 "MemberType": 0,
                                 "VariableData": 4
                             },
@@ -84,40 +845,3398 @@
                                 "MemberType": 5
                             },
                             {
-                                "VariableName": "mDoor1",
+                                "VariableName": "mAreaDoorsGO",
                                 "MemberType": 3,
-                                "VariableData": 1148983579
+                                "VariableData": 1307015596
                             },
                             {
-                                "VariableName": "mDoor2",
-                                "MemberType": 3,
-                                "VariableData": 1796980057
-                            },
-                            {
-                                "VariableName": "TRAPS",
+                                "VariableName": "EXPLOSIVE SPAWNERS",
                                 "MemberType": 5
                             },
                             {
-                                "VariableName": "mTrap1",
+                                "VariableName": "mExplosiveSpawn1",
                                 "MemberType": 3,
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mTrap2",
+                                "VariableName": "mExplosiveSpawn2",
                                 "MemberType": 3,
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mTrap3",
+                                "VariableName": "mExplosiveSpawn3",
                                 "MemberType": 3,
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mTrap4",
+                                "VariableName": "mExplosiveSpawn4",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TUTORIAL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mIsTutorialArea",
+                                "MemberType": 2,
+                                "VariableData": true
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "UID": 2092132064,
+                "ParentUID": 1922465687,
+                "Name": "WinArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -146.35101318359376,
+                    0.0,
+                    -1.1775028705596924
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "WinArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            11.100000381469727,
+                            1.7000000476837159,
+                            9.949999809265137
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2112809501,
+                "ParentUID": 1922465687,
+                "Name": "BattleArea2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    14.961749076843262,
+                    0.5978862047195435,
+                    -10.384252548217774
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "BattleArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BattleArea",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpawnerGO1",
+                                "MemberType": 3,
+                                "VariableData": 102966571
+                            },
+                            {
+                                "VariableName": "mSpawnerGO2",
+                                "MemberType": 3,
+                                "VariableData": 142023952
+                            },
+                            {
+                                "VariableName": "mSpawnerGO3",
+                                "MemberType": 3,
+                                "VariableData": 256620118
+                            },
+                            {
+                                "VariableName": "mSpawnerGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mWavesRounds",
+                                "MemberType": 0,
+                                "VariableData": 2
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreaDoorsGO",
+                                "MemberType": 3,
+                                "VariableData": 1178340231
+                            },
+                            {
+                                "VariableName": "EXPLOSIVE SPAWNERS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TUTORIAL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mIsTutorialArea",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.4500000476837159,
+                            -1.0499999523162842
+                        ],
+                        "Size": [
+                            1.25,
+                            4.050000190734863,
+                            26.950000762939454
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2132651486,
+                "ParentUID": 1922465687,
+                "Name": "BattleArea3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -29.102550506591798,
+                    1.106519103050232,
+                    -19.210100173950197
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "BattleArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.850000023841858,
+                            4.050000190734863,
+                            8.100000381469727
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BattleArea",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpawnerGO1",
+                                "MemberType": 3,
+                                "VariableData": 218467810
+                            },
+                            {
+                                "VariableName": "mSpawnerGO2",
+                                "MemberType": 3,
+                                "VariableData": 180385123
+                            },
+                            {
+                                "VariableName": "mSpawnerGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mWavesRounds",
+                                "MemberType": 0,
+                                "VariableData": 2
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreaDoorsGO",
+                                "MemberType": 3,
+                                "VariableData": 1406952880
+                            },
+                            {
+                                "VariableName": "EXPLOSIVE SPAWNERS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TUTORIAL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mIsTutorialArea",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 5984518,
+                "ParentUID": 1922465687,
+                "Name": "BattleArea4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -89.50638580322266,
+                    0.21693232655525208,
+                    4.074917316436768
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "BattleArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.600000023841858,
+                            6.199999809265137,
+                            17.950000762939454
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BattleArea",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpawnerGO1",
+                                "MemberType": 3,
+                                "VariableData": 295050910
+                            },
+                            {
+                                "VariableName": "mSpawnerGO2",
+                                "MemberType": 3,
+                                "VariableData": 333133597
+                            },
+                            {
+                                "VariableName": "mSpawnerGO3",
+                                "MemberType": 3,
+                                "VariableData": 2026409840
+                            },
+                            {
+                                "VariableName": "mSpawnerGO4",
+                                "MemberType": 3,
+                                "VariableData": 1977605519
+                            },
+                            {
+                                "VariableName": "mWavesRounds",
+                                "MemberType": 0,
+                                "VariableData": 2
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreaDoorsGO",
+                                "MemberType": 3,
+                                "VariableData": 1501822785
+                            },
+                            {
+                                "VariableName": "EXPLOSIVE SPAWNERS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TUTORIAL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mIsTutorialArea",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 25548019,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea1-1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    55.00431823730469,
+                    0.0,
+                    7.36373233795166
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 6
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 1487431635
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1487431635,
+                "ParentUID": 25548019,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1624533343,
+                "ParentUID": 1487431635,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1576268031,
+                "ParentUID": 1487431635,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 102966571,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea2-1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    33.10907745361328,
+                    0.0,
+                    -6.373642921447754
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 10
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 807172045
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 807172045,
+                "ParentUID": 102966571,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 835855897,
+                "ParentUID": 807172045,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 843583828,
+                "ParentUID": 807172045,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 142023952,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea2-2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -8.623059272766114,
+                    0.0,
+                    -6.011763095855713
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 6
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 351128084
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 351128084,
+                "ParentUID": 142023952,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 384755027,
+                "ParentUID": 351128084,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 393179168,
+                "ParentUID": 351128084,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 180385123,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea3-2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -57.242164611816409,
+                    0.0,
+                    -8.283458709716797
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 7
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 1497352541
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1497352541,
+                "ParentUID": 180385123,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1523181932,
+                "ParentUID": 1497352541,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1530840242,
+                "ParentUID": 1497352541,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 218467810,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea3-1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -31.982547760009767,
+                    0.0,
+                    1.505300521850586
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 6
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 1102807198
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1102807198,
+                "ParentUID": 218467810,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1152307729,
+                "ParentUID": 1102807198,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1159757176,
+                "ParentUID": 1102807198,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 256620118,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea2-3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.074540615081787,
+                    0.0,
+                    -20.319713592529298
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 10
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 507849340
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 507849340,
+                "ParentUID": 256620118,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 534444562,
+                "ParentUID": 507849340,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 541824388,
+                "ParentUID": 507849340,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 295050910,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea4-1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -81.60711669921875,
+                    0.0,
+                    -20.564260482788087
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 6
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 728800831
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 728800831,
+                "ParentUID": 295050910,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 771687367,
+                "ParentUID": 728800831,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 780459613,
+                "ParentUID": 728800831,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 333133597,
+                "ParentUID": 1922465687,
+                "Name": "SpawnerArea4-2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -105.19381713867188,
+                    0.0,
+                    -20.75905990600586
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 10
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 752460338
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mEnemiesPerRound",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 752460338,
+                "ParentUID": 333133597,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    1.3852670192718506,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 799315271,
+                "ParentUID": 752460338,
+                "Name": "ExplodingParticles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 1.2999999523162842,
+                        "Duration": 1.0,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 1000,
+                        "Burst": 300,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 1148076284,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.03999999910593033,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.46380695700645449,
+                                        "Color": [
+                                            0.06480001658201218,
+                                            0.452044814825058,
+                                            0.6480000019073486,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 808714106,
+                "ParentUID": 752460338,
+                "Name": "ImplodingTrails",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 317624299,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 300.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 4,
+                        "ShapeRadius": 3.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 2.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.20000000298023225,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 10.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.0010000000474974514,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             }

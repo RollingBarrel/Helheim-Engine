@@ -17,8 +17,12 @@ MaskComponent::MaskComponent(GameObject* owner) : Component(owner, ComponentType
 
 MaskComponent::MaskComponent(const MaskComponent& original, GameObject* owner) : Component(owner, ComponentType::MASK)
 {
-    mMask = original.mMask;
+    mMaskingMode = original.mMaskingMode;
     mDrawMask = original.mDrawMask;
+
+    Component* mask = owner->GetComponent(ComponentType::IMAGE);
+    if (mask != nullptr) mMask = static_cast<ImageComponent*>(mask);
+    UpdateMaskToChilds();
 }
 
 MaskComponent::MaskComponent(GameObject* owner, bool active) : Component(owner, ComponentType::MASK)

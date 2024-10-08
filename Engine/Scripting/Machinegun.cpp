@@ -21,6 +21,7 @@
 Machinegun::Machinegun()
 {
 	mDamage = 4.0f;
+    mEnergyCost = 5;
 	mAttackDuration = 0.3f;
     mAttackCooldown = 0.35f;
 	mAttackRange = 25.0f;
@@ -31,7 +32,7 @@ Machinegun::Machinegun()
 
     mShootDuration = mAttackDuration / static_cast<float>(mNumBullets);
 
-    mFire = App->GetScene()->InstantiatePrefab("MachingunFire.prfb");
+    mFire = App->GetScene()->InstantiatePrefab("MachingunFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
     if (mFire)
     {
         mFire->SetEnabled(false);
@@ -59,7 +60,7 @@ void Machinegun::Attack(float time)
    
     if (mShootTimer.Delay(delay))
     {
-        GameManager::GetInstance()->GetPlayerController()->UseEnergy(mNumBullets);
+        GameManager::GetInstance()->GetPlayerController()->UseEnergy(mEnergyCost);
         
         //Audio
         if (GameManager::GetInstance()->GetAudio())
@@ -78,7 +79,6 @@ void Machinegun::Attack(float time)
         {
             mFire->SetEnabled(false);
             mFire->SetEnabled(true);
-            mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
         }
     }
 }

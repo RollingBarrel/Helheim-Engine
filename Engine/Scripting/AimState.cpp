@@ -23,44 +23,42 @@ AimState::~AimState()
 StateType AimState::HandleInput()
 {
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::DASH;
-
-    if (mPlayerController->GetGrenadeState()->IsReady() &&
-       (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN || 
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetWeapon()->GetCurrentAmmo()== 0) return StateType::RELOAD;
+    if (mPlayerController->GetGrenadeState()->IsReady())
     {
-        mPlayerController->GetGrenadeState()->ResetCooldown();
         return StateType::GRENADE;
     }
 
-    if (mPlayerController->GetAttackState()->IsReady())
+    if (mPlayerController->GetEnergyType()!=EnergyType::NONE)
     {
-        return StateType::ATTACK;
+        if (mPlayerController->GetSpecialState()->IsReady())
+        {
+            return StateType::SPECIAL;
+        }
+    }
+    else 
+    {
+        if (mPlayerController->GetAttackState()->IsReady())
+        {
+            return StateType::ATTACK;
+        }
     }
 
-    if (mPlayerController->GetSpecialState()->IsReady())
-    {
-        return StateType::SPECIAL;
-    }
+    //if (mPlayerController->GetSwitchState()->IsReady() &&
+    //   (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
+    //    App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
+    //{
+    //    mPlayerController->GetSwitchState()->ResetCooldown();
+    //    return StateType::SWITCH;
+    //}
 
-    if (mPlayerController->GetSwitchState()->IsReady() &&
-       (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
-    {
-        mPlayerController->GetSwitchState()->ResetCooldown();
-        return StateType::SWITCH;
-    }
-
-    if (mPlayerController->GetReloadState()->IsReady() &&
-       (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetReloadState()->IsReady())
     {
         mPlayerController->GetReloadState()->ResetCooldown();
         return StateType::RELOAD;
     }
 
-    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady() && (
-        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN) ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetUltimateState()->IsReady())
     {
         mPlayerController->GetUltimateState()->ResetCooldown();
         return StateType::ULTIMATE_CHARGE;
@@ -71,12 +69,33 @@ StateType AimState::HandleInput()
 
 void AimState::Update()
 {
+    if (!mIsIdle)
+    {
+        mIdleAnimTimer += App->GetDt();
+        if (mIdleAnimTimer >= mWaitTimeForIdle && mPlayerController->GetPlayerLowerState()->GetType() == StateType::IDLE)
+        {
+            mPlayerController->SetSpineAnimation("tIdleRanged", 0.2f);
+            mIsIdle = true;
+        }
+    }
+    else
+    {
+        mIdleAnimTimer = 0.0f;
+        if (mPlayerController->GetPlayerLowerState()->GetType() != StateType::IDLE)
+        {
+            mIsIdle = false;
+            mPlayerController->SetSpineAnimation("tAim", 0.2f);
+        }
+    }
+    
+
 }
 
 void AimState::Enter()
 {
     //It can't be done when entering because in that case the others animations would be one frame
     //Maybe with buffers
+    /*
     if(mPlayerController->GetPlayerUpperState()->GetType() != StateType::ATTACK)
     {
         if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
@@ -84,6 +103,8 @@ void AimState::Enter()
         else
             mPlayerController->SetSpineAnimation("tIdleMelee", 0.3f);
     }
+    */
+    mIdleAnimTimer = 0.0f;
     
 }
 

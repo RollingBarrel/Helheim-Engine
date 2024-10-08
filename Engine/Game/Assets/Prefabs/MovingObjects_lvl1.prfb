@@ -1,0 +1,2710 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1767357253,
+                "ParentUID": 1,
+                "Name": "MovingObjects_lvl1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 670872222,
+                "ParentUID": 1767357253,
+                "Name": "Moving_MiniEnemy",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    64.83264923095703,
+                    -0.510005533695221,
+                    -17.9587459564209
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1707737775,
+                "ParentUID": 670872222,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.000004231929779052734,
+                    0.0021514892578125
+                ],
+                "Rotation": [
+                    4.3821643203045826e-8,
+                    -1.0,
+                    -5.523263553186553e-7,
+                    -0.00019961530051659793
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    64.83000183105469,
+                                    -0.5099999904632568,
+                                    -24.59000015258789
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.600000023841858
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 613202132,
+                "ParentUID": 1707737775,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1655776607,
+                "ParentUID": 613202132,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 553373791,
+                "ParentUID": 1767357253,
+                "Name": "Moving_MiniEnemy (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    70.8315200805664,
+                    -0.510005533695221,
+                    -26.350000381469728
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1610081329,
+                "ParentUID": 553373791,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    4.172325134277344e-7,
+                    0.0022125244140625
+                ],
+                "Rotation": [
+                    -3.219066400106385e-7,
+                    -0.00008816780609777197,
+                    -8.514541155468791e-11,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    70.83000183105469,
+                                    -0.5099999904632568,
+                                    -17.739999771118165
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.7999999523162842
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 512203878,
+                "ParentUID": 1610081329,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1565708850,
+                "ParentUID": 512203878,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 502920383,
+                "ParentUID": 1767357253,
+                "Name": "Moving_MiniEnemy (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    59.282630920410159,
+                    -0.510005533695221,
+                    -26.349205017089845
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1562969729,
+                "ParentUID": 502920383,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.000003159046173095703,
+                    0.0019073486328125
+                ],
+                "Rotation": [
+                    -3.21936255431865e-7,
+                    -0.0001528678258182481,
+                    -1.4764110767284678e-10,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    59.279998779296878,
+                                    -0.5099999904632568,
+                                    -17.739999771118165
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 469548022,
+                "ParentUID": 1562969729,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1530502441,
+                "ParentUID": 469548022,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 449473272,
+                "ParentUID": 1767357253,
+                "Name": "Moving_MiniEnemy (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -73.59664154052735,
+                    -4.809999942779541,
+                    9.2562837600708
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1511889732,
+                "ParentUID": 449473272,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -23.608238220214845,
+                    0.0,
+                    -0.00345611572265625
+                ],
+                "Rotation": [
+                    0.0,
+                    0.00006885654875077307,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -73.59664154052735,
+                                    -4.809999942779541,
+                                    9.2562837600708
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.4000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 427936481,
+                "ParentUID": 1511889732,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1492998539,
+                "ParentUID": 427936481,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 413152927,
+                "ParentUID": 1767357253,
+                "Name": "Moving_MiniEnemy (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -89.56621551513672,
+                    -4.809999942779541,
+                    -17.83559226989746
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1475847871,
+                "ParentUID": 413152927,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    19.65044403076172,
+                    0.0,
+                    0.007293701171875
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.00009923295874614269
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -89.56621551513672,
+                                    -4.809999942779541,
+                                    -17.83559226989746
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.4000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 412015089,
+                "ParentUID": 1475847871,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1484039247,
+                "ParentUID": 412015089,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 402035384,
+                "ParentUID": 1767357253,
+                "Name": "Moving_MiniEnemy (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -105.54497528076172,
+                    -4.810604095458984,
+                    -14.777542114257813
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1477331729,
+                "ParentUID": 402035384,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    19.747146606445314,
+                    0.0003814697265625,
+                    -0.00160980224609375
+                ],
+                "Rotation": [
+                    -1.7882195724183703e-9,
+                    1.0,
+                    -0.000014737198398506735,
+                    -0.0001213405339512974
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -105.54497528076172,
+                                    -4.810604095458984,
+                                    -14.777542114257813
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.4000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 396232939,
+                "ParentUID": 1477331729,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1462130449,
+                "ParentUID": 396232939,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 381170901,
+                "ParentUID": 1767357253,
+                "Name": "Drones",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1448251968,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    24.296167373657228,
+                    4.145169258117676,
+                    26.70357894897461
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 367640525,
+                "ParentUID": 1448251968,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -28.950000762939454,
+                                    4.150000095367432,
+                                    26.700000762939454
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.700000047683716
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1430822816,
+                "ParentUID": 367640525,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 353205076,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    28.74597930908203,
+                    -3.9600000381469728,
+                    30.877140045166017
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1445349703,
+                "ParentUID": 353205076,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -50.22999954223633,
+                                    -3.9600000381469728,
+                                    30.8799991607666
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.799999952316284
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 366478785,
+                "ParentUID": 1445349703,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1442471340,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    29.327823638916017,
+                    0.1899999976158142,
+                    35.90222930908203
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 359075057,
+                "ParentUID": 1442471340,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -32.959999084472659,
+                                    0.1899999976158142,
+                                    35.900001525878909
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.299999952316284
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1432143530,
+                "ParentUID": 359075057,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 361348648,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -52.336795806884769,
+                    -3.6493802070617677,
+                    30.618770599365236
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1432119628,
+                "ParentUID": 361348648,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    29.43000030517578,
+                                    -4.690000057220459,
+                                    29.170000076293947
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.700000047683716
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 350811975,
+                "ParentUID": 1432119628,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1423184238,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -42.39976501464844,
+                    -3.4110021591186525,
+                    37.13828659057617
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 341180375,
+                "ParentUID": 1423184238,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    29.540000915527345,
+                                    -4.289999961853027,
+                                    37.13999938964844
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.0999999046325685
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1431097130,
+                "ParentUID": 341180375,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 355219915,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -32.04929733276367,
+                    2.558563232421875,
+                    31.474143981933595
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1421117425,
+                "ParentUID": 355219915,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    25.09000015258789,
+                                    2.559999942779541,
+                                    31.469999313354493
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.9000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 353873214,
+                "ParentUID": 1421117425,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1422137838,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (6)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -27.45787811279297,
+                    5.848814010620117,
+                    22.508548736572267
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 349393568,
+                "ParentUID": 1422137838,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    24.209999084472658,
+                                    5.849999904632568,
+                                    22.510000228881837
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.5999999046325685
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1416335393,
+                "ParentUID": 349393568,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1454445429,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (7)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    74.43399047851563,
+                    -0.5140084028244019,
+                    19.001964569091798
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1989273951,
+                "ParentUID": 1454445429,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    43.0,
+                                    -0.5099999904632568,
+                                    19.0
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.5999999046325685
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 777775028,
+                "ParentUID": 1989273951,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 55847290,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (8)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    43.70000076293945,
+                    1.4658973217010499,
+                    23.08990478515625
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 585871963,
+                "ParentUID": 55847290,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    75.19000244140625,
+                                    1.4700000286102296,
+                                    23.09000015258789
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.9000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1474027060,
+                "ParentUID": 585871963,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1480622119,
+                "ParentUID": 381170901,
+                "Name": "OB_Drone (9)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    74.01815032958985,
+                    -2.8920340538024904,
+                    26.30359649658203
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2015450641,
+                "ParentUID": 1480622119,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    40.0,
+                                    -2.890000104904175,
+                                    26.299999237060548
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 70.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 799217490,
+                "ParentUID": 2015450641,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 75162304,
+                        "MaterialID": 75162309,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}

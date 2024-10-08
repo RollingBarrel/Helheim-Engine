@@ -1,0 +1,58 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 476279889,
+                "ParentUID": 224743922,
+                "Name": "Logo ITB",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    61.07432556152344,
+                    -0.4706304669380188,
+                    -2.1166515350341799
+                ],
+                "Rotation": [
+                    3.090862321641907e-8,
+                    0.7071068286895752,
+                    0.7071068286895752,
+                    -3.090862321641907e-8
+                ],
+                "Scale": [
+                    12.0,
+                    12.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "DiffuseID": 2068451841,
+                        "DiffuseName": "Alpha_I.T.B_logo_complete_PNG.png",
+                        "DiffuseColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            }
+        ]
+    }
+}

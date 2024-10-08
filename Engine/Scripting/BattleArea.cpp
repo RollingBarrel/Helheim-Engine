@@ -3,10 +3,13 @@
 #include "BoxColliderComponent.h"
 #include "AnimationComponent.h"
 #include "GameObject.h"
+#include "AreaDoors.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "HudController.h"
 #include "Spawner.h"
+#include "EnemyExplosiveSpawner.h"
 
 CREATE(BattleArea)
 {
@@ -16,16 +19,16 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO2);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO3);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
-	MEMBER(MemberType::INT, mMaxSimulNumEnemies);
-	MEMBER(MemberType::INT, mTotalNumEnemies);
+	MEMBER(MemberType::INT, mWavesRounds);
 	SEPARATOR("DOORS");
-	MEMBER(MemberType::GAMEOBJECT, mDoor1);
-	MEMBER(MemberType::GAMEOBJECT, mDoor2);
-	SEPARATOR("TRAPS");
-	MEMBER(MemberType::GAMEOBJECT, mTrap1);
-	MEMBER(MemberType::GAMEOBJECT, mTrap2);
-	MEMBER(MemberType::GAMEOBJECT, mTrap3);
-	MEMBER(MemberType::GAMEOBJECT, mTrap4);
+	MEMBER(MemberType::GAMEOBJECT, mAreaDoorsGO);
+	SEPARATOR("EXPLOSIVE SPAWNERS");
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn1);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn2);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn3);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn4);
+	SEPARATOR("TUTORIAL");
+	MEMBER(MemberType::BOOL, mIsTutorialArea);
 	END_CREATE;
 }
 
@@ -39,108 +42,120 @@ BattleArea::~BattleArea()
 
 void BattleArea::Start()
 {
+	mSpawners.reserve(4);
 	if (mSpawnerGO1)
 	{
 		mEnemySpawner1 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner1);
+
 	}
 	if (mSpawnerGO2)
 	{
 		mEnemySpawner2 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO2->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner2);
 	}
 	if (mSpawnerGO3)
 	{
 		mEnemySpawner3 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO3->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner3);
 	}
 	if (mSpawnerGO4)
 	{
 		mEnemySpawner4 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner4);
 	}
+	if (mExplosiveSpawn1)
+	{
+		mEnemyExplosiveSpawner1 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner1);
+	}
+	if (mExplosiveSpawn2)
+	{
+		mEnemyExplosiveSpawner2 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn2->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner2);
+	}
+	if (mExplosiveSpawn3)
+	{
+		mEnemyExplosiveSpawner3 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn3->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner3);
+	}
+	if (mExplosiveSpawn4)
+	{
+		mEnemyExplosiveSpawner4 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner4);
+	};
 
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
 	}
-
-	UpdateTrapNumber();
-
-	CloseDoors(false);
 }
 
 void BattleArea::Update()
 {
-	if (mHasBeenActivated && mTotalNumEnemies > 0)
+	if(mSpawnEnemies)
 	{
-		if (mEnemySpawner1 && mCurrentEnemies < mMaxSimulNumEnemies)
+		if (mHasBeenActivated && mNeedsToSpawn)
 		{
-			if (mEnemySpawner1->Spawn())
+			for (size_t i = 0; i < mSpawners.size(); i++)
 			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
+				if (mSpawners[i]->IsActive())
+				{
+					for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
+					{
+						mSpawners[i]->Spawn();
+						mCurrentEnemies++;
+					}
+				}
 			}
-		}
-		if (mEnemySpawner2 && mCurrentEnemies < mMaxSimulNumEnemies)
-		{
-			if (mEnemySpawner2->Spawn())
+			for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
 			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
+				if (mExplosiveSpawners[i]->IsActive())
+				{
+					for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
+					{
+						mExplosiveSpawners[i]->Spawn();
+						mCurrentEnemies++;
+					}
+				}
 			}
-		}
-		if (mEnemySpawner3 && mCurrentEnemies < mMaxSimulNumEnemies)
-		{
-			if (mEnemySpawner3->Spawn())
-			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
-			}
-		}
-		if (mEnemySpawner4 && mCurrentEnemies < mMaxSimulNumEnemies)
-		{
-			if (mEnemySpawner4->Spawn())
-			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
-			}
+			mNeedsToSpawn = false;
 		}
 	}
 }
 
 void BattleArea::EnemyDestroyed(GameObject* enemy)
 {
-	std::string scriptName = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptName();
-
-	if (scriptName == "EnemyExplosiveSpawner")
+	mCurrentEnemies--;
+	if (mCurrentEnemies == 0)
 	{
-		mCurrentTraps--;
-	}
-	else if (scriptName == "EnemyExplosive")
-	{
-		mCurrentExplosiveEnemies--;
-	}
-	else // Any enemy except traps and explosive enemies
-	{
-		mCurrentEnemies--;
+		mWavesRounds--;
+		if (mWavesRounds >= 1)
+		{
+			mNeedsToSpawn = true;
+		}
 	}
 
-	LOG("CURRENT TRAPS: %i", mCurrentTraps);
-	LOG("CURRENT EXPLOSIVE ENEMIES: %i", mCurrentExplosiveEnemies);
-	LOG("CURRENT ENEMIES: %i", mCurrentEnemies);
-
-	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0 && mCurrentTraps <= 0)
+	if (mWavesRounds <= 0)
 	{
 		ActivateArea(false);
+
+		mHasBeenActivated = false;
+
+		if (mAreaDoorsGO)
+		{
+			AreaDoors* areaDoors = static_cast<AreaDoors*>(static_cast<ScriptComponent*>(mAreaDoorsGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+			areaDoors->CloseDoors(false);
+		}
+
 		mGameObject->SetEnabled(false);
 		return;
 	}
-	//LOG("REMAINING ENEMIES: %i", mTotalNumEnemies);
 }
 
 inline void BattleArea::ActivateArea(bool activate)
 {
-
-	CloseDoors(activate);
-
 	if (mEnemySpawner1)
 	{
 		mEnemySpawner1->Active(activate);
@@ -157,17 +172,28 @@ inline void BattleArea::ActivateArea(bool activate)
 	{
 		mEnemySpawner4->Active(activate);
 	}
-
-	SetTrapState(mTrap1, activate);
-	SetTrapState(mTrap2, activate);
-	SetTrapState(mTrap3, activate);
-	SetTrapState(mTrap4, activate);
+	if (mEnemyExplosiveSpawner1)
+	{
+		mEnemyExplosiveSpawner1->Active(activate);
+	}
+	if (mEnemyExplosiveSpawner2)
+	{
+		mEnemyExplosiveSpawner2->Active(activate);
+	}
+	if (mEnemyExplosiveSpawner3)
+	{
+		mEnemyExplosiveSpawner3->Active(activate);
+	}
+	if (mEnemyExplosiveSpawner4)
+	{
+		mEnemyExplosiveSpawner4->Active(activate);
+	}
+	mNeedsToSpawn = activate;
 
 	if (!activate)
 	{
 		GameManager::GetInstance()->SetActiveBattleArea(nullptr);
 		GameManager::GetInstance()->GetHud()->SetDialog();
-		//LOG("Sanity");
 	}
 }
 
@@ -175,84 +201,12 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mHasBeenActivated)
 	{
+		if (mIsTutorialArea)
+		{
+			GameManager::GetInstance()->ActivateSecondTutorial();
+		}
  		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
-		//LOG("PLAYER COLLISION");
 	}
-}
-
-void BattleArea::AddExplosiveEnemy()
-{
-	mCurrentExplosiveEnemies++;
-}
-
-void BattleArea::SetTrapState(GameObject* trap, bool enable)
-{
-	if (trap)
-	{
-		auto scriptComponent = reinterpret_cast<ScriptComponent*>(trap->GetComponent(ComponentType::SCRIPT));
-		if (scriptComponent)
-		{
-			if (enable)
-			{
-				scriptComponent->Enable();
-			}
-			else
-			{
-				scriptComponent->Disable();
-			}
-		}
-	}
-}
-
-void BattleArea::UpdateTrapNumber()
-{
-	GameObject* trapsArray[] = { mTrap1, mTrap2, mTrap3, mTrap4 };
-
-	for (GameObject* trap : trapsArray)
-	{
-		if (trap != nullptr)
-		{
-			mCurrentTraps++;
-		}
-	}
-}
-
-void BattleArea::CloseDoors(bool close)
-{
-	std::string trigger = (close) ? "tClose" : "tOpen";
-
-	if (mDoor1)
-	{
-		AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
-		if (doorAnimation1)
-		{
-			doorAnimation1->SetIsPlaying(true);
-			doorAnimation1->SendTrigger(trigger, 0.6f);
-			
-		}
-
-		BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
-		if (door1Collider)
-		{
-			door1Collider->SetEnable(close);
-		}
-	}
-	if (mDoor2)
-	{
-		AnimationComponent* doorAnimation2 = static_cast<AnimationComponent*>(mDoor2->GetComponent(ComponentType::ANIMATION));
-		if (doorAnimation2)
-		{
-			doorAnimation2->SetIsPlaying(true);
-			doorAnimation2->SendTrigger(trigger, 0.6f);
-		}
-
-		BoxColliderComponent* door2Collider = static_cast<BoxColliderComponent*>(mDoor2->GetComponent(ComponentType::BOXCOLLIDER));
-		if (door2Collider)
-		{
-			door2Collider->SetEnable(close);
-		}
-	}
-
 }

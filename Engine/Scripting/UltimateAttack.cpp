@@ -3,9 +3,12 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "MathFunc.h"
+#include "ModuleScene.h"
+
 
 #include "Physics.h"
 #include "Geometry/Ray.h"
+#include "MathFunc.h"
 
 #include "ScriptComponent.h"
 #include "BoxColliderComponent.h"
@@ -13,7 +16,7 @@
 CREATE(UltimateAttack)
 {
     CLASS(owner);
-    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
+    MEMBER(MemberType::GAMEOBJECT, mLinesGO);
     END_CREATE;
 }
 UltimateAttack::UltimateAttack(GameObject* owner) : Script(owner)
@@ -35,12 +38,40 @@ void UltimateAttack::Start()
 
 void UltimateAttack::Update()
 {
+    if (!mExpansionTimer.DelayWithoutReset(3.8f)) 
+    {
+        SetLength(100.0f, 25.0f);
+    }
+    else
+    {
+        SetLength(10.0f,15.0f);/*
+        if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();*/
+    }
+    
+}
 
+void UltimateAttack::SetLength(float targetPercent, float speed)
+{
+    if (mLinesGO)
+    {
+        float3 scale = mLinesGO->GetLocalScale();
+        float length = scale.z;
+        length = Lerp(length, 1.0f, App->GetDt()*speed);
+        mLengthPercent = Lerp(mLengthPercent, targetPercent, App->GetDt() * speed);
+        scale.z = length * (mLengthPercent/100.0f);
+        mLinesGO->SetLocalScale(scale);
+    }
 }
 
 void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
 {
     GameObject* collisionGO = collisionData->collidedWith;
+    Hit hit;
+    Ray ray;
+    ray.dir = mGameObject->GetFront();
+    ray.pos = mGameObject->GetWorldPosition();
+
+
     if (collisionGO->GetTag() == "Enemy")
     {
         Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(collisionGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -48,26 +79,24 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
         {
             if (mDamageTimer.Delay(mInterval)) 
             {
+                enemyScript->ActivateUltVFX();
                 enemyScript->TakeDamage(mDamageTick);
                 //TODO: Slow enemies 
                 LOG("Ultimate tick")
             }
         }
     }
-    else if (collisionGO->GetTag() != "Player" && collisionGO->GetTag() != "Drop" && collisionGO->GetTag() != "Trap")
+    else 
     {
         float3 currentScale = mGameObject->GetLocalScale();
-         
-        Hit hit;
-        Ray ray;
-        ray.dir = mGameObject->GetFront();
-        ray.pos = mGameObject->GetWorldPosition();
-
-        Physics::Raycast(hit, ray, 10.0f);  
+        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy"};
+        Physics::Raycast(hit, ray, 10.0f, &ignoreTags);
         if (hit.IsValid()) {
             float distance = Distance(float2(hit.mHitPoint.x, hit.mHitPoint.z), float2(mGameObject->GetWorldPosition().x, mGameObject->GetWorldPosition().z)) / 10;
-            mGameObject->SetLocalScale(float3(currentScale.x, currentScale.y, distance));
+            
+            mGameObject->SetLocalScale(float3(currentScale.x, currentScale.y,distance + 0.1));
         }
+        else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));
     }
-    else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));
+    
 }

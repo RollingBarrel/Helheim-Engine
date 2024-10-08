@@ -1,0 +1,24 @@
+{
+    "Name": "door panel security emissive",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        0.0,
+        0.0
+    ],
+    "BaseColorTex": 1570432843,
+    "MetallicRoughTex": 1570432844,
+    "NormalTex": 1570432845,
+    "EmissiveTex": 1570432846,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

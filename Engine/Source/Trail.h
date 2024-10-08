@@ -38,11 +38,13 @@ public:
 	void Update();
 	void UpdateTrailComponent(GameObject* owner);
 	void UpdateLineComponent(GameObject* origin, GameObject* final);
+	void UpdateTrailParticle(float3 position);
 	void Draw() const;
 	void Enable();
 	void Disable();
 
 	void AddFirstTrailPoint(GameObject* mOwner);
+	void AddFirstTrailPoint(float3 position);
 	void RemoveLastTrailPoint();
 
 	void Save(JsonObject& archive) const;
@@ -50,6 +52,7 @@ public:
 
 	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
 	void SetLifeTime(float time) { mMaxLifeTime = time; }
+	void SetWidth(float width);
 
 private:
 	float3 CalculateDirection(const float3& position, const float3& norm) const;
@@ -76,6 +79,8 @@ private:
 
 	bool mIsTilled = true;
 	float mTilling = 1.0f;
+
+	bool mWidthUpdated = false;
 
 	unsigned int mVAO = 0;
 	unsigned int mVBO = 0;

@@ -11,7 +11,7 @@ class RangeWeapon : public Weapon
 
 public:
 	RangeWeapon();
-	~RangeWeapon();
+	~RangeWeapon() {}
 
 	float GetAttackDuration() override { return mAttackDuration; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }

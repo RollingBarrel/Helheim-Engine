@@ -3,7 +3,7 @@
 
 struct Material
 {
-	vec3 baseColor;
+	vec4 baseColor;
 	sampler2D baseColorTex;
 	sampler2D metalRoughTex;
 	sampler2D normalTex;
@@ -30,6 +30,8 @@ readonly layout(std430, binding = 12) buffer Indices
 	Index indices[];
 };
 
+layout(binding = 0) uniform sampler2D noiseTex;
+
 
 in VertToFrag {
 	vec2 uv;
@@ -41,7 +43,7 @@ in VertToFrag {
 
 layout(location = 0) out vec3 outDiffuse;
 //layout(location = 1) out vec4 outSpecularRough;
-layout(location = 1) out vec3 outMetalRough;
+layout(location = 1) out vec2 outMetalRough;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec3 outPosition;
 layout(location = 4) out vec3 outEmissive;
@@ -51,7 +53,11 @@ void main()
 {
 	Material material = materials[indices[instace_index].matIdx];
 
-	vec3 baseColor = material.baseColor;
+	float noiseValue = min(texture(noiseTex, uv).x, 1.0f);
+	if (material.baseColor.a <= noiseValue) 
+		discard;
+
+	vec3 baseColor = material.baseColor.rgb;
 	if(material.hasBaseColorTex)
 	{
 		vec3 texCol = vec3(texture(material.baseColorTex, uv));
@@ -81,18 +87,22 @@ void main()
 	{
 		N = normalize(norm);  	//Normal
 	}
+	vec3 emissiveColor = vec3(0.0f);
 	if (material.hasEmissiveTex)
 	{
-		vec3 emissiveColor = vec3(texture(material.emissiveTex, uv));
+		emissiveColor = vec3(texture(material.emissiveTex, uv));
 		//Using  gamma correction forces to transform sRGB textures to linear space
 		emissiveColor = pow(emissiveColor, vec3(2.2));
 		emissiveColor *= material.emissiveFactor;
 		outEmissive = emissiveColor;
 	}
 
+	if (material.baseColor.a < (noiseValue + 0.09))
+		outEmissive = vec3(1.0f, 0.0f, 0.0f);
+
 	outDiffuse = baseColor;
-	outMetalRough.g = rough;
-	outMetalRough.b = metal;
+	outMetalRough.r = rough;
+	outMetalRough.g = metal;
 
 
 	//outDiffuse = baseColor * (1 - metal);

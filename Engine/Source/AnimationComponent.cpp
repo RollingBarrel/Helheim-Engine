@@ -12,6 +12,7 @@
 #include "float4x4.h"
 #include "ResourceStateMachine.h"
 
+
 AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
 	mStateMachine = nullptr;
@@ -19,22 +20,16 @@ AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, Com
 	mAnimationUID = 0;
 }
 
-AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION), mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
+AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION),
+	mCurrentState(other.mCurrentState), mLoop(other.mLoop), mIsPlaying(other.mIsPlaying), mSpeed(other.mSpeed), mAnimationUID(other.mAnimationUID),
+	mCurrentSpineState(other.mCurrentSpineState), mHasSpine(other.mHasSpine), 
+	mSpineObjects(other.mSpineObjects), mDefaultObjects(other.mDefaultObjects)
 {
+	mController = new AnimationController(*other.mController);
+	mSpineController = new AnimationController(*other.mSpineController);
 
-	mSpeed = 1.0;
-	mStateMachine = nullptr;
-	mAnimationUID = other.mAnimationUID;
-
-	ResourceAnimation* res = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.mAnimationUID, Resource::Type::Animation));
-	res->AddReferenceCount();
-
-	mController = new AnimationController(res);
-	mSpineController = new AnimationController(res);
-
-	mStateMachine = new AnimationStateMachine(other.mAnimationUID);
-	mSpineStateMachine = new AnimationStateMachine(other.mAnimationUID);
-
+	mStateMachine = new AnimationStateMachine(*other.mStateMachine);
+	mSpineStateMachine = new AnimationStateMachine(*other.mSpineStateMachine);
 }
 
 AnimationComponent::~AnimationComponent()
@@ -43,13 +38,10 @@ AnimationComponent::~AnimationComponent()
 	delete mController;
 	delete mStateMachine;
 
-	if (mHasSpine)
-	{
-		delete mSpineController;
-		delete mSpineStateMachine;
-	}
-	
 
+	delete mSpineController;
+	delete mSpineStateMachine;
+	
 }
 
 void AnimationComponent::SetLoop(bool loop)
@@ -68,13 +60,12 @@ void AnimationComponent::StartUp()
 	mStateMachine = new AnimationStateMachine(mAnimationUID);
 	mSpineStateMachine = new AnimationStateMachine(mAnimationUID);
 	
-	ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
-	mController = new AnimationController(tmpAnimation);
+	mController = new AnimationController(mAnimationUID);
 	mController->SetStartTime(mStateMachine->GetStateStartTime(0));
 	mController->SetEndTime(mStateMachine->GetStateEndTime(0));
 	mStateMachine = new AnimationStateMachine(mAnimationUID);
 
-	mSpineController = new AnimationController(tmpAnimation);
+	mSpineController = new AnimationController(mAnimationUID);
 	mSpineController->SetStartTime(mStateMachine->GetStateStartTime(0));
 	mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
 	mSpineStateMachine = new AnimationStateMachine(mAnimationUID);
@@ -83,6 +74,7 @@ void AnimationComponent::StartUp()
 
 void AnimationComponent::Update()
 {
+	if (App->IsPause()) return;
 
 	if (mIsPlaying)
 	{
@@ -144,21 +136,57 @@ void AnimationComponent::OnStop()
 
 }
 
-void AnimationComponent::OnRestart()
+void AnimationComponent::RestartStateAnimation()
 {
+
 	mController->Restart();
+	for (GameObject* current : mDefaultObjects)
+	{
+		mController->GetTransform(current);
+	}
 	if (mHasSpine)
 	{
 		mSpineController->Restart();
+
+		for (GameObject* current : mSpineObjects)
+		{
+			mSpineController->GetTransform(current);
+		}
 	}
 }
 
-void AnimationComponent::OnReset()
+void AnimationComponent::ResetAnimationComponent()
 {
-	if (mDefaultObjects.size() == 0)
+	ChangeState("Default", 0.0f);
+	OnResetGameObjects();
+	if (mHasSpine)
 	{
-		LoadGameObjects(mOwner);
+		ChangeSpineState("Default", 0.0f);
 	}
+
+	RestartStateAnimation();
+
+}
+
+const std::vector<std::string> AnimationComponent::GetSMStateNames() const
+{
+	return mStateMachine->GetStateNames();
+}
+
+const std::vector<std::string> AnimationComponent::GetSpineSMStateNames() const
+{
+	if(mHasSpine)
+		return mSpineStateMachine->GetStateNames();
+	std::vector<std::string> empty;
+	return empty;
+}
+
+
+void AnimationComponent::OnResetGameObjects()
+{
+	mDefaultObjects.clear();
+	mSpineObjects.clear();
+	LoadGameObjects(mOwner);
 	ChangeState("Default", 0.0f);
 	if (mHasSpine)
 	{
@@ -166,8 +194,32 @@ void AnimationComponent::OnReset()
 	}
 }
 
+void AnimationComponent::SetStateMachine(AnimationStateMachine* sm)
+{
+	mStateMachine = sm;
+	ChangeState("Default", 0.0f);
+}
 
+void AnimationComponent::SetSpineStateMachine(AnimationStateMachine* sm)
+{
+	mSpineStateMachine = sm;
+	ChangeSpineState("Default", 0.0f);
+}
 
+void AnimationComponent::SetUpperAnimSpeed(float speed)
+{
+	if (mHasSpine)
+	{
+		mSpineController->SetAnimSpeed(speed);
+	}
+}
+
+void AnimationComponent::SetLowerAnimSpeed(float speed)
+{
+	mSpeed = speed;
+	mController->SetAnimSpeed(speed);
+
+}
 
 void AnimationComponent::SetAnimSpeed(float speed)
 {
@@ -206,7 +258,6 @@ void AnimationComponent::SendTrigger(const std::string& trigger, float transitio
 			ChangeState(mStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
-
 }
 
 void AnimationComponent::ChangeState(const std::string& stateName, float transitionTime)
@@ -238,8 +289,7 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 			}
 			else
 			{
-				ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
-				mController = new AnimationController(tmpAnimation);
+				mController = new AnimationController(resourceAnimation);
 				mController->SetLoop(mStateMachine->GetStateLoop(stateIndex));
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
 				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
@@ -327,8 +377,7 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 			}
 			else
 			{
-				ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
-				mSpineController = new AnimationController(tmpAnimation);
+				mSpineController = new AnimationController(resourceAnimation);
 				mSpineController->SetLoop(mSpineStateMachine->GetStateLoop(stateIndex));
 				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(stateIndex));
 				mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(stateIndex));
@@ -381,11 +430,58 @@ void AnimationComponent::ReloadGameObjects()
 	LoadGameObjects(mOwner);
 }
 
+void AnimationComponent::SetControllerTime(float time)
+{
+	mController->SetAnimationCurrentTime(time);
+
+	for (GameObject* current : mDefaultObjects)
+	{
+		mController->GetTransform(current);
+	}
+}
+
+float AnimationComponent::GetControllerTime() const
+{
+	return mController->GetAnimationCurrentTime();
+}
+
+void AnimationComponent::SetSpineControllerTime(float time)
+{
+	if (mHasSpine)
+	{
+		mSpineController->SetAnimationCurrentTime(time);
+		for (GameObject* current : mSpineObjects)
+		{
+			mSpineController->GetTransform(current);
+		}
+	}
+}
+
+float AnimationComponent::GetSpineControllerTime() const
+{
+	if(mHasSpine)
+		return mSpineController->GetAnimationCurrentTime();
+	return 0.0f;
+}
+
+void AnimationComponent::SetObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew)
+{
+	//mSpineObjects(other.mSpineObjects), mDefaultObjects(other.mDefaultObjects)
+	for (int i = 0; i<mSpineObjects.size(); ++i)
+	{
+		mSpineObjects[i] = originalToNew.at(mSpineObjects[i]);
+	}
+	for (int i = 0; i < mDefaultObjects.size(); ++i)
+	{
+		mDefaultObjects[i] = originalToNew.at(mDefaultObjects[i]);
+	}
+}
 
 
 void AnimationComponent::LoadGameObjects(GameObject* current)
 {
-	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine"))
+
+	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine") || current->GetName() == std::string("Spine1")) //This will be changed
 	{
 		if (mOwner->GetTag() == "Player")
 		{
@@ -414,10 +510,15 @@ void AnimationComponent::LoadGameObjects(GameObject* current)
 			LoadGameObjects(child);
 		}
 	}
+
 }
 
 void AnimationComponent::LoadSpineChildren(GameObject* current)
 {
+	/* INFO: This *if* allows to fix the player's right arm wherever placed in the inspector so that you can fix it centered when playing the shooting state. (Oriol)
+	if (current->GetName() == std::string("RightShoulder") && mOwner->GetTag() == "Player")
+		return;
+	*/
 	mSpineObjects.push_back(current);
 	for (GameObject* child : current->GetChildren())
 	{
@@ -453,10 +554,10 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 	{
 		mAnimationUID = data.GetInt("AnimationUID");
 
-
-		ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
-		mController = new AnimationController(tmpAnimation);
-		mSpineController = new AnimationController(tmpAnimation);
+		delete mController;
+		delete mSpineController;
+		mController = new AnimationController(mAnimationUID);
+		mSpineController = new AnimationController(mAnimationUID);
 
 
 		if (data.HasMember("LowerSMUID"))
@@ -496,9 +597,8 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 				ResourceStateMachine* resSM = static_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(upperStateMachine, Resource::Type::StateMachine));
 				mSpineStateMachine = resSM->GetStateMachine();
 				mSpineStateMachine->SetUID(resSM->GetUID());
-				mSpineController = new AnimationController(tmpAnimation);
-				mController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
-				mController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
+				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
+				mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
 				App->GetResource()->ReleaseResource(upperStateMachine);
 
 			}
@@ -520,9 +620,12 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 
 			mAnimationUID = animationUids[0];
 		}
-		ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
-		mController = new AnimationController(tmpAnimation);
-		mSpineController = new AnimationController(tmpAnimation);
+
+		delete mController;
+		delete mSpineController;
+
+		mController = new AnimationController(mAnimationUID);
+		mSpineController = new AnimationController(mAnimationUID);
 
 		mStateMachine = new AnimationStateMachine(mAnimationUID);
 		

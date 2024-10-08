@@ -21,15 +21,15 @@
 
 Shootgun::Shootgun()
 {
-    mDamage = 2.0f;
+    mDamage = 1.0f;
     mAttackRange = 25.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.5f;
 
     mBulletSpeed = 30.0f;
     mBulletMaxSpread = 0.5f;
-
-    mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb");
+    mEnergyCost = 15;
+    mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
     if (mFire)
     {
         mFire->SetEnabled(false);
@@ -61,7 +61,7 @@ void Shootgun::Attack(float time)
 
     //Shoot Logic
     int numBullets = 10;
-    GameManager::GetInstance()->GetPlayerController()->UseEnergy(numBullets);
+    GameManager::GetInstance()->GetPlayerController()->UseEnergy(mEnergyCost);
     for (int i = 0; i < numBullets; ++i)
     {
         Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
@@ -72,7 +72,6 @@ void Shootgun::Attack(float time)
     {
         mFire->SetEnabled(false);
         mFire->SetEnabled(true);
-        mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
     }
 }
 

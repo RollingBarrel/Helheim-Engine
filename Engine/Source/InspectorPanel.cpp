@@ -1,18 +1,18 @@
 ﻿#include "InspectorPanel.h"
 
 #include "ImBezier.h"
-#include "imgui.h"
 #include "ImColorGradient.h"
-#include "ImGuiFileDialog.h"
+#include "imgui.h"
+
+#include "HierarchyPanel.h"
+#include "SettingsPanel.h"
 
 #include "EngineApp.h"
 #include "ModuleScene.h"
+#include "ModuleEngineResource.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
-#include "HierarchyPanel.h"
-#include "SettingsPanel.h"
-#include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
@@ -22,7 +22,6 @@
 #include "GameObject.h"
 
 #include "MeshRendererComponent.h"
-#include "ModuleEngineResource.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ScriptComponent.h"
@@ -43,27 +42,20 @@
 #include "AnimationComponent.h"
 #include "SliderComponent.h"
 #include "DecalComponent.h"
-
-#include "ImporterMaterial.h"
-#include "MathFunc.h"
-#include "Script.h"
-#include "AnimationController.h"
-#include "BezierCurve.h"
-#include "AudioUnit.h"
-#include "Trail.h"
-
-#include "ResourceMaterial.h"
-#include "ResourceTexture.h"
-#include "ResourceAnimation.h"
-#include "ResourceModel.h"
-#include "ResourceStateMachine.h"
-
-#include "IconsFontAwesome6.h"
-
+#include "VideoComponent.h"
 
 #include "AnimationStateMachine.h"
 #include "AnimationSMPanel.h"
+#include "AudioUnit.h"
+
 #include "SaveLoadMaterial.h"
+#include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+#include "ResourceStateMachine.h"
+
+#include "Trail.h"
+#include "MathFunc.h"
+#include "IconsFontAwesome6.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -520,10 +512,13 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					DrawTrailComponent(static_cast<TrailComponent*>(component));
 					break;
 				case ComponentType::LINE:
-						DrawLineComponent(static_cast<LineComponent*>(component));
-						break;
+					DrawLineComponent(static_cast<LineComponent*>(component));
+					break;
 				case ComponentType::DECAL:
 					DrawDecalComponent(static_cast<DecalComponent*>(component));
+					break;
+				case ComponentType::VIDEO:
+					DrawVideoComponent(static_cast<VideoComponent*>(component));
 					break;
 			}
 		}
@@ -532,7 +527,8 @@ void InspectorPanel::DrawComponents(GameObject* object)
 	//DragAndDropTarget(object, nullptr);
 }
 
-void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) const 
+{
 	const float* pCol = component->GetColor();
 	float col[3] = { pCol[0], pCol[1] , pCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
@@ -552,7 +548,7 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	//ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
-void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) 
+void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) const
 {
 	const float* sCol = component->GetColor();
 	float col[3] = { sCol[0], sCol[1] , sCol[2] };
@@ -579,6 +575,12 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 	if (ImGui::DragFloat("Outer angle", &outerAngle, 1.0f, innerAngle, 75.0f))
 	{
 		component->SetOuterAngle(DegToRad(outerAngle));
+	}
+
+	bool isVolumetric = component->GetVolumetric();
+	if(ImGui::Checkbox("Volumetric", &isVolumetric))
+	{
+		component->SetVolumetric(isVolumetric);
 	}
 
 	ImGui::SeparatorText("Shadows");
@@ -617,7 +619,7 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 }
 
-void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component) 
+void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component) const
 {
 	static bool createMaterialPopUp = false;
 
@@ -628,9 +630,36 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 	MaterialVariables(component);
 
 	ImGui::Separator();
+
+	std::vector<std::string>matFiles;
+	EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_MATERIAL_PATH, ".mat", matFiles);
+	std::string matName;
+	std::string selectedName = (rMat.GetName() != nullptr) ? rMat.GetName() : "SELECT MATERIAL";
+	if (ImGui::BeginCombo("Select Material", selectedName.c_str(), ImGuiComboFlags_PopupAlignLeft))
+	{
+		for (const std::string& file : matFiles)
+		{
+			EngineApp->GetFileSystem()->SplitPath(file.c_str(), &matName);
+			bool selectedMat = (rMat.GetName() != nullptr) && strcmp(matName.c_str(), rMat.GetName());
+			if (ImGui::Selectable(matName.c_str(), selectedMat))
+			{
+				matName = file + ".emeta";
+				char* fileBuffer = nullptr;
+				EngineApp->GetFileSystem()->Load(matName.c_str(), &fileBuffer);
+				//assert(EngineApp->GetFileSystem()->Load(matName.c_str(), &fileBuffer) && "Not able to open .emeta file");
+				rapidjson::Document document;
+				document.Parse(fileBuffer);
+				//assert(document.Parse(fileBuffer) != 0 && "Not able to load .emeta file");
+				assert(document.HasMember("uid") && "Meta has no uid");
+				component.SetMaterial(document["uid"].GetInt());
+				break;
+			}
+		}
+		ImGui::EndCombo();
+	}
+
 	if (rMat.GetName() != nullptr)
 	{
-		ImGui::Text(rMat.GetName());
 		if (ImGui::Button("Save Material"))
 		{
 			//Just save the resource material
@@ -638,11 +667,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 			Importer::Material::Save(&rMat);
 		}
 	}
-
-	//if (ImGui::Button("Set Material"))
-	//{
-	// chose a material from the assets material foler and set it
-	//}
 
 	if (ImGui::Button("Create New Material"))
 	{
@@ -666,8 +690,7 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 					if (!App->GetFileSystem()->Exists(assetName.c_str()))
 					{
 						Importer::Material::SaveMatFile(rMat, userInputName);
-						unsigned int newUid = EngineApp->GetEngineResource()->ImportFile(assetName.c_str());
-						component.SetMaterial(newUid);
+						component.SetMaterial(EngineApp->GetEngineResource()->ImportFile(assetName.c_str()));
 					}
 					else
 					{
@@ -675,12 +698,14 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 					}
 					createMaterialPopUp = false;
 				}
-				memset(userInputName, 0, 200);
+				userInputName[0] = '\0';
+				//memset(userInputName, 0, 200);
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel"))
 			{
-				memset(userInputName, 0, 200);
+				//memset(userInputName, 0, 200);
+				userInputName[0] = '\0';
 				createMaterialPopUp = false;
 			}
 			ImGui::EndPopup();
@@ -688,7 +713,7 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 	}
 }
 
-void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
+void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component) const
 {
 	ImGui::SeparatorText("Agent Parameters");
 
@@ -716,7 +741,7 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 
 }
 
-void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderComponent)
+void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderComponent) const
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent.GetResourceMaterial());
 
@@ -739,7 +764,7 @@ void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderCompon
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 
-		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
+		if (ImGui::ColorPicker4("BaseColor", material->mBaseColorFactor.ptr()))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
@@ -761,7 +786,7 @@ void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderCompon
 	}
 }
 
-void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)
+void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component) const
 {
 	ImGui::SeparatorText("Navigation Mesh Obstacle");
 
@@ -776,7 +801,7 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 }
 
 
-void InspectorPanel::DrawCameraComponent(CameraComponent* component)
+void InspectorPanel::DrawCameraComponent(CameraComponent* component) const
 {
 	ImGui::SeparatorText("Camera");
 
@@ -820,7 +845,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	ImGui::PopID();
 }
 
-void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
+void InspectorPanel::DrawScriptComponent(ScriptComponent* component) const
 {
 
 	const char* currentItem = component->GetScriptName();
@@ -992,7 +1017,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 }
 
 
-void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) 
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 {
 
 	ImGui::SeparatorText("Animation");
@@ -1003,53 +1028,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 	if (component->GetAnimationUid() != 0)
 	{
-
-		if (ImGui::Button("Play/Pause"))
-		{
-			//component->OnStart();
-			bool play = component->GetIsPlaying();
-			component->SetIsPlaying(!play);
-		}
-
-		ImGui::SameLine();
-		ImGui::Dummy(ImVec2(40.0f, 0.0f));
-		ImGui::SameLine();
-
-
-
-		if (component->GetIsPlaying())
-		{
-			ImGui::Text("PLAYING");
-		}
-		else
-		{
-			ImGui::Text("PAUSED");
-		}
-
-		if (ImGui::Button("Restart"))
-		{
-			component->OnRestart();
-		}
-
-		if (ImGui::Checkbox("Loop", &loop))
-		{
-			component->SetLoop(loop);
-		}
-
-		float animSpeed = component->GetAnimSpeed();
-
-		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
-		{
-			component->SetAnimSpeed(animSpeed);
-		}
-
-		if (ImGui::Button("Open state machine panel"))
-		{
-			AnimationSMPanel* panel = static_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
-			panel->SetStateMachine(component->GetStateMachine());
-			panel->Open();
-		}
-
 		//Draw selectable state machines
 		std::vector<std::string> assets;
 		GetStateMachineAssets(component, false, assets);
@@ -1076,7 +1054,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 			}
 			ImGui::EndCombo();
 		}
-		
+
 		if (component->HasSpine())
 		{
 			ImGui::Text("Select spine state machine:");
@@ -1104,10 +1082,129 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 				ImGui::EndCombo();
 			}
 		}
+		if (ImGui::Button("Play/Pause"))
+		{
+			//component->OnStart();
+			bool play = component->GetIsPlaying();
+			component->SetIsPlaying(!play);
+		}
+
+		ImGui::SameLine();
+		ImGui::Dummy(ImVec2(40.0f, 0.0f));
+		ImGui::SameLine();
+
+
+
+		if (component->GetIsPlaying())
+		{
+			ImGui::Text("PLAYING");
+		}
+		else
+		{
+			ImGui::Text("PAUSED");
+		}
+
+		if (ImGui::Button("Restart current state"))
+		{
+			component->RestartStateAnimation();
+		}
+
+		if (ImGui::Button("Reset Component"))
+		{
+			component->ResetAnimationComponent();
+		}
+
+		std::vector<std::string> state_names = component->GetSMStateNames();
+		std::string currentState = component->GetCurrentStateName();
+		ImGui::Text("Select current state:");
+		if (ImGui::BeginCombo("##DefaultState", currentState.c_str()))
+		{
+
+			for (int n = 0; n < state_names.size(); n++)
+			{
+				bool is_selected = (currentState == state_names[n]);
+				if (ImGui::Selectable(state_names[n].c_str(), is_selected))
+				{
+					currentState = state_names[n].c_str();
+					component->ChangeState(state_names[n], 0.01f);
+					component->RestartStateAnimation();
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		if (component->HasSpine())
+		{
+			std::vector<std::string> spine_state_names = component->GetSpineSMStateNames();
+			std::string currentSpineState = component->GetCurrentSpineStateName();
+			ImGui::Text("Select current spine state:");
+			if (ImGui::BeginCombo("##DefaultState", currentSpineState.c_str()))
+			{
+
+				for (int n = 0; n < spine_state_names.size(); n++)
+				{
+					bool is_selected = (currentSpineState == spine_state_names[n]);
+					if (ImGui::Selectable(spine_state_names[n].c_str(), is_selected))
+					{
+						currentSpineState = spine_state_names[n].c_str();
+						component->ChangeSpineState(spine_state_names[n], 0.01f);
+						component->RestartStateAnimation();
+
+					}
+					if (is_selected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		if (ImGui::Checkbox("Loop", &loop))
+		{
+			component->SetLoop(loop);
+		}
+		float controllerTime = component->GetControllerTime();
+
+		if (ImGui::DragFloat("Current animation time ", &controllerTime, 0.02f, 0.0f, 50.0f))
+		{
+			component->SetControllerTime(controllerTime);
+		}
+
+		if (component->HasSpine())
+		{
+			float spineControllerTime = component->GetSpineControllerTime();
+
+			if (ImGui::DragFloat("Current spine animation time ", &spineControllerTime, 0.02f, 0.0f, 50.0f))
+			{
+				component->SetSpineControllerTime(spineControllerTime);
+			}
+
+
+		}
+
+		float animSpeed = component->GetAnimSpeed();
+
+		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
+		{
+			component->SetAnimSpeed(animSpeed);
+		}
+
+		if (ImGui::Button("Open state machine panel"))
+		{
+			AnimationSMPanel* panel = static_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+			panel->SetStateMachine(component->GetStateMachine());
+			panel->Open();
+		}
+
+		
 	}
 }
 
-void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names)
+void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names) const
 {
 	
 	const char* currentItem = component->GetStateMachine()->GetName().c_str();
@@ -1136,7 +1233,7 @@ void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool i
 	}
 }
 
-void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) const
 {
 	// Drag and drop	
 	ImGui::Columns(2);
@@ -1165,6 +1262,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 				imageComponent->SetImage(resource->GetUID());
 				imageComponent->SetFileName(asset->mName);
 			}
+			EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -1319,9 +1417,14 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	{
 		imageComponent->SetMaskable(maskable);
 	}
+	bool blurBack = imageComponent->BlurBackground();
+	if (ImGui::Checkbox("BlurBack", &blurBack))
+	{
+		imageComponent->SetBlurBackground(blurBack);
+	}
 }
 
-void InspectorPanel::DrawMaskComponent(MaskComponent* component)
+void InspectorPanel::DrawMaskComponent(MaskComponent* component) const
 {
 	if (component->GetMask() == nullptr)
 		ImGui::Text("No image component attached");
@@ -1359,7 +1462,7 @@ void InspectorPanel::DrawMaskComponent(MaskComponent* component)
 }
 
 
-void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) const
 {
 	const char* renderModes[] = { "World Space", "Screen Space", "Billboard mode", "World axis billboard"};
 	static int selectedRenderMode = static_cast<int>(canvasComponent->GetRenderSpace());
@@ -1418,7 +1521,8 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	ImGui::EndTable();
 }
 
-void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) {
+void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) const
+{
 	// List event and add
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
 
@@ -1512,16 +1616,8 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) {
 	}
 }
 
-void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
-{
 
-}
-;
-void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
-{
-}
-
-void InspectorPanel::DrawSliderComponent(SliderComponent* component)
+void InspectorPanel::DrawSliderComponent(SliderComponent* component) const
 {
 	float value = component->GetValue();
 
@@ -1529,7 +1625,7 @@ void InspectorPanel::DrawSliderComponent(SliderComponent* component)
 	component->SetValue(value);
 }
 
-void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 
+void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) const
 {
 	
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) 
@@ -1737,61 +1833,73 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
-	ImGui::Text("Delay");
-	ImGui::SameLine();
-	ImGui::DragFloat("##Delay", &(component->mDelay), 0.1f, 0.0f);
-
-	ImGui::Text("Looping");
-	ImGui::SameLine(); 
-	ImGui::Checkbox("##Looping", &(component->mLooping));
-	if (!component->mLooping) 
+	if (ImGui::CollapsingHeader("Emitter"))
 	{
-		ImGui::Text("Duration");
-		ImGui::SameLine(); 
-		ImGui::DragFloat("##Duration", &(component->mDuration), 0.1f, 0.0f);
+		ImGui::Text("Delay");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Delay", &(component->mDelay), 0.1f, 0.0f);
+
+		ImGui::Text("Looping");
+		ImGui::SameLine();
+		ImGui::Checkbox("##Looping", &(component->mLooping));
+		if (!component->mLooping)
+		{
+			ImGui::Text("Duration");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Duration", &(component->mDuration), 0.1f, 0.0f);
+		}
+
+		ImGui::Text("Max Particles");
+		ImGui::SameLine();
+		ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0, 200);
+		ImGui::Text("Burst");
+		ImGui::SameLine();
+		ImGui::DragInt("##Burst", &(component->mBurst), 0.1f, 0, 200);
+		ImGui::Text("Emision Rate");
+		ImGui::SameLine();
+		ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
+		DrawRandomFloat(component->mLifetime, "Lifetime");
+		ImGui::Text("Follow Emitter");
+		ImGui::SameLine();
+		ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
+		if (component->mFollowEmitter)
+		{
+			ImGui::SameLine();
+			ImGui::Text("Spin Speed");
+			ImGui::SameLine();
+			ImGui::DragFloat("##SpinSpeed", &(component->mSpinSpeed), 0.1f, 0.0f);
+		}
+		ImGui::Text("Gravity");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);
 	}
 
-	ImGui::Text("Max Particles");
-	ImGui::SameLine();
-	ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0,200);
-	ImGui::Text("Burst");
-	ImGui::SameLine();
-	ImGui::DragInt("##Burst", &(component->mBurst), 0.1f, 0, 200);
-	ImGui::Text("Emision Rate");
-	ImGui::SameLine(); 
-	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	DrawRandomFloat(component->mLifetime, "Lifetime");
-	ImGui::Text("Follow Emitter");
-	ImGui::SameLine();
-	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
-	ImGui::Text("Gravity");
-	ImGui::SameLine();
-	ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);
+	if (ImGui::CollapsingHeader("Speed")) DrawBezierCurve(&(component->mSpeedCurve), "Speed");
 
-
-	ImGui::Separator();
-	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
-	ImGui::Separator();
-	ImGui::Text("Stretched Billboard");
-	ImGui::SameLine();
-	ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
-	ImGui::Text("Stretched Ratio");
-	ImGui::SameLine();
-	ImGui::DragFloat("##StretchedRatio", &(component->mStretchedRatio), 0.1f, 0.0f);
-
-	DrawBezierCurve(&(component->mSizeCurve), "Size");
-	ImGui::Separator();
-	static const char* items[]{ "Cone","Box","Sphere"};
-	static int Selecteditem = 0;
-	ImGui::Text("Shape");
-	ImGui::SameLine();
-	bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
-	if (check)
+	if (ImGui::CollapsingHeader("Size"))
 	{
-		component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
-	}	
-	switch(component->mShapeType)
+		ImGui::Text("Stretched Billboard");
+		ImGui::SameLine();
+		ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
+		ImGui::Text("Stretched Ratio");
+		ImGui::SameLine();
+		ImGui::DragFloat("##StretchedRatio", &(component->mStretchedRatio), 0.1f, 0.0f);
+		DrawBezierCurve(&(component->mSizeCurve), "Size");
+	}
+
+	if (ImGui::CollapsingHeader("Shape"))
 	{
+		static const char* items[]{ "None", "Cone","Box","Sphere","Cilinder","Donut" };
+		static int selectedItem = static_cast<int>(component->mShapeType);
+		ImGui::Text("Shape");
+		ImGui::SameLine();
+		bool check = ImGui::Combo("##Shape", &selectedItem, items, IM_ARRAYSIZE(items));
+		if (check)
+		{
+			component->mShapeType = (ParticleSystemComponent::EmitterType)(selectedItem);
+		}
+		switch (component->mShapeType)
+		{
 		case ParticleSystemComponent::EmitterType::CONE:
 			ImGui::Text("Angle");
 			ImGui::SameLine();
@@ -1800,88 +1908,243 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
+
 		case ParticleSystemComponent::EmitterType::BOX:
 			ImGui::Text("Width");
 			ImGui::SameLine();
 			ImGui::DragFloat3("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::Text("Follow Z Axis");
+			ImGui::SameLine();
+			ImGui::Checkbox("##FollowZAxis", &(component->mShapeFollowZAxis));
 			ImGui::Text("Invers Dir");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
-
 			break;
+
 		case ParticleSystemComponent::EmitterType::SPHERE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
-			ImGui::Text("Invers Dir");
+			ImGui::Text("InversDir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##InversDir", &(component->mShapeInverseDir));
+			break;
+
+		case ParticleSystemComponent::EmitterType::CILINDER:
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
+			ImGui::Text("Height");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Height", &component->mShapeHeight, 0.1f, 0.0f);
+			ImGui::Text("Follow Z Axis");
+			ImGui::SameLine();
+			ImGui::Checkbox("##FollowZAxis", &(component->mShapeFollowZAxis));
+			ImGui::Text("InversDir");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
-
 			break;
-	}
-	ImGui::Text("Rand Dir");
-	ImGui::SameLine();
-	ImGui::Checkbox("##FixedDirection", &(component->mIsShapeAngleRand));
-	if (component->mIsShapeAngleRand) 
-	{
+
+		case ParticleSystemComponent::EmitterType::DONUT:
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
+			ImGui::Text("Tube Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##TubeRadius", &component->mShapeTubeRadius, 0.1f, 0.0f);
+			ImGui::Text("InversDir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##InversDir", &(component->mShapeInverseDir));
+			break;
+			
+		default:
+			ImGui::Text("NONE");
+			break;
+		}
+		ImGui::Text("Rand Dir");
 		ImGui::SameLine();
-		ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
+		ImGui::Checkbox("##IsRandDirection", &(component->mIsShapeAngleRand));
+		if (component->mIsShapeAngleRand)
+		{
+			ImGui::SameLine();
+			ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
+		}
+		ImGui::Text("Speed To Center");
+		ImGui::SameLine();
+		ImGui::Checkbox("##SpeedCenterShape", &(component->mSpeedCenterShape));
+		if (component->mSpeedCenterShape)
+		{
+			ImGui::SameLine();
+			ImGui::DragFloat("##SpeedCenterFactor", &component->mSpeedCenterFactor, 0.1f, 0.0f);
+		}
 	}
 
-	DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
-	ImGui::Separator();
-	if (ImGui::CollapsingHeader("Texture & Tint")) 
+	if (ImGui::CollapsingHeader("Trail"))
 	{
-		// Drag and drop	
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, 70.0);
+		ImGui::Text("Trails");
+		ImGui::SameLine();
+		ImGui::Checkbox("##Trails", &(component->mHasTrails));
 
-		const ResourceTexture* image = component->GetImage();
-
-		if (image)
+		if (component->mHasTrails)
 		{
-			ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
-			ImGui::Image(imageID, ImVec2(50, 50));
+			ImGui::SeparatorText("Properties");
+			{
+				ImGui::Text("Fixed Direction");
+				ImGui::SameLine();
+				ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
+
+				if (component->mTrail->mFixedDirection)
+				{
+					ImGui::Text("Trail Direction");
+					ImGui::SameLine();
+					ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
+				}
+
+				ImGui::Text("Minimum distance");
+				ImGui::SameLine();
+				ImGui::DragFloat("##MinDistance", &(component->mTrail->mMinDistance), 1.0f, 0.0f);
+
+				ImGui::Text("Lifetime");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+			}
+
+			ImGui::SeparatorText("Width");
+			DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+		}
+	}
+
+	if (ImGui::CollapsingHeader("Particles Texture & Color"))
+	{
+		static bool interruptor = true;
+
+		if (ImGui::Button("Particles")) interruptor = true;
+		ImGui::SameLine();
+		if (ImGui::Button("Trails")) interruptor = false;
+
+		if (interruptor)
+		{
+			DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
+			// Drag and drop	
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 70.0);
+
+			const ResourceTexture* image = component->GetImage();
+
+			if (image)
+			{
+				ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+				ImGui::Image(imageID, ImVec2(50, 50));
+			}
+			else
+			{
+				ImGui::Text("Drop Image");
+			}
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+				{
+					AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+					Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+					if (resource && (resource->GetType() == Resource::Type::Texture))
+					{
+						component->SetImage(resource->GetUID());
+						component->SetFileName(asset->mName);
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+			ImGui::NextColumn();
+			if (component->GetFileName() != nullptr)
+			{
+				ImGui::Text(component->GetFileName());
+			}
+
+			if (image)
+			{
+				ImGui::Text("Width:%dpx", image->GetWidth());
+				ImGui::Text("Height:%dpx", image->GetHeight());
+
+			}
+			ImGui::Columns(1);
+			static float draggingMark = -1.0f;
+			static float selectedMark = -1.0f;
+			bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
+			ImGui::CollapsingHeader("Trail Texture & Color", ImGuiTreeNodeFlags_DefaultOpen);
 		}
 		else
 		{
-			ImGui::Text("Drop Image");
-		}
-
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			if (component->mHasTrails)
 			{
-				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
-				if (resource && (resource->GetType() == Resource::Type::Texture))
+				// Drag and drop	
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 70.0);
+
+				ResourceTexture* image = component->mTrail->mImage;
+
+				if (image)
 				{
-					component->SetImage(resource->GetUID());
-					component->SetFileName(asset->mName);
+					ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+					ImGui::Image(imageID, ImVec2(50, 50));
 				}
+				else
+				{
+					ImGui::Text("Drop Image");
+				}
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+					{
+						AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+						Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+						if (resource && (resource->GetType() == Resource::Type::Texture))
+						{
+							component->mTrail->SetImage(resource->GetUID());
+							component->mTrail->SetFileName(asset->mName);
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
+				ImGui::NextColumn();
+				if (component->mTrail->GetFileName() != nullptr)
+				{
+					ImGui::Text(component->mTrail->GetFileName());
+				}
+
+				if (image)
+				{
+					ImGui::Text("Width:%dpx", image->GetWidth());
+					ImGui::Text("Height:%dpx", image->GetHeight());
+
+				}
+				if (ImGui::Button(ICON_FA_TRASH_CAN))
+				{
+					component->mTrail->SetImage(148626881);
+				}
+				ImGui::Columns(1);
+
+				ImGui::Text("Tilling");
+				ImGui::SameLine();
+				ImGui::Checkbox("##IsTilled", &(component->mTrail->mIsTilled));
+				if (component->mTrail->mIsTilled)
+				{
+					ImGui::SameLine();
+					ImGui::DragFloat("##Tilling", &(component->mTrail->mTilling), 0.01f, 0.0f);
+				}
+
+				static float draggingMark = -1.0f;
+				static float selectedMark = -1.0f;
+				bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
 			}
-			ImGui::EndDragDropTarget();
+			else ImGui::Text("Activate Trails for this functionality");
 		}
-		ImGui::NextColumn();
-		if (component->GetFileName() != nullptr)
-		{
-			ImGui::Text(component->GetFileName());
-		}
-
-		if (image)
-		{
-			ImGui::Text("Width:%dpx", image->GetWidth());
-			ImGui::Text("Height:%dpx", image->GetHeight());
-
-		}
-		ImGui::Columns(1);
-		static float draggingMark = -1.0f;
-		static float selectedMark = -1.0f;
-		bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
 	}
+
 }
 
-void InspectorPanel::DrawTextComponent(TextComponent* component)
+void InspectorPanel::DrawTextComponent(TextComponent* component) const
 {
 	float3* color = component->GetColor();
 	float* alpha = component->GetAlpha();
@@ -1906,6 +2169,30 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("##Color", (float*)color);
 	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("##Alpha", alpha, 0.0f, 1.0f);
 	
+	const char* renderModes[] = { "Regular", "Medium", "SemiBold", "Bold", "Light"};
+	static int selectedRenderMode;
+
+	ImGui::Text("Render Mode");
+	ImGui::SameLine();
+
+	if (ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes)))
+	{
+		switch (selectedRenderMode)
+		{
+		case -1: break;
+		case 0: component->SetTextFont("Assets\\Fonts\\Akshar-Regular.ttf");
+			break;
+		case 1: component->SetTextFont("Assets\\Fonts\\Akshar-Medium.ttf");
+			break;
+		case 2: component->SetTextFont("Assets\\Fonts\\Akshar-SemiBold.ttf");
+			break;
+		case 3: component->SetTextFont("Assets\\Fonts\\Akshar-Bold.ttf");
+			break;
+		case 4: component->SetTextFont("Assets\\Fonts\\Akshar-Light.ttf");
+			break;
+		}
+	}
+
 	ImGui::Text("Alignment:");
 	if (ImGui::Button("Left"))
 	{
@@ -1922,12 +2209,14 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 		component->SetAlignment(TextAlignment::RIGHT);
 	}
 
-	ImGui::Text("Font Size:"); ImGui::SameLine(); ImGui::DragInt("##Font Size", fontSize);
+	bool sizeChanged = false;
+	ImGui::Text("Font Size:"); ImGui::SameLine(); sizeChanged = ImGui::DragInt("##Font Size", fontSize);
+	if (sizeChanged) component->SetFontSize(*fontSize);
 	ImGui::Text("Line Spacing:"); ImGui::SameLine(); ImGui::DragInt("##Line Space", lineSpacing);
 	ImGui::Text("Line Width:"); ImGui::SameLine(); ImGui::DragInt("##Line Width", lineWidth);
 }
 
-void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
+void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component) const
 {
 	if (ImGui::BeginTable("transformTable", 4))
 	{
@@ -2174,7 +2463,7 @@ void InspectorPanel::DrawLineComponent(LineComponent* component) const
 	}
 }
 
-void InspectorPanel::DrawDecalComponent(DecalComponent* component)
+void InspectorPanel::DrawDecalComponent(DecalComponent* component) const
 {
 
 	unsigned int imageSize = 50;
@@ -2395,6 +2684,66 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 
 		ImGui::EndTable();
 	}
+}
+
+void InspectorPanel::DrawVideoComponent(VideoComponent* component) const
+{
+	ImGui::Text("VIDEO CONTROLS");
+
+	if(ImGui::Button(ICON_FA_PLAY))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_FA_PAUSE))
+	{
+		component->Pause();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_FA_STOP))
+	{
+		component->Stop();
+	}
+
+	bool loop = component->GetLoop();
+	if (ImGui::Checkbox("Loop", &loop))
+	{
+		component->SetLoop(loop);
+	}
+
+	const char* currentItem = component->GetName();
+	if (strcmp(currentItem, "") == 0)
+	{
+		currentItem = "una_rosa.mp4";
+	}
+
+
+	if (ImGui::BeginCombo("##combo", currentItem))
+	{
+		std::vector<std::string> videoNames;
+		EngineApp->GetFileSystem()->GetDirectoryFiles("Assets/Videos", videoNames);
+
+		for (int n = 0; n < videoNames.size(); n++)
+		{
+			bool is_selected = (currentItem == videoNames[n]);
+			if (ImGui::Selectable(videoNames[n].c_str(), is_selected))
+			{
+				currentItem = videoNames[n].c_str();
+				std::string videoPath = std::string("./Assets/Videos/");
+				videoPath += currentItem;
+				component->OpenVideo(videoPath.c_str());
+			}
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+
+		}
+		ImGui::EndCombo();
+	}
+
+
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const
