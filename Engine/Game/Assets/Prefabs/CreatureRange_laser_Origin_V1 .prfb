@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 21514256,
-                "ParentUID": 2111421336,
+                "UID": 1659651488,
+                "ParentUID": 1,
                 "Name": "CreatureRange_laser_Origin_V1 ",
                 "Enabled": true,
                 "Active": true,

@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1780172048,
+                "UID": 1991690511,
                 "ParentUID": 1,
                 "Name": "Laser",
                 "Enabled": true,
@@ -47,8 +47,8 @@
                 ]
             },
             {
-                "UID": 1107350299,
-                "ParentUID": 1780172048,
+                "UID": 2023019961,
+                "ParentUID": 1991690511,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
@@ -75,8 +75,8 @@
                 "Components": []
             },
             {
-                "UID": 1145641849,
-                "ParentUID": 1107350299,
+                "UID": 2030051682,
+                "ParentUID": 2023019961,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
@@ -103,8 +103,8 @@
                 "Components": []
             },
             {
-                "UID": 1178502961,
-                "ParentUID": 1145641849,
+                "UID": 2036526435,
+                "ParentUID": 2030051682,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,

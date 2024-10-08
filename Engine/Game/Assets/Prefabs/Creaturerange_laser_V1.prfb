@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 318440667,
+                "UID": 1424010872,
                 "ParentUID": 1,
                 "Name": "Creaturerange_laser_V1",
                 "Enabled": true,
