@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1977033949,
+                "UID": 1830926583,
                 "ParentUID": 1,
                 "Name": "Collectible",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    83.7481918334961,
+                    76.7602310180664,
                     0.7844780683517456,
-                    4.545426368713379
+                    -0.9981523752212524
                 ],
                 "Rotation": [
                     0.0,
@@ -36,7 +36,17 @@
                             {
                                 "VariableName": "mMeshGO",
                                 "MemberType": 3,
-                                "VariableData": 1729472682
+                                "VariableData": 1168574206
+                            },
+                            {
+                                "VariableName": "mTitleTextGO",
+                                "MemberType": 3,
+                                "VariableData": 536050202
+                            },
+                            {
+                                "VariableName": "mSubtitleTextGO",
+                                "MemberType": 3,
+                                "VariableData": 1932650912
                             }
                         ]
                     },
@@ -59,8 +69,8 @@
                 ]
             },
             {
-                "UID": 685460068,
-                "ParentUID": 1977033949,
+                "UID": 982501175,
+                "ParentUID": 1830926583,
                 "Name": "OB_PDA",
                 "Enabled": true,
                 "Active": true,
@@ -87,8 +97,8 @@
                 "Components": []
             },
             {
-                "UID": 289083813,
-                "ParentUID": 685460068,
+                "UID": 25397386,
+                "ParentUID": 982501175,
                 "Name": "OB_PDA",
                 "Enabled": true,
                 "Active": true,
@@ -115,8 +125,8 @@
                 "Components": []
             },
             {
-                "UID": 1729472682,
-                "ParentUID": 289083813,
+                "UID": 1168574206,
+                "ParentUID": 25397386,
                 "Name": "OB_PDA",
                 "Enabled": true,
                 "Active": true,
@@ -151,6 +161,62 @@
                         "InverseBindMatrices": []
                     }
                 ]
+            },
+            {
+                "UID": 536050202,
+                "ParentUID": 1830926583,
+                "Name": "Title",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1932650912,
+                "ParentUID": 1830926583,
+                "Name": "Subtext",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
             }
         ]
     }
