@@ -8,7 +8,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    5.350286960601807,
+                    3.573176860809326,
                     -0.07321131229400635,
                     0.0
                 ],
@@ -23,7 +23,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "BattleArea",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -52,7 +52,7 @@
                             {
                                 "VariableName": "mBossGO",
                                 "MemberType": 3,
-                                "VariableData": 1348112554
+                                "VariableData": 1525874252
                             },
                             {
                                 "VariableName": "mSpawnerGO1",
@@ -73,6 +73,20 @@
                                 "VariableName": "mSpawnerGO4",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreaDoorsGO",
+                                "MemberType": 3,
+                                "VariableData": 1343049099
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 1088382681
                             },
                             {
                                 "VariableName": "EXPLOSIVE SPAWNERS",
@@ -147,7 +161,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1157576968
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -157,7 +171,7 @@
                             {
                                 "VariableName": "mEnemiesPerRound",
                                 "MemberType": 0,
-                                "VariableData": 1
+                                "VariableData": 3
                             }
                         ]
                     }
@@ -233,6 +247,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 1.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.30000001192092898,
@@ -378,6 +393,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.5,
@@ -516,7 +532,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 2139881596
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -526,7 +542,7 @@
                             {
                                 "VariableName": "mEnemiesPerRound",
                                 "MemberType": 0,
-                                "VariableData": 1
+                                "VariableData": 2
                             }
                         ]
                     }
@@ -602,6 +618,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 1.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.30000001192092898,
@@ -747,6 +764,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.5,
@@ -847,9 +865,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.700000047683716,
+                    -0.8500000238418579,
                     0.0,
-                    9.130000114440918
+                    9.199999809265137
                 ],
                 "Rotation": [
                     0.0,
@@ -875,7 +893,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.5999999046325685,
+                    4.198832988739014,
                     0.0,
                     -0.09000000357627869
                 ],
@@ -903,7 +921,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.700000047683716,
+                    -0.8458104133605957,
                     0.0,
                     -9.199999809265137
                 ],
