@@ -555,7 +555,7 @@
                             {
                                 "VariableName": "mEnemyAnimState1",
                                 "MemberType": 0,
-                                "VariableData": 5
+                                "VariableData": 1
                             },
                             {
                                 "VariableName": "mEnemyGO2",

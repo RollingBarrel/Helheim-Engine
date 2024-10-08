@@ -138,13 +138,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 1)
             {
-                if ((mCameraObjectGO1)&&(mEnemyGO1)) //NEW
+                if ((mCameraObjectGO1)&&(mEnemyGO1))
                 {
                     StartCinematic(mCameraObjectGO1, mEnemyGO1, mBattleArea1, mEnemyAnimState1);
                  
-                    //************************************************************************************************************
-                    // SetEnemyScreen (1 - enemyMelee, 2 - ball, 3 - enemyRange, 4 - creatureMelee, 5 - creatureRange, 0 - Boss (no hay pantalla para el boss))
-
                     if (App->GetScene()->GetName() == "Level1Scene")
                     {
                         if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 1);
@@ -160,7 +157,6 @@ void CinematicCamera::Update()
                         GameManager::GetInstance()->HandleBossAudio(-1);
                         if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 0);
                     }  
-                    //************************************************************************************************************ 
                 }    
             }    
         }
@@ -172,12 +168,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 2)
             {
-                if ((mCameraObjectGO2) && (mEnemyGO2)) //NEW
+                if ((mCameraObjectGO2) && (mEnemyGO2))
                 {
                     StartCinematic(mCameraObjectGO2, mEnemyGO2, mBattleArea2, mEnemyAnimState2);           
-                    //************************************************************************************************************
                     if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 2);
-                    //************************************************************************************************************ 
                 }       
             }            
         }
@@ -189,12 +183,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 3)
             {
-                if ((mCameraObjectGO3) && (mEnemyGO3)) //NEW
+                if ((mCameraObjectGO3) && (mEnemyGO3))
                 {
                     StartCinematic(mCameraObjectGO3, mEnemyGO3, mBattleArea3, mEnemyAnimState3);
-                    //************************************************************************************************************
                     if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 3);
-                    //************************************************************************************************************ 
                 }             
             }
         }
@@ -206,12 +198,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 4)
             {
-                if ((mCameraObjectGO4) && (mEnemyGO4)) //NEW
+                if ((mCameraObjectGO4) && (mEnemyGO4))
                 {
                     StartCinematic(mCameraObjectGO4, mEnemyGO4, mBattleArea4, mEnemyAnimState4);
-                    //************************************************************************************************************
                     if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 4);
-                    //************************************************************************************************************
                 }
             }
         }
@@ -441,11 +431,8 @@ void CinematicCamera::EndCinematic()
         mPlayerController->EnableLaser(true);
     }
 
-    //************************************************************************************************************
-    //DEVELOP
     GameManager::GetInstance()->GetHud()->SetEnemyScreen(false, 0);
     mEscape = true;
-    //************************************************************************************************************
     
     if (mActiveCinematicCamera)
     {
