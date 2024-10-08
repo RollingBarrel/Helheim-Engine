@@ -8,6 +8,7 @@ class SliderComponent;
 class Transform2DComponent;
 class ImageComponent;
 class AudioManager;
+class VideoComponent;
 
 enum MENU_TYPE {
     MAIN,
@@ -288,5 +289,8 @@ private:
     GameObject* mBackControllerGO = nullptr;
 
     bool mController = false;
+
+    GameObject* mVideoGO = nullptr;
+    VideoComponent* mVideo = nullptr;
 };
 

@@ -525,6 +525,15 @@
                                 "VariableName": "mBackControllerGO",
                                 "MemberType": 3,
                                 "VariableData": 1465024436
+                            },
+                            {
+                                "VariableName": "Video",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mVideoGO",
+                                "MemberType": 3,
+                                "VariableData": 1222345080
                             }
                         ]
                     }
@@ -4405,7 +4414,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1016849080,
+                        "ImageID": 686109489,
                         "Color": [
                             1.0,
                             1.0,
@@ -4484,7 +4493,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 201965199,
+                        "ImageID": 148626881,
                         "Color": [
                             1.0,
                             1.0,
@@ -17310,6 +17319,72 @@
                         "Speed": 30,
                         "IsPlaying": false,
                         "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1222345080,
+                "ParentUID": 470409709,
+                "Name": "Video",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 22,
+                        "IsEnabled": false,
+                        "Video Path": "./Assets/Videos/Splash_screen.mp4",
+                        "Loop": true
+                    },
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
                     }
                 ]
             }

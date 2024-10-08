@@ -17,6 +17,7 @@
 #include "ModuleWindow.h"
 #include "AudioManager.h"
 #include "PlayerStats.h"
+#include "VideoComponent.h"
 
 CREATE(MainMenu)
 {
@@ -130,6 +131,9 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mBackKeyboardGO);
     MEMBER(MemberType::GAMEOBJECT, mBackControllerGO);
 
+    SEPARATOR("Video");
+    MEMBER(MemberType::GAMEOBJECT, mVideoGO);
+
     END_CREATE;
 }
 
@@ -141,6 +145,10 @@ void MainMenu::Start()
 
     mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
+
+    // Video
+
+    if (mVideoGO) mVideo = static_cast<VideoComponent*>(mVideoGO->GetComponent(ComponentType::VIDEO));
 
     // Main buttons
 
@@ -745,6 +753,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
             break;
         case MENU_TYPE::SPLASH:
             mSplashScreen->SetEnabled(true);
+            mVideo->Play();
             break;
         case MENU_TYPE::ENGINE:
             mEngineScreen->SetEnabled(true);
