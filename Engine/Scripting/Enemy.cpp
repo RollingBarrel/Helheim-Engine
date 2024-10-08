@@ -133,6 +133,11 @@ void Enemy::ActivateEnemy()
 	{
 		mBeAttracted = false;
 		mAiAgentComponent->SetEnable(true);
+		if (mCurrentState == EnemyState::DEATH)
+		{
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+			Death();
+		}
 	}
 }
 

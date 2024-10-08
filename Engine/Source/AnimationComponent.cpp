@@ -37,8 +37,11 @@ AnimationComponent::~AnimationComponent()
 	// Destructor calls all his members destrcuctors?
 	delete mController;
 	delete mStateMachine;
+
+
 	delete mSpineController;
 	delete mSpineStateMachine;
+	
 }
 
 void AnimationComponent::SetLoop(bool loop)
@@ -553,7 +556,8 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 	{
 		mAnimationUID = data.GetInt("AnimationUID");
 
-
+		delete mController;
+		delete mSpineController;
 		mController = new AnimationController(mAnimationUID);
 		mSpineController = new AnimationController(mAnimationUID);
 
@@ -595,9 +599,8 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 				ResourceStateMachine* resSM = static_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(upperStateMachine, Resource::Type::StateMachine));
 				mSpineStateMachine = resSM->GetStateMachine();
 				mSpineStateMachine->SetUID(resSM->GetUID());
-				mSpineController = new AnimationController(mAnimationUID);
-				mController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
-				mController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
+				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
+				mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
 				App->GetResource()->ReleaseResource(upperStateMachine);
 
 			}
@@ -619,6 +622,10 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 
 			mAnimationUID = animationUids[0];
 		}
+
+		delete mController;
+		delete mSpineController;
+
 		mController = new AnimationController(mAnimationUID);
 		mSpineController = new AnimationController(mAnimationUID);
 

@@ -43,17 +43,6 @@ void BossLaserEyeBall::Update()
 
         break;
 
-    case LaserEyeBallState::CHARGING:
-
-        Charge();
-
-        if (mElapsedTime >= mAimTime) 
-        {
-            mCurrentState = LaserEyeBallState::FIRING;
-            mElapsedTime = 0.0f; 
-        }
-        break;
-
     case LaserEyeBallState::FIRING:
         ActivateLaserVFX();
         RotateLaser();
@@ -94,8 +83,8 @@ void BossLaserEyeBall::Init(float damage, float duration, float distance, float 
     mCurrentRotation = mInitRotation;
 
     mAttackCoolDownTimer.Reset(); 
-
-    mCurrentState = LaserEyeBallState::CHARGING;
+    if (mLaserCharge) mLaserCharge->SetEnabled(true);
+    mCurrentState = LaserEyeBallState::FIRING;
     mElapsedTime = 0.0f;
     mCanDamage = true;
     DisableLaserVFX();

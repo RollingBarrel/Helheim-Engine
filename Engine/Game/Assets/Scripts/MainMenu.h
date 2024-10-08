@@ -127,9 +127,9 @@ private:
 	AUDIO_SETTING_TYPE mCurrentAudioSetting;
 	VIDEO_SETTING_TYPE mCurrentVideoSetting;
 
-    float mMasterVolumeValue = .75f;
-    float mMusicVolumeValue = .75f;
-    float mEffectsVolumeValue = .75f;
+    float mMasterVolumeValue = .35f;
+    float mMusicVolumeValue = .35f;
+    float mEffectsVolumeValue = .35f;
 	bool mIsAdjustingAudio = false;
 
     TimerScript mTimer;

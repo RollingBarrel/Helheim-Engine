@@ -1917,6 +1917,18 @@ void OpenGLBuffer::RemoveData(unsigned int dataSize, unsigned int offset)
 	glDeleteBuffers(1, &tmp);
 }
 
+void ModuleOpenGL::AddParticleSystem(ParticleSystemComponent* component)
+{
+	for (int i = 0; i < mParticleSystems.size(); ++i)
+	{
+		if (mParticleSystems[i] == component)
+		{
+			return;
+		}
+	}
+	mParticleSystems.push_back(component);
+}
+
 void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component)
 {
 	for (int i = 0; i < mParticleSystems.size(); ++i)
@@ -1936,7 +1948,7 @@ void ModuleOpenGL::RemoveTrail(const Trail* trail)
 		if (mTrails[i] == trail)
 		{
 			mTrails.erase(mTrails.begin() + i);
-			break;
+			//break;
 		}
 	}
 }
