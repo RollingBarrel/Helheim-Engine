@@ -249,7 +249,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8176528215408326,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -573,7 +573,7 @@
                             {
                                 "VariableName": "mSkipGO",
                                 "MemberType": 3,
-                                "VariableData": 112751954
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -32448,7 +32448,7 @@
                             {
                                 "VariableName": "mEnemy1GO",
                                 "MemberType": 3,
-                                "VariableData": 1249662884
+                                "VariableData": 1574166365
                             },
                             {
                                 "VariableName": "mEnemy2GO",
@@ -32458,17 +32458,17 @@
                             {
                                 "VariableName": "mEnemy3GO",
                                 "MemberType": 3,
-                                "VariableData": 1736452916
+                                "VariableData": 1900758476
                             },
                             {
                                 "VariableName": "mEnemy4GO",
                                 "MemberType": 3,
-                                "VariableData": 1574166365
+                                "VariableData": 1249662884
                             },
                             {
                                 "VariableName": "mEnemy5GO",
                                 "MemberType": 3,
-                                "VariableData": 1900758476
+                                "VariableData": 1736452916
                             },
                             {
                                 "VariableName": "BINDINGS",
@@ -32532,7 +32532,7 @@
                             {
                                 "VariableName": "mControllerPresentationSkipBinding",
                                 "MemberType": 3,
-                                "VariableData": 922861910
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "mKeyboardWeaponBinding",
@@ -32592,7 +32592,7 @@
                             {
                                 "VariableName": "mKeyboardPresentationSkipBinding",
                                 "MemberType": 3,
-                                "VariableData": 601839479
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -63565,8 +63565,8 @@
                 "UID": 2098993365,
                 "ParentUID": 1209347188,
                 "Name": "Enemies",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -63590,539 +63590,10 @@
                 "Components": []
             },
             {
-                "UID": 112751954,
-                "ParentUID": 2098993365,
-                "Name": "Btn",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            800.0,
-                            -450.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            200.0,
-                            100.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": false
-                    }
-                ]
-            },
-            {
-                "UID": 273297980,
-                "ParentUID": 112751954,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -2.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "TO SKIP",
-                        "Color": [
-                            0.9882352948188782,
-                            0.05882352963089943,
-                            0.24313725531101228
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
-                        "FontSize": 20
-                    }
-                ]
-            },
-            {
-                "UID": 439622549,
-                "ParentUID": 112751954,
-                "Name": "Button",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -40.04999923706055,
-                            5.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 601839479,
-                "ParentUID": 439622549,
-                "Name": "Keyboard",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            40.0,
-                            24.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 1967594074,
-                        "Color": [
-                            0.9882352948188782,
-                            0.05882352963089943,
-                            0.24313725531101228
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 762594368,
-                "ParentUID": 601839479,
-                "Name": "GameObject",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            1.0,
-                            -5.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "ESC",
-                        "Color": [
-                            0.9882352948188782,
-                            0.05882352963089943,
-                            0.24313725531101228
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 1,
-                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
-                        "FontSize": 16
-                    }
-                ]
-            },
-            {
-                "UID": 922861910,
-                "ParentUID": 439622549,
-                "Name": "Controller",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            24.0,
-                            24.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 552134230,
-                        "Color": [
-                            0.9882352948188782,
-                            0.05882352963089943,
-                            0.24313725531101228
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 1086749744,
-                "ParentUID": 922861910,
-                "Name": "GameObject",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            1.0,
-                            -5.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "B",
-                        "Color": [
-                            0.9882352948188782,
-                            0.05882352963089943,
-                            0.24313725531101228
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 1,
-                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
-                        "FontSize": 16
-                    }
-                ]
-            },
-            {
                 "UID": 1249662884,
                 "ParentUID": 2098993365,
                 "Name": "creature-melee",
-                "Enabled": true,
+                "Enabled": false,
                 "Active": false,
                 "Translation": [
                     0.0,
