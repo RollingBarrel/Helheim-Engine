@@ -155,6 +155,8 @@ void PlayerController::Start()
     mGodMode = mPlayerStats->GetGodMode();
     mPlayerSpeed = mPlayerStats->GetSpeed();
     mDamageModifier = mPlayerStats->GetDamageModifier();
+    mUltimateResource = mPlayerStats->GetUltimateResource();
+
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -898,6 +900,7 @@ void PlayerController::CheckDebugOptions()
     else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
     {
         mUltimateResource = 100;
+        mPlayerStats->SetUltimateResource(mUltimateResource);
     }
     else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
@@ -1035,12 +1038,19 @@ void PlayerController::ResetEnergy()
 
 void PlayerController::AddUltimateResource()
 {
-    if (mUltimateResource != 100)
+    if ( mUltimateResource != 100)
     {
         mUltimateResource += 25;
         GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
+        mPlayerStats->SetUltimateResource(mUltimateResource);
     }
     else return;
+}
+
+void PlayerController::UseUltimateResource()
+{
+    mUltimateResource = 0;
+    mPlayerStats->SetUltimateResource(mUltimateResource);
 }
 
 void PlayerController::EnableUltimate(bool enable)
