@@ -295,6 +295,7 @@ void Sanity::OnCard1Click()
 
 void Sanity::OnCard1HoverOn()
 {
+    if (mTimeout) return;
     if (mCard1Hovered) return;
     mCard1Hovered = true;
 
@@ -332,6 +333,7 @@ void Sanity::OnCard2Click()
 
 void Sanity::OnCard2HoverOn()
 {
+    if (mTimeout) return;
     if (mCard2Hovered) return;
     mCard2Hovered = true;
 
@@ -369,6 +371,7 @@ void Sanity::OnCard3Click()
 
 void Sanity::OnCard3HoverOn()
 {
+    if (mTimeout) return;
     if (mCard3Hovered) return;
     mCard3Hovered = true;
 

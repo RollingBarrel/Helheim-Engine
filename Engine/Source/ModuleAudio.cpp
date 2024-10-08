@@ -240,6 +240,15 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	return count - 1;
 }
 
+void ModuleAudio::Restart(const FMOD::Studio::EventDescription* eventDescription, const int id)
+{
+	if (id != -1)
+	{
+		FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
+		eventInstance->start();
+	}
+}
+
 void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);

@@ -119,9 +119,8 @@ private:
             "..."
         },
         {
-            "I think that was the last of them. Next should be your room.",
             "Finally! Just get me out of here quickly please! Get me out!",
-            "I'm almost there already honey. Just hold on for a moment.",
+            "I'm almost there already. Just hold on for a moment.",
             "Yes, come get me out now. GET ME OUT!",
             "Calm down, the worst part is already over. We Will get out of here.",
             "GET ME OUT, GET ME OUT, GET ME OUT.",
