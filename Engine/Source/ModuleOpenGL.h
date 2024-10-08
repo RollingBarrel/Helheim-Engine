@@ -180,6 +180,8 @@ public:
 	void SetVolStepSize(float volStepSize);
 	int GetVolMaxSteps() const { return mVolMaxSteps; }
 	void SetVolMaxSteps(int volMaxSteps);
+	unsigned int GetVolInvScale() const { return mVolInvScale; }
+	void SetVolInvScale(int volInvScale);
 
 	unsigned int GetQuadVBO() const { return mQuadVBO; }
 	unsigned int GetQuadVAO() const { return mQuadVAO; }

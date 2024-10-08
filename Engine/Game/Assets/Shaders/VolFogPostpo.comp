@@ -16,6 +16,8 @@ layout(location = 2) uniform float maxFog;
 layout(location = 3) uniform float density;
 layout(location = 4) uniform float heightFallof;
 
+layout(binding = 2) uniform sampler2D volumetricTex;
+
 
 float GetLinearZ(float inputDepth)
 {
@@ -54,6 +56,9 @@ void main()
 	{
 		vec2 uv = vec2(gl_GlobalInvocationID.xy) / vec2(imgSize);
 		vec4 screenColor = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
+		
+		//volumetric
+		screenColor.rgb += texture(volumetricTex, uv).rgb;
 		
 		//fog
 		vec3 worldPos = GetWorldPos(texture(depthTex, uv).r, uv);

@@ -69,6 +69,7 @@ layout(location = 7) uniform uvec2 tileSize;
 
 layout(location = 8) uniform float stepSize;
 layout(location = 9) uniform uint maxSteps;
+layout(location= 10) uniform uint screenDiv;
 
 float GetLinearZ(float inputDepth)
 {
@@ -113,7 +114,7 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	//diractional light
 	//li +=  dirCol.rgb * dirCol.w * MieScattering(vDir, dirDir);
 
-	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy * 2) / tileSize;
+	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy * screenDiv) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//point lights
 	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;

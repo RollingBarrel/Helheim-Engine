@@ -512,6 +512,7 @@ bool ModuleOpenGL::Init()
 	glUniform1f(4, mVolAnisotropy);
 	glUniform1f(8, mVolStepSize);
 	glUniform1ui(9, mVolMaxSteps);
+	glUniform1ui(10, mVolInvScale);
 	glUseProgram(0);
 
 	
@@ -705,7 +706,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
 	glBindTexture(GL_TEXTURE_2D, mVolTexId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width/mVolInvScale, height/mVolInvScale, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width/mVolInvScale, height/mVolInvScale, 0, GL_RGBA, GL_FLOAT, NULL);
 	glUseProgram(mSSAOPassProgramId);
 	glUniform2ui(glGetUniformLocation(mSSAOPassProgramId, "screenSize"), width, height);
 	glUseProgram(0);
@@ -1147,6 +1148,14 @@ void ModuleOpenGL::SetVolMaxSteps(int volMaxSteps)
 	mVolMaxSteps = volMaxSteps;
 	glUseProgram(mVolLightProgramId);
 	glUniform1ui(9, mVolMaxSteps);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolInvScale(int volInvScale)
+{
+	mVolInvScale = volInvScale;
+	glUseProgram(mVolLightProgramId);
+	glUniform1ui(10, mVolInvScale);
 	glUseProgram(0);
 }
 
@@ -1680,7 +1689,10 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, blurredTex);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, mVolTexId);
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 
