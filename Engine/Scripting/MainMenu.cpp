@@ -632,6 +632,12 @@ void MainMenu::Controls()
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
         if (mCurrentMenu == MENU_TYPE::LOADING) return;
+        if (mCurrentMenu == MENU_TYPE::MAIN)
+        {
+            OpenMenu(MENU_TYPE::SPLASH);
+            return;
+        }
+
         mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
         if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD )
         {
