@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1589052857,
+                "UID": 1832693800,
                 "ParentUID": 1,
                 "Name": "Lights_Alpha3_Level3",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1594204811,
-                "ParentUID": 1589052857,
+                "UID": 1935454396,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight",
                 "Enabled": true,
                 "Active": true,
@@ -85,8 +85,8 @@
                 ]
             },
             {
-                "UID": 1598312450,
-                "ParentUID": 1589052857,
+                "UID": 1963233175,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -140,8 +140,8 @@
                 ]
             },
             {
-                "UID": 1600122596,
-                "ParentUID": 1589052857,
+                "UID": 1990246123,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (3)",
                 "Enabled": true,
                 "Active": true,
@@ -195,8 +195,8 @@
                 ]
             },
             {
-                "UID": 1602211226,
-                "ParentUID": 1589052857,
+                "UID": 2016493240,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (5)",
                 "Enabled": true,
                 "Active": true,
@@ -250,8 +250,8 @@
                 ]
             },
             {
-                "UID": 1604021372,
-                "ParentUID": 1589052857,
+                "UID": 2041974526,
+                "ParentUID": 1832693800,
                 "Name": "Pointlight",
                 "Enabled": true,
                 "Active": true,
@@ -295,8 +295,8 @@
                 ]
             },
             {
-                "UID": 1605761897,
-                "ParentUID": 1589052857,
+                "UID": 2067525433,
+                "ParentUID": 1832693800,
                 "Name": "Pointlight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -340,8 +340,8 @@
                 ]
             },
             {
-                "UID": 1607641664,
-                "ParentUID": 1589052857,
+                "UID": 2094608002,
+                "ParentUID": 1832693800,
                 "Name": "Pointlight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -385,8 +385,8 @@
                 ]
             },
             {
-                "UID": 1609730294,
-                "ParentUID": 1589052857,
+                "UID": 2119671562,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (4)",
                 "Enabled": true,
                 "Active": true,
@@ -440,8 +440,8 @@
                 ]
             },
             {
-                "UID": 1611470819,
-                "ParentUID": 1589052857,
+                "UID": 2144804743,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (6)",
                 "Enabled": true,
                 "Active": true,
@@ -495,8 +495,8 @@
                 ]
             },
             {
-                "UID": 1613489828,
-                "ParentUID": 1589052857,
+                "UID": 22245414,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (7)",
                 "Enabled": true,
                 "Active": true,
@@ -550,8 +550,8 @@
                 ]
             },
             {
-                "UID": 1615230353,
-                "ParentUID": 1589052857,
+                "UID": 47448216,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (9)",
                 "Enabled": true,
                 "Active": true,
@@ -605,8 +605,8 @@
                 ]
             },
             {
-                "UID": 1617040499,
-                "ParentUID": 1589052857,
+                "UID": 72163671,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (10)",
                 "Enabled": true,
                 "Active": true,
@@ -660,8 +660,8 @@
                 ]
             },
             {
-                "UID": 43736357,
-                "ParentUID": 1589052857,
+                "UID": 97018368,
+                "ParentUID": 1832693800,
                 "Name": "Spotlight (1)",
                 "Enabled": true,
                 "Active": true,
