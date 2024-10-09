@@ -156,7 +156,6 @@ void PlayerController::Start()
     mPlayerSpeed = mPlayerStats->GetSpeed();
     mDamageModifier = mPlayerStats->GetDamageModifier();
     mUltimateResource = mPlayerStats->GetUltimateResource();
-    GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
 
     // States
     mDashState = new DashState(this, mDashCoolDown);
