@@ -47,6 +47,10 @@ private:
 	float mIniDamage = 0.0f;
 	int mIniDialogIdx = 0;
 
+	int mInitHealthLvl = 0;
+	int mInitSpeedLvl = 0;
+	int mInitDamageLvl = 0;
+
 	int mHealthLvl = 0;
 	int mSpeedLvl = 0;
 	int mDamageLvl = 0;
