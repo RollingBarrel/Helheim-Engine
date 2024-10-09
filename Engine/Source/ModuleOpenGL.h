@@ -152,9 +152,9 @@ public:
 	float mAoRange = 1.0f;
 	float mAoBias = 0.0001f;
 	
-	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0) const;
-	void GaussianBlurTexture(unsigned int texId, unsigned int passes);
-	unsigned int SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize);
+	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0, unsigned int startIndex = 0) const;
+	void GaussianBlurTexture(unsigned int texId, unsigned int passes, unsigned int startIndex = 0);
+	unsigned int SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize, unsigned int startIndex = 0);
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };

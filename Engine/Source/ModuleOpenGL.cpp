@@ -967,13 +967,18 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
-unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes, unsigned int startIndex) const
 {
 	if (passes > mBlurPasses || passes == 0)
 		passes = mBlurPasses;
 
 	float w = mSceneWidth;
 	float h = mSceneHeight;
+	for (int i = 0; i < startIndex; ++i)
+	{
+		w /= 2;
+		h /= 2;
+	}
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
 	glActiveTexture(GL_TEXTURE0);
@@ -985,9 +990,9 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		w /= 2;
 		h /= 2;
 		glViewport(0, 0, w, h);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1+startIndex], 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1+ startIndex]);
 	}
 	glUseProgram(mUpsampleProgramId);
 	for (int i = passes - 1; i >= 0; --i)
@@ -998,18 +1003,18 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		if (i == 0 && modifyTex)
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
 		else
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+startIndex], 0);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+startIndex]);
 	}
 	glBindVertexArray(0);
 	glViewport(0 , 0, mSceneWidth, mSceneHeight);
 	glPopDebugGroup();
-	return mBlurTex[0];
+	return mBlurTex[0+startIndex];
 }
 
-void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
+void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes, unsigned int startIndex)
 {
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GaussianBlur");
 	//Passes have to be pair
@@ -1021,7 +1026,7 @@ void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
 	glUseProgram(mGaussianBlurProgramId);
 	glBindVertexArray(mEmptyVAO);
 	bool horizontal = true;
-	unsigned int drawTex = mBlurTex[0];
+	unsigned int drawTex = mBlurTex[startIndex];
 	unsigned int sampleTex = texId;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
 	glBindTexture(GL_TEXTURE_2D, sampleTex);
@@ -1042,12 +1047,12 @@ void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
 	glPopDebugGroup();
 }
 
-unsigned int ModuleOpenGL::SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize)
+unsigned int ModuleOpenGL::SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize, unsigned int startIndex)
 {
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SimpleBlur");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[startIndex], 0);
 	glUseProgram(mSimpleBlurProgramId);
 	glBindVertexArray(mEmptyVAO);
 	glActiveTexture(GL_TEXTURE0);
@@ -1590,7 +1595,6 @@ void ModuleOpenGL::Draw()
 		glPopDebugGroup();
 	}
 
-	//Bloom
 	unsigned int blurredTex = BlurTexture(mGEmissive, false, 3);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
@@ -1682,6 +1686,13 @@ void ModuleOpenGL::Draw()
 	//glDisable(GL_BLEND);
 	//glDepthMask(GL_TRUE);
 	//glPopDebugGroup();
+
+
+	//SimpleBlurTexture(mVolTexId, 16, 1);
+
+	//BlurTexture(mVolTexId, true, 1, 1);
+	//Bloom
+	//unsigned int blurredTex = BlurTexture(mGEmissive, false, 3);
 
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Vol&Fog&Postpo");
 	glUseProgram(mVolFogPostpoProgramId);
