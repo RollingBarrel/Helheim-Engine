@@ -23,6 +23,10 @@ public:
 
 	void OnCollisionEnter(CollisionData* collisionData);
 
+
+	void SetAttracted(bool attracted) override;
+
+
 private:
 	BoxColliderComponent* mCollider = nullptr;
 	GameObject* mDashAttackVFX = nullptr;

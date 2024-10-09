@@ -144,6 +144,15 @@ void EnemyCreatureMelee::Death()
 	}
 }
 
+void EnemyCreatureMelee::SetAttracted(bool attracted)
+{
+	Enemy::SetAttracted(attracted);
+
+	if (mCurrentState == EnemyState::CHARGE || mCurrentState == EnemyState::ATTACK)
+		mDashIndicator->SetEnabled(!attracted);
+	
+}
+
 void EnemyCreatureMelee::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (mCurrentState == EnemyState::ATTACK && !mHit && collisionData->collidedWith->GetTag() == "Player")
