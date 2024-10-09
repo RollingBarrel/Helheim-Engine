@@ -144,6 +144,12 @@ void LightningPanel::Draw(int windowFlags)
 		glUniform1ui(9, openGl->mVolMaxSteps);
 		glUseProgram(0);
 	}
+	if (ImGui::InputInt("InvScale", (int*)&openGl->mVolInvScale, 0, 64))
+	{
+		glUseProgram(openGl->mVolLightProgramId);
+		glUniform1ui(10, openGl->mVolInvScale);
+		glUseProgram(0);
+	}
 
 	ImGui::Separator();
 	ImGui::Text("Ambient Occlusion");
