@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 182660391,
+                "UID": 1589052857,
                 "ParentUID": 1,
                 "Name": "Lights_Alpha3_Level3",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 206563988,
-                "ParentUID": 182660391,
+                "UID": 1594204811,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight",
                 "Enabled": true,
                 "Active": true,
@@ -85,68 +85,13 @@
                 ]
             },
             {
-                "UID": 78777122,
-                "ParentUID": 182660391,
-                "Name": "Spotlight (1)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    67.55097961425781,
-                    8.950952529907227,
-                    -0.5302016735076904
-                ],
-                "Rotation": [
-                    0.5000002980232239,
-                    -0.5000054240226746,
-                    0.4999997019767761,
-                    0.49999454617500307
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            67.55097961425781,
-                            8.950952529907227,
-                            -0.5302016735076904,
-                            200.0
-                        ],
-                        "Direction": [
-                            2.9802322387695315e-8,
-                            -1.0,
-                            -0.000011444091796875,
-                            0.8571673035621643
-                        ],
-                        "Color": [
-                            1.0,
-                            0.0,
-                            0.0,
-                            0.8191520571708679
-                        ],
-                        "Range": 26.0,
-                        "CastShadow": true,
-                        "Bias": 0.000039999998989515009,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 924485815,
-                "ParentUID": 182660391,
+                "UID": 1598312450,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    51.8912239074707,
+                    60.499149322509769,
                     8.950952529907227,
                     -0.5302016735076904
                 ],
@@ -170,7 +115,7 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            51.8912239074707,
+                            60.499149322509769,
                             8.950952529907227,
                             -0.5302016735076904,
                             200.0
@@ -195,13 +140,13 @@
                 ]
             },
             {
-                "UID": 420937946,
-                "ParentUID": 182660391,
+                "UID": 1600122596,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (3)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    33.57880401611328,
+                    41.82826614379883,
                     8.950952529907227,
                     -0.5302016735076904
                 ],
@@ -225,7 +170,7 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            33.57880401611328,
+                            41.82826614379883,
                             8.950952529907227,
                             -0.5302016735076904,
                             200.0
@@ -250,8 +195,8 @@
                 ]
             },
             {
-                "UID": 1974873756,
-                "ParentUID": 182660391,
+                "UID": 1602211226,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (5)",
                 "Enabled": true,
                 "Active": true,
@@ -300,13 +245,13 @@
                         "Range": 28.5,
                         "CastShadow": true,
                         "Bias": 0.000039999998989515009,
-                        "isVolumetric": true
+                        "isVolumetric": false
                     }
                 ]
             },
             {
-                "UID": 1506243958,
-                "ParentUID": 182660391,
+                "UID": 1604021372,
+                "ParentUID": 1589052857,
                 "Name": "Pointlight",
                 "Enabled": true,
                 "Active": true,
@@ -350,8 +295,8 @@
                 ]
             },
             {
-                "UID": 743993061,
-                "ParentUID": 182660391,
+                "UID": 1605761897,
+                "ParentUID": 1589052857,
                 "Name": "Pointlight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -395,8 +340,8 @@
                 ]
             },
             {
-                "UID": 1199321208,
-                "ParentUID": 182660391,
+                "UID": 1607641664,
+                "ParentUID": 1589052857,
                 "Name": "Pointlight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -440,8 +385,8 @@
                 ]
             },
             {
-                "UID": 1279501741,
-                "ParentUID": 182660391,
+                "UID": 1609730294,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (4)",
                 "Enabled": true,
                 "Active": true,
@@ -495,8 +440,8 @@
                 ]
             },
             {
-                "UID": 1169573262,
-                "ParentUID": 182660391,
+                "UID": 1611470819,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (6)",
                 "Enabled": true,
                 "Active": true,
@@ -550,8 +495,8 @@
                 ]
             },
             {
-                "UID": 1289378497,
-                "ParentUID": 182660391,
+                "UID": 1613489828,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (7)",
                 "Enabled": true,
                 "Active": true,
@@ -597,7 +542,7 @@
                             0.8760799765586853,
                             0.8480480909347534
                         ],
-                        "Range": 35.0,
+                        "Range": 36.0,
                         "CastShadow": true,
                         "Bias": 0.000039999998989515009,
                         "isVolumetric": true
@@ -605,8 +550,8 @@
                 ]
             },
             {
-                "UID": 1928757128,
-                "ParentUID": 182660391,
+                "UID": 1615230353,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (9)",
                 "Enabled": true,
                 "Active": true,
@@ -660,8 +605,8 @@
                 ]
             },
             {
-                "UID": 1161808310,
-                "ParentUID": 182660391,
+                "UID": 1617040499,
+                "ParentUID": 1589052857,
                 "Name": "Spotlight (10)",
                 "Enabled": true,
                 "Active": true,
@@ -708,6 +653,61 @@
                             0.8191520571708679
                         ],
                         "Range": 28.5,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 43736357,
+                "ParentUID": 1589052857,
+                "Name": "Spotlight (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    26.18035125732422,
+                    8.950952529907227,
+                    -0.5302016735076904
+                ],
+                "Rotation": [
+                    0.5000002980232239,
+                    -0.5000054240226746,
+                    0.4999997019767761,
+                    0.49999454617500307
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            26.18035125732422,
+                            8.950952529907227,
+                            -0.5302016735076904,
+                            200.0
+                        ],
+                        "Direction": [
+                            2.9802322387695315e-8,
+                            -1.0,
+                            -0.000011444091796875,
+                            0.8571673035621643
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.8191520571708679
+                        ],
+                        "Range": 26.0,
                         "CastShadow": true,
                         "Bias": 0.000039999998989515009,
                         "isVolumetric": false

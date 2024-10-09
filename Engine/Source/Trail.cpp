@@ -341,7 +341,7 @@ void Trail::UpdateLineComponent(GameObject* origin, GameObject* final)
             const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
             float3 norm = cam->GetFrustum().front;
             float3 direction;
-            if (mFixedDirection) direction = mDirection.Normalized();
+            if (mFixedDirection) direction = origin->GetWorldRotation().Transform(mDirection).Normalized();
             else direction = lineDirection.Cross(norm).Normalized();
             float3 topPointPos = position + direction * (mWidth.GetValue().GetMinValue() * 0.5f);
             float3 botPointPos = position - direction * (mWidth.GetValue().GetMinValue() * 0.5f);

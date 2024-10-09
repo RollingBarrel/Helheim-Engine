@@ -30,6 +30,8 @@ CREATE(EnemyCreatureMelee)
 	MEMBER(MemberType::GAMEOBJECT, mDashAttackVFX);
 	MEMBER(MemberType::GAMEOBJECT, mDashRightVFX);
 	MEMBER(MemberType::GAMEOBJECT, mDashLeftVFX);
+	MEMBER(MemberType::GAMEOBJECT, mDashIndicator);
+	MEMBER(MemberType::GAMEOBJECT, mDashIndicatorFinal);
 	END_CREATE;
 }
 
@@ -82,6 +84,8 @@ void EnemyCreatureMelee::Chase()
 				mDashAttackVFX->SetEnabled(true);
 				mDashRightVFX->SetEnabled(true);
 				mDashLeftVFX->SetEnabled(true);
+				mDashIndicator->SetEnabled(true);
+				mDashIndicatorFinal->SetLocalPosition(float3(0, 0, 0));
 			}
 		}
 		else
@@ -96,7 +100,7 @@ void EnemyCreatureMelee::Chase()
 void EnemyCreatureMelee::Charge()
 {
 	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
-
+	mDashIndicatorFinal->SetLocalPosition(float3(0,0,mAttackDistance * mChargeDurationTimer.GetTimePassed() / mChargeDuration));
 	Enemy::Charge();
 	mHit = false;
 }
@@ -112,11 +116,13 @@ void EnemyCreatureMelee::Attack()
 		mDashAttackVFX->SetEnabled(false);
 		mDashRightVFX->SetEnabled(false);
 		mDashLeftVFX->SetEnabled(false);
+		mDashIndicator->SetEnabled(false);
 		mAttackAudioPlayed = false;
 	}
 
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
 	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
+	mDashIndicatorFinal->SetLocalPosition(float3(0, 0, mAttackDistance * (1 - mAttackDurationTimer.GetTimePassed() / mAttackDuration)));
 }
 
 void EnemyCreatureMelee::TakeDamage(float damage)
@@ -128,11 +134,23 @@ void EnemyCreatureMelee::TakeDamage(float damage)
 void EnemyCreatureMelee::Death()
 {
 	Enemy::Death();
+	mDashLeftVFX->SetEnabled(false);
+	mDashRightVFX->SetEnabled(false);
+	mDashIndicator->SetEnabled(false);
 	if (!mDeathAudioPlayed)
 	{
 		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
 		mDeathAudioPlayed = true;
 	}
+}
+
+void EnemyCreatureMelee::SetAttracted(bool attracted)
+{
+	Enemy::SetAttracted(attracted);
+
+	if (mCurrentState == EnemyState::CHARGE || mCurrentState == EnemyState::ATTACK)
+		mDashIndicator->SetEnabled(!attracted);
+	
 }
 
 void EnemyCreatureMelee::OnCollisionEnter(CollisionData* collisionData)
