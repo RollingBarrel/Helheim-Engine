@@ -301,7 +301,7 @@ void HudController::Start()
         SetDialog();
     }
 
-    SetUltimateCooldown(GameManager::GetInstance()->GetPlayerController()->GetUltimateResource());
+    SetUltimateCooldown(App->GetScene()->GetPlayerStats()->GetUltimateResource());
 }
 
 void HudController::Update()
