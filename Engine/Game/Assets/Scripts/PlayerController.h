@@ -160,7 +160,7 @@ public:
     float GetUltimateChargeDuration() const { return mUltimateChargeDuration; }
     float GetUltimateDamageInterval() const { return mUltimateDamageInterval; };
     float GetUltimateDamageTick() const { return mUltimateDamageTick; };
-    void UseUltimateResource() { mUltimateResource = 0; }
+    void UseUltimateResource();
     void EnableUltimate(bool enable);
     void EnableChargeUltimate(bool enable);
     void InterpolateLookAt(const float3& target, float speed); 

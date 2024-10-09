@@ -23,6 +23,7 @@ public:
     void Start() override;
     void Update() override;
     void OnCollisionEnter(CollisionData* collisionData);
+    void CheckDistance();
 
 private:
     int mDropId = -1;
@@ -36,5 +37,6 @@ private:
 
     TimerScript mInteractTimer;
     float mUIDeactivateTimer = 3.0f;
-    
+
+    bool mCollided = false;
 };

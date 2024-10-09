@@ -26,6 +26,9 @@ public:
 private:
 	BoxColliderComponent* mCollider = nullptr;
 	GameObject* mDashAttackVFX = nullptr;
+	GameObject* mDashRightVFX = nullptr;
+	GameObject* mDashLeftVFX = nullptr;
+
 	bool mHit = false;
 	bool mAttack = false;
 	bool mAttackAudioPlayed = false;

@@ -197,6 +197,11 @@ void ScenePanel::MenuGBuffer()
 				currentScene = EngineApp->GetOpenGL()->GetBluredTexture();
 				currentSceneName = "BLUR";
 			}
+			if (ImGui::Selectable("VOLUMETRIC"))
+			{
+				currentScene = EngineApp->GetOpenGL()->GetVolumetricTexture();
+				currentSceneName = "VOLUMETRIC";
+			}
 			ImGui::EndCombo();
 		}
 		ImGui::EndMenuBar();

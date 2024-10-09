@@ -104,7 +104,10 @@ void BossLaser::Cooldown()
 
     if (mLaserEyeBall)
     {
-        mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+        if (mLaserSound != -1)
+        {
+            mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+        }
 
         mLaserEyeBall->SetEnabled(false);
     }

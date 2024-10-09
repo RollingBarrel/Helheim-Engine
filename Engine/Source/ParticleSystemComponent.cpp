@@ -361,6 +361,7 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddBool("StretchedBillboard", mStretchedBillboard);
     obj.AddFloat("StretchedRatio", mStretchedRatio);
     obj.AddFloat("Gravity", mGravity);
+    obj.AddBool("ShapeFollowZAxis", mShapeFollowZAxis);
     JsonObject lifetime = obj.AddNewJsonObject("Lifetime");
     mLifetime.Save(lifetime);
 
@@ -407,6 +408,7 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     if (data.HasMember("StretchedBillboard")) mStretchedBillboard = data.GetBool("StretchedBillboard");
     if (data.HasMember("StretchedRatio")) mStretchedRatio = data.GetFloat("StretchedRatio");
     if (data.HasMember("Gravity")) mGravity = data.GetFloat("Gravity");
+    if (data.HasMember("ShapeFollowZAxis")) mShapeFollowZAxis = data.GetBool("ShapeFollowZAxis");
     if (data.HasMember("Lifetime")) 
     {
         JsonObject lifetime = data.GetJsonObject("Lifetime");
@@ -637,7 +639,15 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
     }
     case EmitterType::DONUT:
     {
-        float3 direction = pos - float3(pos.x, pos.y, 0).Normalized() * mShapeRadius;
+        float3 direction;
+        if (mShapeFollowZAxis)
+        {
+            direction = float3(0.0f, 0.0f, 1.0f);
+        }
+        else
+        {
+            direction = pos - float3(pos.x, pos.y, 0).Normalized() * mShapeRadius;
+        }
         if (mShapeInverseDir) direction = -direction;
         direction = direction.Normalized();
 

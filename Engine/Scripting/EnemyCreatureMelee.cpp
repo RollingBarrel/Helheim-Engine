@@ -28,6 +28,8 @@ CREATE(EnemyCreatureMelee)
 	SEPARATOR("VFX");
 	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
 	MEMBER(MemberType::GAMEOBJECT, mDashAttackVFX);
+	MEMBER(MemberType::GAMEOBJECT, mDashRightVFX);
+	MEMBER(MemberType::GAMEOBJECT, mDashLeftVFX);
 	END_CREATE;
 }
 
@@ -78,6 +80,8 @@ void EnemyCreatureMelee::Chase()
 				RotateHorizontally(mPlayer->GetWorldPosition(), 100.0f);
 				mCurrentState = EnemyState::CHARGE;
 				mDashAttackVFX->SetEnabled(true);
+				mDashRightVFX->SetEnabled(true);
+				mDashLeftVFX->SetEnabled(true);
 			}
 		}
 		else
@@ -106,6 +110,8 @@ void EnemyCreatureMelee::Attack()
 		mAttack = false;
 		mCurrentState = EnemyState::CHASE;
 		mDashAttackVFX->SetEnabled(false);
+		mDashRightVFX->SetEnabled(false);
+		mDashLeftVFX->SetEnabled(false);
 		mAttackAudioPlayed = false;
 	}
 

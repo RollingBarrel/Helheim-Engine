@@ -81,6 +81,7 @@ update_status ModuleAudio::Update(float dt)
 
 update_status ModuleAudio::PostUpdate(float dt)
 {
+	UpdatePendingReleases();
 	return UPDATE_CONTINUE;
 }
 
@@ -239,6 +240,15 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	return count - 1;
 }
 
+void ModuleAudio::Restart(const FMOD::Studio::EventDescription* eventDescription, const int id)
+{
+	if (id != -1)
+	{
+		FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
+		eventInstance->start();
+	}
+}
+
 void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
@@ -328,13 +338,64 @@ void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription
 
 	if (eventInstance != nullptr)
 	{
-		eventInstance->release();
+		FMOD_STUDIO_PLAYBACK_STATE state;
+		eventInstance->getPlaybackState(&state);
+
+		char eventPath[256];
+		eventDescription->getPath(eventPath, sizeof(eventPath), nullptr);
+
+		if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+		{
+			eventInstance->release();
+			LOG("Released event: %s", eventPath); 
+		}
+		else
+		{
+			LOG("Event '%s' is not stopped, cannot release", eventPath);
+			eventsPendingRelease.push_back(eventInstance);
+		}
 	}
-	else 
+	else
 	{
-		LOG("Cannot release event");
+		LOG("Cannot release event, eventInstance not found");
 	}
 }
+
+
+void ModuleAudio::UpdatePendingReleases()
+{
+	for (auto it = eventsPendingRelease.begin(); it != eventsPendingRelease.end();)
+	{
+		FMOD_STUDIO_PLAYBACK_STATE state;
+		(*it)->getPlaybackState(&state);
+
+		if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+		{
+			FMOD::Studio::EventDescription* eventDescription = nullptr;
+			(*it)->getDescription(&eventDescription);
+
+			char eventPath[256];
+			if (eventDescription != nullptr)
+			{
+				eventDescription->getPath(eventPath, sizeof(eventPath), nullptr);
+			}
+			else
+			{
+				snprintf(eventPath, sizeof(eventPath), "Unknown event");
+			}
+
+			(*it)->release();
+			LOG("Released event: %s", eventPath);
+
+			it = eventsPendingRelease.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
 
 void ModuleAudio::ReleaseAllAudio()
 {
