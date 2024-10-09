@@ -111,6 +111,8 @@ void Dialog::Update()
 
 void Dialog::Controls()
 {
+    if (mTimeout) return;
+
     if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
@@ -126,8 +128,9 @@ void Dialog::Controls()
 
 void Dialog::AnimationToMain()
 {
-    if (mTopTransform->GetPosition().y < 300) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetPosition().y > -310) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
+
+    if (mTopTransform->GetPosition().y < 300.0f) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y > -300.0f) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
     else 
     {
         mWifeGO->SetEnabled(true);
@@ -160,8 +163,8 @@ void Dialog::StartAnimationToMain()
 
 void Dialog::AnimationToIntro()
 {
-    if (mTopTransform->GetSize().x < 1080.0f) mTopTransform->SetSize(mTopTransform->GetSize() + float2(2000.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetSize().x < 1080.0f) mBotTransform->SetSize(mBotTransform->GetSize() + float2(2000.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetSize().x < 1078.0f) mTopTransform->SetSize(mTopTransform->GetSize() + float2(2000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetSize().x < 1078.0f) mBotTransform->SetSize(mBotTransform->GetSize() + float2(2000.0f, 0.0f) * App->GetDt());
     else 
     {
         mIntroGO->SetEnabled(true);
@@ -182,8 +185,8 @@ void Dialog::StartAnimationToIntro()
 
 void Dialog::AnimationToOutro()
 {
-    if (mTopTransform->GetPosition().y > 55) mTopTransform->SetPosition(mTopTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetPosition().y < -55) mBotTransform->SetPosition(mBotTransform->GetPosition() + float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetPosition().y > 55.0f) mTopTransform->SetPosition(mTopTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y < -55.0f) mBotTransform->SetPosition(mBotTransform->GetPosition() + float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
     else
     {
         mOutroGO->SetEnabled(true);
