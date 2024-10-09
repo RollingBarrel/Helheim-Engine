@@ -52,6 +52,7 @@ public:
 	void ReleadAudioSystem();
 	// Start
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
+	void Restart(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause);
 
 	// Kill instance

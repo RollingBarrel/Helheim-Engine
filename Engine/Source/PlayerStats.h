@@ -11,6 +11,7 @@ public:
 	bool GetGodMode() { return mGodMode; };
 	int GetDialogIndex() { return mDialogIndex; }
 	bool GetGameFinished() { return mGameFinished; }
+	int GetUltimateResource() { return mUltimateResource; }
 
 	int GetHealthLvl() { return mHealthLvl; }
 	int GetDamageLvl() { return mDamageLvl; }
@@ -23,6 +24,7 @@ public:
 	void SetGodMode(bool godMode) { mGodMode = godMode; };
 	void SetInitLevelStats();
 	void SetGameFinished(bool value) { mGameFinished = value; }
+	void SetUltimateResource(int value) { mUltimateResource = value; }
 
 	void SetHealthLvl(int stat) { mHealthLvl = stat; }
 	void SetDamageLvl(int stat) { mDamageLvl = stat; }
@@ -38,11 +40,16 @@ private:
 	float mDamageModifier = 1.0f;
 	int mDialogIndex = 0;
 	bool mGodMode = false;
+	int mUltimateResource = 0;
 
 	float mIniHealth = 0.0f;
 	float mIniSpeed = 0.0f;
 	float mIniDamage = 0.0f;
 	int mIniDialogIdx = 0;
+
+	int mInitHealthLvl = 0;
+	int mInitSpeedLvl = 0;
+	int mInitDamageLvl = 0;
 
 	int mHealthLvl = 0;
 	int mSpeedLvl = 0;

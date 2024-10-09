@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 288751416,
+                "UID": 899078832,
                 "ParentUID": 1,
                 "Name": "ExplosiveTrapsLevel1",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 11009345,
-                "ParentUID": 288751416,
+                "UID": 986801292,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -121,25 +121,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1148338001
+                                "VariableData": 1018548468
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1233993648
+                                "VariableData": 1129036995
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 64106266
+                                "VariableData": 1049738676
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1148338001,
-                "ParentUID": 11009345,
+                "UID": 1018548468,
+                "ParentUID": 986801292,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -190,8 +190,8 @@
                 ]
             },
             {
-                "UID": 64106266,
-                "ParentUID": 11009345,
+                "UID": 1049738676,
+                "ParentUID": 986801292,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -240,15 +240,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 11009345
+                                "VariableData": 986801292
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1133415205,
-                "ParentUID": 64106266,
+                "UID": 1076403519,
+                "ParentUID": 1049738676,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -275,8 +275,8 @@
                 "Components": []
             },
             {
-                "UID": 45563178,
-                "ParentUID": 1133415205,
+                "UID": 1102789878,
+                "ParentUID": 1076403519,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -313,8 +313,8 @@
                 ]
             },
             {
-                "UID": 1233993648,
-                "ParentUID": 11009345,
+                "UID": 1129036995,
+                "ParentUID": 986801292,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -341,8 +341,8 @@
                 "Components": []
             },
             {
-                "UID": 151989785,
-                "ParentUID": 1233993648,
+                "UID": 1155284112,
+                "ParentUID": 1129036995,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -379,8 +379,8 @@
                 ]
             },
             {
-                "UID": 1214754350,
-                "ParentUID": 151989785,
+                "UID": 1181670471,
+                "ParentUID": 1155284112,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -427,8 +427,8 @@
                 ]
             },
             {
-                "UID": 214764025,
-                "ParentUID": 1233993648,
+                "UID": 1208822661,
+                "ParentUID": 1129036995,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -628,8 +628,8 @@
                 ]
             },
             {
-                "UID": 1354668658,
-                "ParentUID": 1233993648,
+                "UID": 1235209020,
+                "ParentUID": 1129036995,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -775,8 +775,8 @@
                 ]
             },
             {
-                "UID": 271202754,
-                "ParentUID": 1233993648,
+                "UID": 1261525758,
+                "ParentUID": 1129036995,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -1056,8 +1056,8 @@
                 ]
             },
             {
-                "UID": 1319068425,
-                "ParentUID": 1233993648,
+                "UID": 1288120980,
+                "ParentUID": 1129036995,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -1257,8 +1257,8 @@
                 ]
             },
             {
-                "UID": 217152956,
-                "ParentUID": 288751416,
+                "UID": 1314785823,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -1348,25 +1348,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1262164166
+                                "VariableData": 1341659529
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1175159733
+                                "VariableData": 1446996102
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 164425957
+                                "VariableData": 1366514226
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1262164166,
-                "ParentUID": 217152956,
+                "UID": 1341659529,
+                "ParentUID": 1314785823,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -1417,8 +1417,8 @@
                 ]
             },
             {
-                "UID": 164425957,
-                "ParentUID": 217152956,
+                "UID": 1366514226,
+                "ParentUID": 1314785823,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -1467,15 +1467,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 217152956
+                                "VariableData": 1314785823
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1214589121,
-                "ParentUID": 164425957,
+                "UID": 1393179069,
+                "ParentUID": 1366514226,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -1502,8 +1502,8 @@
                 "Components": []
             },
             {
-                "UID": 124578843,
-                "ParentUID": 1214589121,
+                "UID": 1419983154,
+                "ParentUID": 1393179069,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -1540,8 +1540,8 @@
                 ]
             },
             {
-                "UID": 1175159733,
-                "ParentUID": 217152956,
+                "UID": 1446996102,
+                "ParentUID": 1314785823,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -1568,8 +1568,8 @@
                 "Components": []
             },
             {
-                "UID": 190834133,
-                "ParentUID": 1175159733,
+                "UID": 1473869808,
+                "ParentUID": 1446996102,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -1606,8 +1606,8 @@
                 ]
             },
             {
-                "UID": 1242946685,
-                "ParentUID": 190834133,
+                "UID": 1500743514,
+                "ParentUID": 1473869808,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -1654,8 +1654,8 @@
                 ]
             },
             {
-                "UID": 153214891,
-                "ParentUID": 1175159733,
+                "UID": 1527547599,
+                "ParentUID": 1446996102,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -1855,8 +1855,8 @@
                 ]
             },
             {
-                "UID": 1199618521,
-                "ParentUID": 1175159733,
+                "UID": 1554421305,
+                "ParentUID": 1446996102,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -2002,8 +2002,8 @@
                 ]
             },
             {
-                "UID": 106544919,
-                "ParentUID": 1175159733,
+                "UID": 1581364632,
+                "ParentUID": 1446996102,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -2283,8 +2283,8 @@
                 ]
             },
             {
-                "UID": 1163461320,
-                "ParentUID": 1175159733,
+                "UID": 1610814315,
+                "ParentUID": 1446996102,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -2484,8 +2484,8 @@
                 ]
             },
             {
-                "UID": 66837047,
-                "ParentUID": 288751416,
+                "UID": 1643814669,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -2575,25 +2575,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1113936887
+                                "VariableData": 1671732690
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1126629726
+                                "VariableData": 1781733870
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 21768358
+                                "VariableData": 1698815259
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1113936887,
-                "ParentUID": 66837047,
+                "UID": 1671732690,
+                "ParentUID": 1643814669,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -2644,8 +2644,8 @@
                 ]
             },
             {
-                "UID": 21768358,
-                "ParentUID": 66837047,
+                "UID": 1698815259,
+                "ParentUID": 1643814669,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -2694,15 +2694,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 66837047
+                                "VariableData": 1643814669
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1073950531,
-                "ParentUID": 21768358,
+                "UID": 1728125700,
+                "ParentUID": 1698815259,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -2729,8 +2729,8 @@
                 "Components": []
             },
             {
-                "UID": 58852449,
-                "ParentUID": 1073950531,
+                "UID": 1755069027,
+                "ParentUID": 1728125700,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -2767,8 +2767,8 @@
                 ]
             },
             {
-                "UID": 1126629726,
-                "ParentUID": 66837047,
+                "UID": 1781733870,
+                "ParentUID": 1643814669,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -2795,8 +2795,8 @@
                 "Components": []
             },
             {
-                "UID": 32163704,
-                "ParentUID": 1126629726,
+                "UID": 1808537955,
+                "ParentUID": 1781733870,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -2833,8 +2833,8 @@
                 ]
             },
             {
-                "UID": 1087548443,
-                "ParentUID": 32163704,
+                "UID": 1835411661,
+                "ParentUID": 1808537955,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -2881,8 +2881,8 @@
                 ]
             },
             {
-                "UID": 2134091315,
-                "ParentUID": 1126629726,
+                "UID": 1862354988,
+                "ParentUID": 1781733870,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -3082,8 +3082,8 @@
                 ]
             },
             {
-                "UID": 1038998704,
-                "ParentUID": 1126629726,
+                "UID": 1889437557,
+                "ParentUID": 1781733870,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -3229,8 +3229,8 @@
                 ]
             },
             {
-                "UID": 2132953477,
-                "ParentUID": 1126629726,
+                "UID": 1916380884,
+                "ParentUID": 1781733870,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -3510,8 +3510,8 @@
                 ]
             },
             {
-                "UID": 1150298781,
-                "ParentUID": 1126629726,
+                "UID": 1943393832,
+                "ParentUID": 1781733870,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -3711,8 +3711,8 @@
                 ]
             },
             {
-                "UID": 75674744,
-                "ParentUID": 288751416,
+                "UID": 1970406780,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -3802,25 +3802,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1141015286
+                                "VariableData": 1997419728
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1204252971
+                                "VariableData": 2105680383
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 165810037
+                                "VariableData": 2024432676
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1141015286,
-                "ParentUID": 75674744,
+                "UID": 1997419728,
+                "ParentUID": 1970406780,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -3871,8 +3871,8 @@
                 ]
             },
             {
-                "UID": 165810037,
-                "ParentUID": 75674744,
+                "UID": 2024432676,
+                "ParentUID": 1970406780,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -3921,15 +3921,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 75674744
+                                "VariableData": 1970406780
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1230593611,
-                "ParentUID": 165810037,
+                "UID": 2051515245,
+                "ParentUID": 2024432676,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -3956,8 +3956,8 @@
                 "Components": []
             },
             {
-                "UID": 138355461,
-                "ParentUID": 1230593611,
+                "UID": 2078528193,
+                "ParentUID": 2051515245,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -3994,8 +3994,8 @@
                 ]
             },
             {
-                "UID": 1204252971,
-                "ParentUID": 75674744,
+                "UID": 2105680383,
+                "ParentUID": 1970406780,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -4022,8 +4022,8 @@
                 "Components": []
             },
             {
-                "UID": 155319083,
-                "ParentUID": 1204252971,
+                "UID": 2132623710,
+                "ParentUID": 2105680383,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -4060,8 +4060,8 @@
                 ]
             },
             {
-                "UID": 1218849479,
-                "ParentUID": 155319083,
+                "UID": 12222632,
+                "ParentUID": 2132623710,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -4108,8 +4108,8 @@
                 ]
             },
             {
-                "UID": 133086082,
-                "ParentUID": 1204252971,
+                "UID": 39305201,
+                "ParentUID": 2105680383,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -4309,8 +4309,8 @@
                 ]
             },
             {
-                "UID": 1183945456,
-                "ParentUID": 1204252971,
+                "UID": 66457391,
+                "ParentUID": 2105680383,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -4456,8 +4456,8 @@
                 ]
             },
             {
-                "UID": 113498679,
-                "ParentUID": 1204252971,
+                "UID": 93470339,
+                "ParentUID": 2105680383,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -4737,8 +4737,8 @@
                 ]
             },
             {
-                "UID": 1167699861,
-                "ParentUID": 1204252971,
+                "UID": 122920022,
+                "ParentUID": 2105680383,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -4938,8 +4938,8 @@
                 ]
             },
             {
-                "UID": 169450061,
-                "ParentUID": 288751416,
+                "UID": 154110230,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -5029,25 +5029,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1266259295
+                                "VariableData": 181889009
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1230565539
+                                "VariableData": 300592814
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 196091002
+                                "VariableData": 209180441
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1266259295,
-                "ParentUID": 169450061,
+                "UID": 181889009,
+                "ParentUID": 154110230,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -5098,8 +5098,8 @@
                 ]
             },
             {
-                "UID": 196091002,
-                "ParentUID": 169450061,
+                "UID": 209180441,
+                "ParentUID": 154110230,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -5148,15 +5148,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 169450061
+                                "VariableData": 154110230
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1257045421,
-                "ParentUID": 196091002,
+                "UID": 243503594,
+                "ParentUID": 209180441,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -5183,8 +5183,8 @@
                 "Components": []
             },
             {
-                "UID": 170028846,
-                "ParentUID": 1257045421,
+                "UID": 273301382,
+                "ParentUID": 243503594,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -5221,8 +5221,8 @@
                 ]
             },
             {
-                "UID": 1230565539,
-                "ParentUID": 169450061,
+                "UID": 300592814,
+                "ParentUID": 154110230,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -5249,8 +5249,8 @@
                 "Components": []
             },
             {
-                "UID": 148283192,
-                "ParentUID": 1230565539,
+                "UID": 327605762,
+                "ParentUID": 300592814,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -5287,8 +5287,8 @@
                 ]
             },
             {
-                "UID": 1227756797,
-                "ParentUID": 148283192,
+                "UID": 354688331,
+                "ParentUID": 327605762,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -5335,8 +5335,8 @@
                 ]
             },
             {
-                "UID": 145265587,
-                "ParentUID": 1230565539,
+                "UID": 381562037,
+                "ParentUID": 300592814,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -5536,8 +5536,8 @@
                 ]
             },
             {
-                "UID": 1216454293,
-                "ParentUID": 1230565539,
+                "UID": 413587697,
+                "ParentUID": 300592814,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -5683,8 +5683,8 @@
                 ]
             },
             {
-                "UID": 127488330,
-                "ParentUID": 1230565539,
+                "UID": 440461403,
+                "ParentUID": 300592814,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -5964,8 +5964,8 @@
                 ]
             },
             {
-                "UID": 1250892786,
-                "ParentUID": 1230565539,
+                "UID": 467404730,
+                "ParentUID": 300592814,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -6165,13 +6165,13 @@
                 ]
             },
             {
-                "UID": 162066065,
-                "ParentUID": 288751416,
+                "UID": 494626541,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -110.61611938476563,
+                    -110.3056869506836,
                     0.0,
                     0.12961840629577638
                 ],
@@ -6256,25 +6256,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1221349580
+                                "VariableData": 521639489
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1213156119
+                                "VariableData": 631571048
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 140181169
+                                "VariableData": 548652437
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1221349580,
-                "ParentUID": 162066065,
+                "UID": 521639489,
+                "ParentUID": 494626541,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -6325,8 +6325,8 @@
                 ]
             },
             {
-                "UID": 140181169,
-                "ParentUID": 162066065,
+                "UID": 548652437,
+                "ParentUID": 494626541,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -6375,15 +6375,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 162066065
+                                "VariableData": 494626541
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1200091273,
-                "ParentUID": 140181169,
+                "UID": 575874248,
+                "ParentUID": 548652437,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -6410,8 +6410,8 @@
                 "Components": []
             },
             {
-                "UID": 151505490,
-                "ParentUID": 1200091273,
+                "UID": 604279616,
+                "ParentUID": 575874248,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -6448,8 +6448,8 @@
                 ]
             },
             {
-                "UID": 1213156119,
-                "ParentUID": 162066065,
+                "UID": 631571048,
+                "ParentUID": 494626541,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -6476,8 +6476,8 @@
                 "Components": []
             },
             {
-                "UID": 124607882,
-                "ParentUID": 1213156119,
+                "UID": 658723238,
+                "ParentUID": 631571048,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -6514,8 +6514,8 @@
                 ]
             },
             {
-                "UID": 1183195187,
-                "ParentUID": 124607882,
+                "UID": 686293154,
+                "ParentUID": 658723238,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -6562,8 +6562,8 @@
                 ]
             },
             {
-                "UID": 100147009,
-                "ParentUID": 1213156119,
+                "UID": 713654207,
+                "ParentUID": 631571048,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -6763,8 +6763,8 @@
                 ]
             },
             {
-                "UID": 1287324301,
-                "ParentUID": 1213156119,
+                "UID": 740806397,
+                "ParentUID": 631571048,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -6910,8 +6910,8 @@
                 ]
             },
             {
-                "UID": 198079854,
-                "ParentUID": 1213156119,
+                "UID": 768097829,
+                "ParentUID": 631571048,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -7191,8 +7191,8 @@
                 ]
             },
             {
-                "UID": 1255344360,
-                "ParentUID": 1213156119,
+                "UID": 795250019,
+                "ParentUID": 631571048,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -7392,8 +7392,8 @@
                 ]
             },
             {
-                "UID": 171739214,
-                "ParentUID": 288751416,
+                "UID": 822471830,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -7483,25 +7483,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1231997423
+                                "VariableData": 849902504
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1186556727
+                                "VariableData": 959485958
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 150829012
+                                "VariableData": 877333178
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1231997423,
-                "ParentUID": 171739214,
+                "UID": 849902504,
+                "ParentUID": 822471830,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -7552,8 +7552,8 @@
                 ]
             },
             {
-                "UID": 150829012,
-                "ParentUID": 171739214,
+                "UID": 877333178,
+                "ParentUID": 822471830,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -7602,15 +7602,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 171739214
+                                "VariableData": 822471830
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1216865764,
-                "ParentUID": 150829012,
+                "UID": 904763852,
+                "ParentUID": 877333178,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -7637,8 +7637,8 @@
                 "Components": []
             },
             {
-                "UID": 128247906,
-                "ParentUID": 1216865764,
+                "UID": 932124905,
+                "ParentUID": 904763852,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -7675,8 +7675,8 @@
                 ]
             },
             {
-                "UID": 1186556727,
-                "ParentUID": 171739214,
+                "UID": 959485958,
+                "ParentUID": 822471830,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -7703,8 +7703,8 @@
                 "Components": []
             },
             {
-                "UID": 97451522,
-                "ParentUID": 1186556727,
+                "UID": 989005262,
+                "ParentUID": 959485958,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -7741,8 +7741,8 @@
                 ]
             },
             {
-                "UID": 1410503582,
-                "ParentUID": 97451522,
+                "UID": 1016366315,
+                "ParentUID": 989005262,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -7789,8 +7789,8 @@
                 ]
             },
             {
-                "UID": 350499955,
-                "ParentUID": 1186556727,
+                "UID": 1043657747,
+                "ParentUID": 959485958,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -7990,8 +7990,8 @@
                 ]
             },
             {
-                "UID": 1413891109,
-                "ParentUID": 1186556727,
+                "UID": 1070949179,
+                "ParentUID": 959485958,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -8137,8 +8137,8 @@
                 ]
             },
             {
-                "UID": 324020073,
-                "ParentUID": 1186556727,
+                "UID": 1098449474,
+                "ParentUID": 959485958,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -8418,8 +8418,8 @@
                 ]
             },
             {
-                "UID": 1382120031,
-                "ParentUID": 1186556727,
+                "UID": 1125740906,
+                "ParentUID": 959485958,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -8619,8 +8619,8 @@
                 ]
             },
             {
-                "UID": 292388237,
-                "ParentUID": 288751416,
+                "UID": 1153101959,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -8710,25 +8710,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1347633734
+                                "VariableData": 1180463012
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1459258014
+                                "VariableData": 1290324950
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 260826022
+                                "VariableData": 1208032928
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1347633734,
-                "ParentUID": 292388237,
+                "UID": 1180463012,
+                "ParentUID": 1153101959,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -8779,8 +8779,8 @@
                 ]
             },
             {
-                "UID": 260826022,
-                "ParentUID": 292388237,
+                "UID": 1208032928,
+                "ParentUID": 1153101959,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -8829,15 +8829,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 292388237
+                                "VariableData": 1153101959
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1322546272,
-                "ParentUID": 260826022,
+                "UID": 1235533223,
+                "ParentUID": 1208032928,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -8864,8 +8864,8 @@
                 "Components": []
             },
             {
-                "UID": 342606795,
-                "ParentUID": 1322546272,
+                "UID": 1263033518,
+                "ParentUID": 1235533223,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -8902,8 +8902,8 @@
                 ]
             },
             {
-                "UID": 1459258014,
-                "ParentUID": 292388237,
+                "UID": 1290324950,
+                "ParentUID": 1153101959,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -8930,8 +8930,8 @@
                 "Components": []
             },
             {
-                "UID": 371266745,
-                "ParentUID": 1459258014,
+                "UID": 1317407519,
+                "ParentUID": 1290324950,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -8968,8 +8968,8 @@
                 ]
             },
             {
-                "UID": 1433056616,
-                "ParentUID": 371266745,
+                "UID": 1344768572,
+                "ParentUID": 1317407519,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -9016,8 +9016,8 @@
                 ]
             },
             {
-                "UID": 348476776,
-                "ParentUID": 1459258014,
+                "UID": 1371920762,
+                "ParentUID": 1290324950,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -9217,8 +9217,8 @@
                 ]
             },
             {
-                "UID": 1407272944,
-                "ParentUID": 1459258014,
+                "UID": 1399142573,
+                "ParentUID": 1290324950,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -9364,8 +9364,8 @@
                 ]
             },
             {
-                "UID": 324364008,
-                "ParentUID": 1459258014,
+                "UID": 1428174530,
+                "ParentUID": 1290324950,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -9645,8 +9645,8 @@
                 ]
             },
             {
-                "UID": 1382533587,
-                "ParentUID": 1459258014,
+                "UID": 1463124272,
+                "ParentUID": 1290324950,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -9846,8 +9846,8 @@
                 ]
             },
             {
-                "UID": 294751181,
-                "ParentUID": 288751416,
+                "UID": 1490833430,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -9937,25 +9937,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1357167641
+                                "VariableData": 1518194483
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1393670862
+                                "VariableData": 1627569074
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 350702563
+                                "VariableData": 1545277052
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1357167641,
-                "ParentUID": 294751181,
+                "UID": 1518194483,
+                "ParentUID": 1490833430,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -10006,8 +10006,8 @@
                 ]
             },
             {
-                "UID": 350702563,
-                "ParentUID": 294751181,
+                "UID": 1545277052,
+                "ParentUID": 1490833430,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -10056,15 +10056,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 294751181
+                                "VariableData": 1490833430
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1416739315,
-                "ParentUID": 350702563,
+                "UID": 1572846968,
+                "ParentUID": 1545277052,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -10091,8 +10091,8 @@
                 "Components": []
             },
             {
-                "UID": 333900000,
-                "ParentUID": 1416739315,
+                "UID": 1600208021,
+                "ParentUID": 1572846968,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -10129,8 +10129,8 @@
                 ]
             },
             {
-                "UID": 1393670862,
-                "ParentUID": 294751181,
+                "UID": 1627569074,
+                "ParentUID": 1490833430,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -10157,8 +10157,8 @@
                 "Components": []
             },
             {
-                "UID": 310970789,
-                "ParentUID": 1393670862,
+                "UID": 1654860506,
+                "ParentUID": 1627569074,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -10195,8 +10195,8 @@
                 ]
             },
             {
-                "UID": 1368653021,
-                "ParentUID": 310970789,
+                "UID": 1684519052,
+                "ParentUID": 1654860506,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -10243,8 +10243,8 @@
                 ]
             },
             {
-                "UID": 280940236,
-                "ParentUID": 1393670862,
+                "UID": 1712019347,
+                "ParentUID": 1627569074,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -10444,8 +10444,8 @@
                 ]
             },
             {
-                "UID": 1341407308,
-                "ParentUID": 1393670862,
+                "UID": 1739241158,
+                "ParentUID": 1627569074,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -10591,8 +10591,8 @@
                 ]
             },
             {
-                "UID": 256270500,
-                "ParentUID": 1393670862,
+                "UID": 1766462969,
+                "ParentUID": 1627569074,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -10872,8 +10872,8 @@
                 ]
             },
             {
-                "UID": 1325509818,
-                "ParentUID": 1393670862,
+                "UID": 1793684780,
+                "ParentUID": 1627569074,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -11073,8 +11073,8 @@
                 ]
             },
             {
-                "UID": 283329167,
-                "ParentUID": 288751416,
+                "UID": 1820976212,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -11164,25 +11164,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1345884869
+                                "VariableData": 1848754991
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1290140265
+                                "VariableData": 1958408066
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 257545495
+                                "VariableData": 1876116044
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1345884869,
-                "ParentUID": 283329167,
+                "UID": 1848754991,
+                "ParentUID": 1820976212,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -11233,8 +11233,8 @@
                 ]
             },
             {
-                "UID": 257545495,
-                "ParentUID": 283329167,
+                "UID": 1876116044,
+                "ParentUID": 1820976212,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -11283,15 +11283,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 283329167
+                                "VariableData": 1820976212
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1318430293,
-                "ParentUID": 257545495,
+                "UID": 1903407476,
+                "ParentUID": 1876116044,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -11318,8 +11318,8 @@
                 "Components": []
             },
             {
-                "UID": 225913659,
-                "ParentUID": 1318430293,
+                "UID": 1930838150,
+                "ParentUID": 1903407476,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -11356,8 +11356,8 @@
                 ]
             },
             {
-                "UID": 1290140265,
-                "ParentUID": 283329167,
+                "UID": 1958408066,
+                "ParentUID": 1820976212,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -11384,8 +11384,8 @@
                 "Components": []
             },
             {
-                "UID": 207092087,
-                "ParentUID": 1290140265,
+                "UID": 1985908361,
+                "ParentUID": 1958408066,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -11422,8 +11422,8 @@
                 ]
             },
             {
-                "UID": 1271457935,
-                "ParentUID": 207092087,
+                "UID": 2013408656,
+                "ParentUID": 1985908361,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -11470,8 +11470,8 @@
                 ]
             },
             {
-                "UID": 184162876,
-                "ParentUID": 1290140265,
+                "UID": 2040769709,
+                "ParentUID": 1958408066,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -11671,8 +11671,8 @@
                 ]
             },
             {
-                "UID": 1237807090,
-                "ParentUID": 1290140265,
+                "UID": 2068270004,
+                "ParentUID": 1958408066,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -11818,8 +11818,8 @@
                 ]
             },
             {
-                "UID": 285159045,
-                "ParentUID": 1290140265,
+                "UID": 2095631057,
+                "ParentUID": 1958408066,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -12099,8 +12099,8 @@
                 ]
             },
             {
-                "UID": 1377512535,
-                "ParentUID": 1290140265,
+                "UID": 2122992110,
+                "ParentUID": 1958408066,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -12300,8 +12300,8 @@
                 ]
             },
             {
-                "UID": 506669165,
-                "ParentUID": 288751416,
+                "UID": 3078379,
+                "ParentUID": 899078832,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -12391,25 +12391,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1566370406
+                                "VariableData": 30578674
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1509303003
+                                "VariableData": 140579854
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 478448758
+                                "VariableData": 58148590
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1566370406,
-                "ParentUID": 506669165,
+                "UID": 30578674,
+                "ParentUID": 3078379,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -12460,8 +12460,8 @@
                 ]
             },
             {
-                "UID": 478448758,
-                "ParentUID": 506669165,
+                "UID": 58148590,
+                "ParentUID": 3078379,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -12510,15 +12510,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 506669165
+                                "VariableData": 3078379
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1538567725,
-                "ParentUID": 478448758,
+                "UID": 85579264,
+                "ParentUID": 58148590,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -12545,8 +12545,8 @@
                 "Components": []
             },
             {
-                "UID": 452247360,
-                "ParentUID": 1538567725,
+                "UID": 113149180,
+                "ParentUID": 85579264,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -12583,8 +12583,8 @@
                 ]
             },
             {
-                "UID": 1509303003,
-                "ParentUID": 506669165,
+                "UID": 140579854,
+                "ParentUID": 3078379,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -12611,8 +12611,8 @@
                 "Components": []
             },
             {
-                "UID": 424583921,
-                "ParentUID": 1509303003,
+                "UID": 168289012,
+                "ParentUID": 140579854,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -12649,8 +12649,8 @@
                 ]
             },
             {
-                "UID": 1485886445,
-                "ParentUID": 424583921,
+                "UID": 195650065,
+                "ParentUID": 168289012,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -12697,8 +12697,8 @@
                 ]
             },
             {
-                "UID": 458952793,
-                "ParentUID": 1509303003,
+                "UID": 224890885,
+                "ParentUID": 140579854,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -12898,8 +12898,8 @@
                 ]
             },
             {
-                "UID": 1521299632,
-                "ParentUID": 1509303003,
+                "UID": 252460801,
+                "ParentUID": 140579854,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -13045,8 +13045,8 @@
                 ]
             },
             {
-                "UID": 435466614,
-                "ParentUID": 1509303003,
+                "UID": 279961096,
+                "ParentUID": 140579854,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -13326,8 +13326,8 @@
                 ]
             },
             {
-                "UID": 1504636311,
-                "ParentUID": 1509303003,
+                "UID": 307391770,
+                "ParentUID": 140579854,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -13357,6 +13357,1233 @@
                         "IsEnabled": false,
                         "Image": 299925969,
                         "Delay": 0.10000000149011612,
+                        "Duration": 0.699999988079071,
+                        "EmissionRate": 80.0,
+                        "MaxParticles": 1000,
+                        "Burst": 80,
+                        "Looping": false,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.10000000149011612,
+                            "MaxValue": 0.30000001192092898
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.6000000238418579,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.5,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 4.0,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.9876543283462524
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.9506173133850098
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.8888888955116272
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.8024691343307495
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.6913579702377319
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.555555522441864
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.395061731338501
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.20987653732299806
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.5,
+                                "MaxValue": 3.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.12868632376194,
+                                "Color": [
+                                    0.09200000762939453,
+                                    0.09200000762939453,
+                                    0.09200000762939453,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.690348207950592,
+                                "Color": [
+                                    0.19199997186660767,
+                                    0.19199997186660767,
+                                    0.19199997186660767,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8364611268043518,
+                                "Color": [
+                                    0.30400002002716067,
+                                    0.2941552996635437,
+                                    0.2906240224838257,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 79791012,
+                "ParentUID": 899078832,
+                "Name": "ExplosiveTrap (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -110.2947998046875,
+                    -0.005696535110473633,
+                    -11.12734603881836
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Trap",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.0,
+                            2.0,
+                            2.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ExplosiveTrap",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "SIZE",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mTriggerArea",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mExplosionArea",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "ACTIVATION PARAMETER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosionWait",
+                                "MemberType": 1,
+                                "VariableData": 1.5
+                            },
+                            {
+                                "VariableName": "mExplosionDuration",
+                                "MemberType": 1,
+                                "VariableData": 1.5
+                            },
+                            {
+                                "VariableName": "SIDE EFFECT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDamageAmount",
+                                "MemberType": 1,
+                                "VariableData": 20.0
+                            },
+                            {
+                                "VariableName": "GAME OBJECT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosionPrestartVFX",
+                                "MemberType": 3,
+                                "VariableData": 1180463012
+                            },
+                            {
+                                "VariableName": "mExplosionVFX",
+                                "MemberType": 3,
+                                "VariableData": 1290324950
+                            },
+                            {
+                                "VariableName": "mBarrelMesh",
+                                "MemberType": 3,
+                                "VariableData": 1208032928
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 907863186,
+                "ParentUID": 79791012,
+                "Name": "BombingArea",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.000010013580322265625,
+                    0.0,
+                    0.000186920166015625
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    7.0,
+                    7.0,
+                    7.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": false,
+                        "EmisiveID": 2086942310,
+                        "EmisiveName": "Warning_Icon2.png",
+                        "EmisiveColor": [
+                            0.8333333134651184,
+                            0.4044117331504822,
+                            0.4044117331504822,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 0.75
+                    }
+                ]
+            },
+            {
+                "UID": 1521920406,
+                "ParentUID": 79791012,
+                "Name": "OB_explosive_Barrell",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.5,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": "Enemy",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            2.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemyExplosiveTrap",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mOuterTrap",
+                                "MemberType": 3,
+                                "VariableData": 1153101959
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 92786237,
+                "ParentUID": 1521920406,
+                "Name": "OB_explosive_barrell",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.010041117668151856,
+                    1.6231112480163575,
+                    0.04312974214553833
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.49275127053260805,
+                    0.49275127053260805,
+                    0.49275127053260805
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 743603345,
+                "ParentUID": 92786237,
+                "Name": "OB_explosive_barrell",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 416022467,
+                        "MaterialID": 416022472,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1565409629,
+                "ParentUID": 79791012,
+                "Name": "VFX_Explotion2",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.699999988079071,
+                    0.06735736131668091
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    5.0,
+                    5.0,
+                    5.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 2125580195,
+                "ParentUID": 1565409629,
+                "Name": "Smoke spritesheet",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.000003814697265625,
+                    0.04477512836456299,
+                    -0.0002498626708984375
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.350000023841858,
+                    1.75,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": false,
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "Render": 2
+                    }
+                ]
+            },
+            {
+                "UID": 527058133,
+                "ParentUID": 2125580195,
+                "Name": "Spritesheet",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.5,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 990477000,
+                        "Color": [
+                            0.10294115543365479,
+                            0.10294115543365479,
+                            0.10294115543365479
+                        ],
+                        "Alpha": 0.4300000071525574,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": true,
+                        "Columns": 2,
+                        "Rows": 2,
+                        "Speed": 15,
+                        "IsPlaying": true,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1094399662,
+                "ParentUID": 1565409629,
+                "Name": "Fire",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 636913638,
+                        "Delay": 0.0,
+                        "Duration": 0.5,
+                        "EmissionRate": 30.0,
+                        "MaxParticles": 1000,
+                        "Burst": 130,
+                        "Looping": false,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.10000000149011612,
+                            "MaxValue": 0.30000001192092898
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.5,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 1.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 1.7999999523162842,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 6.0,
+                                "MaxValue": 8.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.8888888955116272
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.7777777910232544
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.6666666269302368
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.5555555820465088
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.4444444179534912
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.3333333134651184
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.2222222089767456
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.1111111044883728
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.5,
+                                "MaxValue": 2.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.12868632376194,
+                                "Color": [
+                                    0.9959999918937683,
+                                    0.7888320088386536,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.42225202918052676,
+                                "Color": [
+                                    0.9959999918937683,
+                                    0.5497919917106628,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8364611268043518,
+                                "Color": [
+                                    0.9960784316062927,
+                                    0.26274511218070986,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1710893617,
+                "ParentUID": 1565409629,
+                "Name": "Burst",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 68952107,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "EmissionRate": 1.0,
+                        "MaxParticles": 1,
+                        "Burst": 1,
+                        "Looping": false,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.10000000149011612,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 40.0,
+                                "MaxValue": 15.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7300000190734863,
+                                        0.13499999046325684
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8424999713897705,
+                                        0.0350000262260437
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    1.0,
+                                    0.7753279805183411,
+                                    0.5239999890327454,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 147042813,
+                "ParentUID": 1565409629,
+                "Name": "Sparks",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    -0.023748397827148439,
+                    0.0,
+                    0.00007915496826171875
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 0.30000001192092898,
+                        "EmissionRate": 2.0,
+                        "MaxParticles": 1000,
+                        "Burst": 40,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 3.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.4000000059604645,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 1.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.800000011920929,
+                                "MaxValue": 2.200000047683716
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.790123462677002
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.604938268661499
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.4444444179534912
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.3086419701576233
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.1975308656692505
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.1111111044883728
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.049382686614990237
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.012345671653747559
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 7.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.9876543283462524
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.9506173133850098
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.8888888955116272
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.8024691343307495
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.6913579702377319
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.555555522441864
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.395061731338501
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.20987653732299806
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.02949061430990696,
+                                "Color": [
+                                    0.9160000085830689,
+                                    0.6485280394554138,
+                                    0.6485280394554138,
+                                    -431602080.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5764077305793762,
+                                "Color": [
+                                    0.8479999899864197,
+                                    0.46375423669815066,
+                                    0.03392001613974571,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9410187602043152,
+                                "Color": [
+                                    0.484000027179718,
+                                    0.11763137578964234,
+                                    0.0019360040314495564,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 317624299,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.0616622120141983,
+                                        "Color": [
+                                            0.9919999837875366,
+                                            0.3723571300506592,
+                                            0.023807989433407785,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.9088472127914429,
+                                        "Color": [
+                                            0.9760000109672546,
+                                            0.12492801994085312,
+                                            0.12492801994085312,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 731859213,
+                "ParentUID": 1565409629,
+                "Name": "Smoke",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 299925969,
+                        "Delay": 0.0,
                         "Duration": 0.699999988079071,
                         "EmissionRate": 80.0,
                         "MaxParticles": 1000,
