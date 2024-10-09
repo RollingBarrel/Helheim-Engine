@@ -415,7 +415,17 @@ void ModuleAudio::ReleaseAllAudio()
 				{
 					if (instance) 
 					{
-						instance->release();
+						FMOD_STUDIO_PLAYBACK_STATE state;
+						instance->getPlaybackState(&state);
+
+						if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+						{
+							instance->release();
+						}
+						else
+						{
+							eventsPendingRelease.push_back(instance);
+						}
 					}
 				}
 			}
