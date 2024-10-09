@@ -127,7 +127,7 @@ void Dialog::Controls()
 void Dialog::AnimationToMain()
 {
     if (mTopTransform->GetPosition().y < 300) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetPosition().y > -310) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y > -300) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
     else 
     {
         mWifeGO->SetEnabled(true);
@@ -149,6 +149,9 @@ void Dialog::AnimationToMain()
 void Dialog::StartAnimationToMain()
 {
     mAnimationToMain = true;
+
+    mTopTransform->SetSize(float2(1078.0f, mTopTransform->GetSize().y));
+    mBotTransform->SetSize(float2(1078.0f, mBotTransform->GetSize().y));
 
     mIntroGO->SetEnabled(false);
     mProtagonistGO->SetEnabled(false);
@@ -172,8 +175,13 @@ void Dialog::AnimationToIntro()
 void Dialog::StartAnimationToIntro()
 {
     mAnimationToIntro = true;
+
+    mBotTransform->SetPosition(float3(0.0f, -55.0f, 0.0f));
+    mTopTransform->SetPosition(float3(0.0f, 55.0f, 0.0f));
+
     mTopTransform->SetSize(float2(0.01f, mTopTransform->GetSize().y));
     mBotTransform->SetSize(float2(0.01f, mBotTransform->GetSize().y));
+
     mIntroGO->SetEnabled(false);
     mOutroGO->SetEnabled(false);
     mAnimationTimer.Reset();
@@ -196,6 +204,9 @@ void Dialog::StartAnimationToOutro()
 {
     if (mAnimationToOutro || mAnimationToEnd) return;
     mAnimationToOutro = true;
+
+    mBotTransform->SetPosition(float3(0.0f, -300.0f, 0.0f));
+    mTopTransform->SetPosition(float3(0.0f, 300.0f, 0.0f));
 
     mProtagonistGO->SetEnabled(false);
     mWifeGO->SetEnabled(false);

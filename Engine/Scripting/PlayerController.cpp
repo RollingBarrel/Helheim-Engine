@@ -899,7 +899,11 @@ void PlayerController::CheckDebugOptions()
     }
     else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
     {
-        mUltimateResource = 100;
+        AddUltimateResource();
+        AddUltimateResource();
+        AddUltimateResource();
+        AddUltimateResource();
+        AddUltimateResource();
         mPlayerStats->SetUltimateResource(mUltimateResource);
     }
     else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)

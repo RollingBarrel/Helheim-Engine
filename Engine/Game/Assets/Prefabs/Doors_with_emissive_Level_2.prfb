@@ -1,0 +1,562 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1460730911,
+                "ParentUID": 1,
+                "Name": "Doors_with_emissive_Level_2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1544206490,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Closed",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    28.118682861328126,
+                    36.00005340576172,
+                    -2.5008552074432375
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1551655937,
+                "ParentUID": 1544206490,
+                "Name": "OB_Door_Closed",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771587,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1557712964,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Closed.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    52.69804382324219,
+                    36.00005340576172,
+                    28.635108947753908
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1563421886,
+                "ParentUID": 1557712964,
+                "Name": "OB_Door_Closed.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771587,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1569339671,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Closed.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -6.275001525878906,
+                    35.98514938354492,
+                    -52.6015739440918
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1575048593,
+                "ParentUID": 1569339671,
+                "Name": "OB_Door_Closed.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771587,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1580757515,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Panel",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    52.69805908203125,
+                    39.00048065185547,
+                    28.629121780395509
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    0.009024927392601967,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1586118332,
+                "ParentUID": 1580757515,
+                "Name": "OB_Door_Panel",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771593,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1593150053,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Panel.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    28.119537353515626,
+                    38.950599670410159,
+                    -2.5182015895843508
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    0.009162475354969502,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1599485564,
+                "ParentUID": 1593150053,
+                "Name": "OB_Door_Panel.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771593,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1604916002,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Panel.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -6.274993896484375,
+                    38.98557662963867,
+                    -52.601531982421878
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    0.009268882684409619,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1610207198,
+                "ParentUID": 1604916002,
+                "Name": "OB_Door_Panel.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771593,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1615776878,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Closed.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    118.74266052246094,
+                    64.99207305908203,
+                    -2.466437578201294
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.947071694985425e-7
+                ],
+                "Scale": [
+                    1.2274116277694703,
+                    1.2274116277694703,
+                    1.2274116277694703
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1621416179,
+                "ParentUID": 1615776878,
+                "Name": "OB_Door_Closed.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771767,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1627194722,
+                "ParentUID": 1460730911,
+                "Name": "OB_Door_Panel.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    118.74369049072266,
+                    68.61360931396485,
+                    -2.4877283573150636
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    0.01124612893909216,
+                    0.012274116277694703,
+                    0.012274116277694703
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1632485918,
+                "ParentUID": 1627194722,
+                "Name": "OB_Door_Panel.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771773,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}
