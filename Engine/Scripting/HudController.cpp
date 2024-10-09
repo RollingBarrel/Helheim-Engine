@@ -300,6 +300,8 @@ void HudController::Start()
     {
         SetDialog();
     }
+
+    SetUltimateCooldown(GameManager::GetInstance()->GetPlayerController()->GetUltimateResource());
 }
 
 void HudController::Update()
