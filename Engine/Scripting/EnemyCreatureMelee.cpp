@@ -136,6 +136,7 @@ void EnemyCreatureMelee::Death()
 	Enemy::Death();
 	mDashLeftVFX->SetEnabled(false);
 	mDashRightVFX->SetEnabled(false);
+	mDashIndicator->SetEnabled(false);
 	if (!mDeathAudioPlayed)
 	{
 		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
