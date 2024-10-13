@@ -2,11 +2,11 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 748544119,
-                "ParentUID": 514547938,
+                "UID": 399711321,
+                "ParentUID": 762016198,
                 "Name": "DashVFX",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     1.0,
@@ -30,11 +30,11 @@
                 "Components": []
             },
             {
-                "UID": 1431840878,
-                "ParentUID": 748544119,
+                "UID": 446566254,
+                "ParentUID": 399711321,
                 "Name": "DashFireSparks",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.00001043081283569336,
                     -0.20000000298023225,
@@ -58,7 +58,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 0.20000000298023225,
@@ -134,27 +134,27 @@
                             {
                                 "Time": 0.1250000149011612,
                                 "Color": [
+                                    0.8240001201629639,
                                     1.0,
-                                    0.8860759735107422,
                                     0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.4801136255264282,
+                                "Time": 0.4023658335208893,
                                 "Color": [
+                                    0.0,
                                     0.6431647539138794,
-                                    0.3419356644153595,
-                                    0.0,
+                                    0.11834216862916947,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7301138043403626,
+                                "Time": 0.6818565726280212,
                                 "Color": [
-                                    0.3919525742530823,
-                                    0.1984570026397705,
                                     0.0,
+                                    0.01567808724939823,
+                                    0.3919525742530823,
                                     1.0
                                 ]
                             },
@@ -199,11 +199,11 @@
                 ]
             },
             {
-                "UID": 1169721477,
-                "ParentUID": 748544119,
+                "UID": 455616984,
+                "ParentUID": 399711321,
                 "Name": "DashFireSmokeRed",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -227,7 +227,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 2102232598,
                         "Delay": 0.0,
                         "Duration": 5.0,
@@ -284,18 +284,18 @@
                             {
                                 "Time": 0.02083335630595684,
                                 "Color": [
-                                    1.0,
-                                    0.3137255012989044,
                                     0.0,
+                                    1.0,
+                                    0.9759998321533203,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.6510411500930786,
                                 "Color": [
+                                    0.0,
+                                    0.18400025367736817,
                                     1.0,
-                                    0.0,
-                                    0.0,
                                     1.0
                                 ]
                             },
@@ -340,11 +340,11 @@
                 ]
             },
             {
-                "UID": 1527483222,
-                "ParentUID": 748544119,
+                "UID": 463623399,
+                "ParentUID": 399711321,
                 "Name": "DashFireSmokeYellow",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -368,7 +368,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 309137552,
                         "Delay": 0.0,
                         "Duration": 5.0,
@@ -425,9 +425,9 @@
                             {
                                 "Time": 0.02083335816860199,
                                 "Color": [
-                                    0.11764705926179886,
-                                    0.14509804546833039,
                                     0.0,
+                                    0.14509804546833039,
+                                    0.01973332278430462,
                                     1.0
                                 ]
                             },
@@ -443,9 +443,9 @@
                             {
                                 "Time": 0.6250000596046448,
                                 "Color": [
-                                    0.11764705926179886,
-                                    0.11764705926179886,
                                     0.0,
+                                    0.11764705926179886,
+                                    0.004705877974629402,
                                     1.0
                                 ]
                             },
@@ -490,11 +490,11 @@
                 ]
             },
             {
-                "UID": 1396471984,
-                "ParentUID": 748544119,
+                "UID": 472186782,
+                "ParentUID": 399711321,
                 "Name": "DashInnerVolts",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.000010341405868530274,
                     0.0000057220458984375,
@@ -518,7 +518,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 1171284849,
                         "Delay": 0.0,
                         "Duration": 5.0,
@@ -640,11 +640,11 @@
                 ]
             },
             {
-                "UID": 1347194087,
-                "ParentUID": 748544119,
+                "UID": 479775471,
+                "ParentUID": 399711321,
                 "Name": "DashOutterVolts",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.000010341405868530274,
                     0.0000057220458984375,
@@ -668,7 +668,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 1171284849,
                         "Delay": 0.0,
                         "Duration": 5.0,
@@ -790,11 +790,11 @@
                 ]
             },
             {
-                "UID": 508388958,
-                "ParentUID": 748544119,
+                "UID": 487573023,
+                "ParentUID": 399711321,
                 "Name": "DashFireTrails",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -803,8 +803,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.747210681438446,
-                    0.6654824018478394
+                    0.28337153792381289,
+                    0.9598119854927063
                 ],
                 "Scale": [
                     1.0,
@@ -818,7 +818,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 5.0,
@@ -910,8 +910,8 @@
                                     {
                                         "Time": 0.00852268561720848,
                                         "Color": [
+                                            0.16256538033485413,
                                             0.7257384061813355,
-                                            0.4593280851840973,
                                             0.0,
                                             1.0
                                         ]
@@ -919,9 +919,9 @@
                                     {
                                         "Time": 0.517045259475708,
                                         "Color": [
+                                            0.0,
+                                            0.09181444346904755,
                                             0.6751054525375366,
-                                            0.0,
-                                            0.0,
                                             1.0
                                         ]
                                     },
