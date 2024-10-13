@@ -23,7 +23,8 @@ ResourceTexture::ResourceTexture(
     unsigned int mipLevels,
     unsigned int pixelsSize,
     bool hasAlpha,
-    unsigned int texelSize): Resource(uid, Type::Texture), 
+    unsigned int texelSize,
+    bool compressed): Resource(uid, Type::Texture), 
     mGLTarget(glTarget), mWidth(width), mHeight(height),
     mInternalFormat(internalFormat), mTexFormat(texFormat), mDataType(dataType), 
     mMipLevels(mipLevels),
@@ -31,7 +32,8 @@ ResourceTexture::ResourceTexture(
     mTexelSize(texelSize),
     mHasAlpha(hasAlpha), 
     mOpenGLId(0),
-    mTexHandle(0)
+    mTexHandle(0),
+    mCompressed(compressed)
 {
     // Generate OpenGL texture
     glGenTextures(1, &mOpenGLId);
@@ -78,7 +80,10 @@ void ResourceTexture::GenerateMipmaps() const
         unsigned int h = mHeight/2;
         for (unsigned int i = 1; i < mMipLevels; ++i)
         {
-            mPixelsSize += w * h * mTexelSize;
+            if (mCompressed)
+                mPixelsSize += ((w * h +  15) / 16) * mTexelSize;
+            else
+                mPixelsSize += w * h * mTexelSize;
             if(w > 1)
                 w /= 2;
             if (h > 1)
@@ -90,8 +95,16 @@ void ResourceTexture::GenerateMipmaps() const
         h = mHeight;
         for (unsigned int i = 0; i < mMipLevels; ++i)
         {
-            glGetTexImage(mGLTarget, i, mTexFormat, mDataType, cursor);
-            cursor += w * h * mTexelSize;
+            if (mCompressed)
+            {
+                glGetCompressedTexImage(mGLTarget, i, cursor);
+                cursor += ((w * h + 15) / 16) * mTexelSize;
+            }
+            else
+            {
+                glGetTexImage(mGLTarget, i, mTexFormat, mDataType, cursor);
+                cursor += w * h * mTexelSize;
+            }
             if (w > 1)
                 w /= 2;
             if (h > 1)

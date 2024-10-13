@@ -11,6 +11,8 @@
 ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int uid)
 {
     DirectX::ScratchImage image;
+    DirectX::ScratchImage cImage;
+    bool compressed = false;
 
     size_t size = strlen(filePath) + 1;
     wchar_t* pathTex = new wchar_t[size];
@@ -84,6 +86,20 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         hasAlpha = true;
     }
 
+    if (strstr(filePath, "_Normal.") != NULL)
+    {
+        hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_BC5_UNORM, DirectX::TEX_COMPRESS_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
+        if (FAILED(hr))
+        {
+            LOG("Failed to compress texture");
+            return nullptr;
+        }
+        compressed = true;
+        image.Release();
+        image = std::move(cImage);
+        pixelsSize = image.GetPixelsSize();
+    }
+
     switch (image.GetMetadata().format) 
     {
     case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
@@ -139,7 +155,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         assert(false && "Unsupported format");
     }
 
-    ResourceTexture* rTex = new ResourceTexture(uid, target, width, height, internalFormat, texFormat, dataType, mipLevels, pixelsSize, hasAlpha, texelSize);
+    ResourceTexture* rTex = new ResourceTexture(uid, target, width, height, internalFormat, texFormat, dataType, mipLevels, pixelsSize, hasAlpha, texelSize, compressed);
     Importer::Texture::Save(rTex, image.GetPixels());
     return rTex;
 }
