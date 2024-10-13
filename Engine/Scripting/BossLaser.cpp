@@ -84,7 +84,7 @@ void BossLaser::Fire()
     if (mLaserEyeBall)
     {
         mLaserEyeBall->SetWorldPosition(mGameObject->GetWorldPosition());
-        mLaserEyeBall->SetLocalPosition(float3(-0.1, 0.71, 0.58));
+        mLaserEyeBall->SetLocalPosition(float3(-0.1, 0.5, 0.58));
         mLaserEyeBall->SetEnabled(true);
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(mLaserEyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
