@@ -17,7 +17,6 @@ DashState::DashState(PlayerController* player, float cooldown) : State(player, c
 {
 	mDashVFX = mPlayerController->GetDashVFX();
 	mCharacterMesh = mPlayerController->GetCharacterMesh();
-	mPistolMesh = mPlayerController->GetPistol();
 }
 
 DashState::~DashState()
@@ -84,9 +83,6 @@ void DashState::Enter()
 	
 	mDashVFX->SetEnabled(true);
 	mCharacterMesh->SetEnabled(false);
-	mPistolMesh->SetEnabled(false);
-
-
 
 	mPlayerController->SetIsAnimationPlaying(false);
 	/*
@@ -135,7 +131,6 @@ void DashState::Exit()
 {
 	mDashVFX->SetEnabled(false);
 	mCharacterMesh->SetEnabled(true);
-	mPistolMesh->SetEnabled(true);
 
 	//Unpause Animation -> Restart animation state -> Unpause player rotation
 	mPlayerController->SetIsAnimationPlaying(true);

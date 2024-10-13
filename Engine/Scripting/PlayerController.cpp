@@ -73,7 +73,6 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
     MEMBER(MemberType::GAMEOBJECT, mDashVFX);
     MEMBER(MemberType::GAMEOBJECT, mCharacterMesh);
-    MEMBER(MemberType::GAMEOBJECT, mPistolMesh);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
