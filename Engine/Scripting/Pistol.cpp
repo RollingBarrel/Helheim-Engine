@@ -46,6 +46,14 @@ void Pistol::Enter()
 	App->GetInput()->SetGameControllerRumble(45000, 0, 100);
 }
 
+void Pistol::Exit()
+{
+	if (mFire)
+	{
+		mFire->SetEnabled(false);
+	}
+}
+
 void Pistol::Attack(float time)
 {
 	//Audio

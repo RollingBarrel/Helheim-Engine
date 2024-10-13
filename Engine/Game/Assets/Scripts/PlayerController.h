@@ -119,6 +119,8 @@ public:
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
     GameObject* GetDashVFX() const { return mDashVFX; }
+    GameObject* GetCharacterMesh() const { return mCharacterMesh; }
+    GameObject* GetPistol() const { return mPistolMesh; }
 
     // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
@@ -327,6 +329,8 @@ private:
 
     //Dash VFX
     GameObject* mDashVFX = nullptr;
+    GameObject* mCharacterMesh = nullptr;
+    GameObject* mPistolMesh = nullptr;
 
     //UNLOCKED ABILITIES
     bool mGrenadeUnlocked = true;
