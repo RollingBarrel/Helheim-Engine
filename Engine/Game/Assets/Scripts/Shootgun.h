@@ -7,6 +7,7 @@ public:
 	Shootgun();
 	~Shootgun() {}
 	void Enter() override;
+	void Exit() override;
 	void Attack(float time) override;
 
 private:
