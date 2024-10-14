@@ -25,5 +25,7 @@ private:
 
 	PathNode* mSelectedNode = nullptr;
 	AssetDisplay* mSelectedAsset = nullptr;
+
+	bool mDeleteAsset = false;
 };
 

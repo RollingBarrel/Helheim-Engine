@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EngineApp.h"
+#include "ModuleWindow.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEngineResource.h"
 #include "ProjectPanel.h"
@@ -61,6 +62,36 @@ void ProjectPanel::Draw(int windowFlags)
 		ImGui::EndChild();
 	}
 	ImGui::End();
+
+	if (mDeleteAsset)
+	{
+		ImVec2 center = ImVec2(ImGui::GetMainViewport()->GetCenter());
+		center.x = center.x - 150;
+		center.y = center.y - 50;
+		ImGui::SetNextWindowPos(center);
+		ImGui::SetNextWindowSize(ImVec2(300, 100));
+		ImGui::OpenPopup("DeleteAssets");
+	}
+
+	if (ImGui::BeginPopupModal("DeleteAssets", &mDeleteAsset, ImGuiWindowFlags_NoTitleBar))
+	{
+		ImGui::Text("Are you sure?");
+
+		ImGui::TextColored(ImVec4(1, 0, 0, 1), "%s", mSelectedAsset->mName);
+		ImGui::Dummy(ImVec2(10,10));
+		if (ImGui::Button("Cancel"))
+		{
+			mDeleteAsset = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Accept"))
+		{
+			//TODO Delete the real game object
+			mSelectedAsset = nullptr;
+			mDeleteAsset = false;
+		}
+		ImGui::EndPopup();
+	}
 }
 
 const void ProjectPanel::DrawFolders(const PathNode& current)
@@ -147,9 +178,17 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 				{
 					mSelectedAsset = current.assets[i];
 				}
-				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+				if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
 				{
-					//App->GetScene()->Load(current.assets[i]->mName);
+					ImGui::OpenPopup("AssetOptions");			
+				}
+				if (ImGui::BeginPopup("AssetOptions"))
+				{
+					if (ImGui::Selectable("Delete"))
+					{
+						mDeleteAsset = true;
+					}
+					ImGui::EndPopup();
 				}
 				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 				{
