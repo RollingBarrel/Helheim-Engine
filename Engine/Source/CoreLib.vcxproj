@@ -799,6 +799,7 @@
     <ClInclude Include="VideoComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\GBRChannels.comp" />
     <None Include="..\Game\Assets\Shaders\Fog.comp" />
     <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />

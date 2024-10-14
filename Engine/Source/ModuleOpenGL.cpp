@@ -321,6 +321,8 @@ bool ModuleOpenGL::Init()
 	//mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 	sourcesPaths[0] = "VolFogPostpo.comp";
 	mVolFogPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "GBRChannels.comp";
+	mBGRChannelsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
