@@ -1203,7 +1203,7 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
         return;
     }
 
-    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge" || collisionData->collidedWith->GetTag() == "Enemy")
     {
         mCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")
