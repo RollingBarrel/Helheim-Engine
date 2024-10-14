@@ -568,20 +568,23 @@ void ModuleAudio::SetVolume(std::string busname, float value) const
 
 	CheckError(bus->setVolume(value));
 
+	// We can remove this +0.1 if it feels unbalances
+	float finalVolume = (value + 0.1)* GetVolume("bus:/");
+
 	if (busname.compare("bus:/music") == 0)
 	{
-		CheckError(mAudioChannelGroup->setVolume(value));
+		CheckError(mAudioChannelGroup->setVolume(finalVolume));
 	}
-	
+
 	if (busname.compare("bus:/sfx") == 0)
 	{
-		CheckError(mOneShotChannelGroup->setVolume(value));
+		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
 	}
-	
+
 	if (busname.compare("bus:/") == 0)
 	{
-		CheckError(mOneShotChannelGroup->setVolume(value));
-		CheckError(mAudioChannelGroup->setVolume(value));
+		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
+		CheckError(mAudioChannelGroup->setVolume(finalVolume));
 	}
 }
 
