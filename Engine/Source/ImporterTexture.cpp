@@ -180,7 +180,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         case DXGI_FORMAT_B8G8R8A8_UNORM:
         {
             formatt = DXGI_FORMAT_R8G8_UNORM;
-            flags = DirectX::TEX_FILTER_DEFAULT;
+            //flags = DirectX::TEX_FILTER_DEFAULT;
             break;
         }
         default:
