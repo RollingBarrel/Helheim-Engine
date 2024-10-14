@@ -3,6 +3,8 @@
 
 #include "ImporterTexture.h"
 #include "ResourceTexture.h"
+#include "EngineApp.h"
+#include "ModuleOpenGL.h"
 #include "glew.h"
 
 #include "DirectXTex.h"
@@ -86,7 +88,42 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         hasAlpha = true;
     }
 
-    if (strstr(filePath, "_Normal.") != NULL)
+    //if (strstr(filePath, "_Normal") != NULL)
+    //{
+    //    DXGI_FORMAT formatt;
+    //    DirectX::TEX_FILTER_FLAGS flags = DirectX::TEX_FILTER_DEFAULT;
+    //    switch (image.GetMetadata().format)
+    //    {
+    //    case DXGI_FORMAT_R8G8B8A8_UNORM:
+    //    {
+    //        formatt = DXGI_FORMAT_R8G8_UNORM;
+    //        break;
+    //    }
+    //    case DXGI_FORMAT_R16G16B16A16_UNORM:
+    //    {
+    //        formatt = DXGI_FORMAT_R16G16_UNORM;
+    //        break;
+    //    }
+    //    case DXGI_FORMAT_B8G8R8A8_UNORM:
+    //    {
+    //        formatt = DXGI_FORMAT_R8G8_UNORM;
+    //        //flags = DirectX::TEX_FILTER_RGB_COPY_GREEN | DirectX::TEX_FILTER_RGB_COPY_BLUE;
+    //        break;
+    //    }
+    //    default:
+    //        assert(false && "No suported format for the normal map");
+    //    }
+    //    hr = DirectX::Convert(image.GetImages(), image.GetImageCount(), image.GetMetadata(), formatt, flags, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
+    //    if (FAILED(hr))
+    //    {
+    //        LOG("Failed to convert texture");
+    //        return nullptr;
+    //    }
+    //    image.Release();
+    //    image = std::move(cImage);
+    //    pixelsSize = image.GetPixelsSize();
+    //}
+    if (strstr(filePath, "_Normal") != NULL)
     {
         hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_BC5_UNORM, DirectX::TEX_COMPRESS_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
         if (FAILED(hr))
@@ -99,6 +136,79 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         image = std::move(cImage);
         pixelsSize = image.GetPixelsSize();
     }
+    else if (strstr(filePath, "_OcclusionRoughnessMetallic"))
+    {
+        //glActiveTexture(GL_TEXTURE0);
+        //unsigned int texId[2];
+        //glGenTextures(2, texId);
+        //glBindTexture(GL_TEXTURE_2D, texId[1]);
+        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.GetMetadata().width, image.GetMetadata().height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        //glBindImageTexture(0, texId[1], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+        //glBindTexture(GL_TEXTURE_2D, texId[0]);
+        //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.GetMetadata().width, image.GetMetadata().height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetPixels());
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        //glUseProgram(EngineApp->GetOpenGL()->GetBGRChannelsProgramId());
+        //glDispatchCompute((image.GetMetadata().width + 8) / 8, (image.GetMetadata().height + 8) / 8, 1);
+        //glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetPixels());
+        //glDeleteTextures(2, texId);
+        //hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_BC5_UNORM, DirectX::TEX_COMPRESS_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
+        //if (FAILED(hr))
+        //{
+        //    LOG("Failed to compress texture");
+        //    return nullptr;
+        //}
+        //compressed = true;
+        //image.Release();
+        //image = std::move(cImage);
+        //pixelsSize = image.GetPixelsSize();
+        //mipLevels = 1;
+        DXGI_FORMAT formatt;
+        DirectX::TEX_FILTER_FLAGS flags = DirectX::TEX_FILTER_RGB_COPY_GREEN | DirectX::TEX_FILTER_RGB_COPY_BLUE;
+        switch (image.GetMetadata().format)
+        {
+        case DXGI_FORMAT_R8G8B8A8_UNORM:
+        {
+            formatt = DXGI_FORMAT_R8G8_UNORM;
+            break;
+        }
+        case DXGI_FORMAT_R16G16B16A16_UNORM:
+        {
+            formatt = DXGI_FORMAT_R16G16_UNORM;
+            break;
+        }
+        case DXGI_FORMAT_B8G8R8A8_UNORM:
+        {
+            formatt = DXGI_FORMAT_R8G8_UNORM;
+            flags = DirectX::TEX_FILTER_DEFAULT;
+            break;
+        }
+        default:
+            assert(false && "No suported format for the occlusion metal rough texture");
+        }
+
+        hr = DirectX::Convert(image.GetImages(), image.GetImageCount(), image.GetMetadata(), formatt, flags, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
+        if (FAILED(hr))
+        {
+            LOG("Failed to convert texture");
+            return nullptr;
+        }
+        image.Release();
+        image = std::move(cImage);
+        pixelsSize = image.GetPixelsSize();
+    }
+    //else if (strstr(filePath, "_Emissive") != NULL)
+    //{
+    //    hr = DirectX::Convert(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_R8G8_UNORM, DirectX::TEX_FILTER_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
+    //    if (FAILED(hr))
+    //    {
+    //        LOG("Failed to convert texture");
+    //        return nullptr;
+    //    }
+    //    image.Release();
+    //    image = std::move(cImage);
+    //    pixelsSize = image.GetPixelsSize();
+    //}
 
     switch (image.GetMetadata().format) 
     {
@@ -150,6 +260,18 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         texFormat = 0;
         dataType = 0;
         texelSize = 16;
+        break;
+    case DXGI_FORMAT_R8G8_UNORM:
+        internalFormat = GL_RG8;
+        texFormat = GL_RG;
+        dataType = GL_UNSIGNED_BYTE;
+        texelSize = 2;
+        break;
+    case DXGI_FORMAT_R16G16_UNORM:
+        internalFormat = GL_RG16;
+        texFormat = GL_RG;
+        dataType = GL_UNSIGNED_SHORT;
+        texelSize = 4;
         break;
     default:
         assert(false && "Unsupported format");
