@@ -195,10 +195,6 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseEnd", 1.0f);
                     ++phaseChange;
                     mWakeUp = false;
-                    mInvulnerable = false;
-                    GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
-                    if (mSpritesheet) mSpritesheet->PlayAnimation();
-                    mShieldTimer.Reset();
                 }
                 break;
             case 3:
@@ -208,14 +204,10 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
                     ++phaseChange;
                     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_AWAKE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-                }
-                if (mShieldTimer.Delay(mShieldDelay))
-                {
-                    if (mSpritesheet)
-                    {
-                        mSpritesheet->StopAnimation();
-                        mShieldGO->SetEnabled(false);
-                    }
+
+                    GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
+                    if (mSpritesheet) mSpritesheet->PlayAnimation();
+                    mShieldTimer.Reset();
                 }
                 break;
             case 4:
@@ -228,6 +220,7 @@ void EnemyBoss::Update()
                 }
                 if (mShieldTimer.Delay(mShieldDelay))
                 {
+                    mInvulnerable = false;
                     if (mSpritesheet)
                     {
                         mSpritesheet->StopAnimation();
@@ -251,7 +244,7 @@ void EnemyBoss::Update()
             }
             break;
         case EnemyState::CHARGING_LASER:
-            if (mPhaseShiftTimer.Delay(2.625f))
+            if (mPhaseShiftTimer.Delay(LASER_WIND_UP))
             {
                 mCurrentState = EnemyState::ATTACK;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
