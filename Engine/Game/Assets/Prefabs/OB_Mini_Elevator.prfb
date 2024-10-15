@@ -1,0 +1,204 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 2089683633,
+                "ParentUID": 1,
+                "Name": "OB_Mini_Elevator",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2091493779,
+                "ParentUID": 2089683633,
+                "Name": "OB_BB_Puerta.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.20000000298023225,
+                    0.38499999046325686,
+                    -0.10000000149011612
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2093234304,
+                "ParentUID": 2091493779,
+                "Name": "OB_BB_Puerta.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1109235289,
+                        "MaterialID": 1109235294,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 350843830,
+                "ParentUID": 2089683633,
+                "Name": "OB_Mini_Elevator",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 355369195,
+                "ParentUID": 350843830,
+                "Name": "OB_Mini_Elevator",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1109235295,
+                        "MaterialID": 1109235300,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 59885675,
+                "ParentUID": 350843830,
+                "Name": "OB_Mini_Elevator",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1109235301,
+                        "MaterialID": 1109235294,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}
