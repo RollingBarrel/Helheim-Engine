@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1249734724,
+                "UID": 22015755,
                 "ParentUID": 1,
                 "Name": "Item_Red_Battery",
                 "Enabled": true,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.15000000596046449,
-                    0.15000000596046449,
-                    0.15000000596046449
+                    1.0,
+                    1.0,
+                    1.0
                 ],
                 "Tag": "Drop",
                 "PrefabUid": 0,
@@ -64,14 +64,14 @@
                 ]
             },
             {
-                "UID": 1375887976,
-                "ParentUID": 1249734724,
-                "Name": "OB_red_battery_particle",
+                "UID": 28212024,
+                "ParentUID": 22015755,
+                "Name": "OB_Pickup_Heavy_Shot",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    0.0,
+                    0.20000000298023225,
                     0.0
                 ],
                 "Rotation": [
@@ -81,20 +81,55 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 713001245,
+                        "LowerSMUID": 1668306357
+                    }
+                ]
+            },
+            {
+                "UID": 29465202,
+                "ParentUID": 28212024,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 1483730905,
-                "ParentUID": 1375887976,
-                "Name": "OB_red_battery_particle",
+                "UID": 30648759,
+                "ParentUID": 29465202,
+                "Name": "OB_Heavy_Shot",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -116,13 +151,13 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": true,
+                "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 1594497916,
-                "ParentUID": 1483730905,
-                "Name": "OB_red_battery_particle",
+                "UID": 31414590,
+                "ParentUID": 30648759,
+                "Name": "OB_Heavy_Shot",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -144,18 +179,215 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 963318783,
-                        "MaterialID": 963318786,
-                        "HasSkinning": false,
+                        "MeshID": 713001242,
+                        "MaterialID": 713001244,
+                        "HasSkinning": true,
                         "PaletteOwner": 0,
-                        "InverseBindMatrices": []
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 32319663,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    208.41372680664063,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 33155115,
+                                "Matrix": [
+                                    3.224128246307373,
+                                    99.9480209350586,
+                                    -0.0000075458656283444729,
+                                    146.84971618652345,
+                                    -99.9480209350586,
+                                    3.2241291999816896,
+                                    -2.4341497351088039e-7,
+                                    4.0130510330200199,
+                                    0.0,
+                                    0.0000075497905527299739,
+                                    100.00000762939453,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 33920946,
+                                "Matrix": [
+                                    1.4083088636398316,
+                                    99.99007415771485,
+                                    -0.000007549040219601011,
+                                    102.01557159423828,
+                                    -99.99007415771485,
+                                    1.408308506011963,
+                                    -1.0632433600221703e-7,
+                                    2.160567283630371,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 34756398,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.170976400375366,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -42.36506271362305,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -2.7755575615628916e-13,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
                     }
                 ]
+            },
+            {
+                "UID": 32319663,
+                "ParentUID": 29465202,
+                "Name": "Root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    1.8189894035458565e-12,
+                    208.4137420654297
+                ],
+                "Rotation": [
+                    -0.7071067690849304,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 33155115,
+                "ParentUID": 32319663,
+                "Name": "smaller_circle",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.7236588001251221,
+                    61.510986328125,
+                    0.0
+                ],
+                "Rotation": [
+                    -7.726888654737904e-17,
+                    2.4726043695161294e-15,
+                    0.6956143975257874,
+                    0.718415379524231
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999998807907105,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 33920946,
+                "ParentUID": 32319663,
+                "Name": "bigger_circle",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.7236588001251221,
+                    106.37783813476563,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.7021099925041199,
+                    0.712068498134613
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 34756398,
+                "ParentUID": 32319663,
+                "Name": "particle",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.170976400375366,
+                    250.77879333496095,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
             }
         ]
     }
