@@ -1062,7 +1062,8 @@ void PlayerController::EnableUltimate(bool enable)
     UltimateAttack* ultimateScript = (UltimateAttack*)((ScriptComponent*)mUltimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
     ultimateScript->ResetTimer();
     if (mUltimateGO)
-    {
+    {   
+        mInUlt = enable;
         if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
         mUltimateGO->SetEnabled(enable);
     }
@@ -1115,7 +1116,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 void PlayerController::TakeDamage(float damage)
 {
     //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-    if (IsPlayerDashing()|| mGodMode)
+    if (IsPlayerDashing()|| mGodMode || mInUlt)
     {
         return;
     }

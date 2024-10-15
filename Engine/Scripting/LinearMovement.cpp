@@ -16,6 +16,8 @@ CREATE(LinearMovement)
 	MEMBER(MemberType::BOOL, mTeleportBack);
 	MEMBER(MemberType::BOOL, mLocalPosition);
 	MEMBER(MemberType::BOOL, mLookAt);
+	MEMBER(MemberType::BOOL, mTargetAGO);
+	MEMBER(MemberType::GAMEOBJECT, mTargetGO);
 	SEPARATOR("Hovering");
 	MEMBER(MemberType::BOOL, mHoveringMovement);
 	MEMBER(MemberType::FLOAT, mHoveringHeight);

@@ -2,11 +2,11 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1514699007,
-                "ParentUID": 1426929061,
+                "UID": 531605083,
+                "ParentUID": 514547938,
                 "Name": "UltimateGO",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.5,
@@ -30,28 +30,28 @@
                 "Components": [
                     {
                         "ComponentType": 3,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "ScriptName": "UltimateAttack",
                         "ScriptVariables": [
                             {
                                 "VariableName": "mLinesGO",
                                 "MemberType": 3,
-                                "VariableData": 492360341
+                                "VariableData": 541769749
                             }
                         ]
                     },
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.05000000074505806,
                             0.949999988079071,
-                            3.9000000953674318
+                            6.849999904632568
                         ],
                         "Size": [
                             0.5,
                             0.6499999761581421,
-                            3.75
+                            6.800000190734863
                         ],
                         "ColliderType": 1,
                         "FreezeRotation": false
@@ -59,21 +59,21 @@
                 ]
             },
             {
-                "UID": 1784550003,
-                "ParentUID": 1514699007,
+                "UID": 533554471,
+                "ParentUID": 531605083,
                 "Name": "Laser_Spin_End",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.09999847412109375,
                     0.9500000476837158,
-                    7.179999828338623
+                    13.300000190734864
                 ],
                 "Rotation": [
-                    0.0020990269258618356,
-                    -0.001509014517068863,
-                    0.8110978603363037,
-                    -0.5836485624313355
+                    0.001249188557267189,
+                    0.0022270898334681989,
+                    0.48436233401298525,
+                    0.8626846075057983
                 ],
                 "Scale": [
                     0.9997341632843018,
@@ -87,7 +87,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -100,6 +100,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.5,
@@ -107,6 +108,8 @@
                         },
                         "ShapeType": 3,
                         "ShapeRadius": 0.17000000178813935,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
@@ -116,6 +119,8 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -297,21 +302,21 @@
                 ]
             },
             {
-                "UID": 1966817781,
-                "ParentUID": 1514699007,
+                "UID": 535503859,
+                "ParentUID": 531605083,
                 "Name": "Laser_Spin",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.10000000149011612,
                     0.8999999761581421,
                     1.0800000429153443
                 ],
                 "Rotation": [
-                    -0.00204686657525599,
-                    0.001595888053998351,
-                    -0.7848988771438599,
-                    0.6119819283485413
+                    0.0013431907864287496,
+                    0.0021871766075491907,
+                    0.5150855779647827,
+                    0.8387010097503662
                 ],
                 "Scale": [
                     1.7897616624832154,
@@ -325,7 +330,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -338,6 +343,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.5,
@@ -345,6 +351,8 @@
                         },
                         "ShapeType": 3,
                         "ShapeRadius": 0.25,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
@@ -354,6 +362,8 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -535,21 +545,21 @@
                 ]
             },
             {
-                "UID": 86400290,
-                "ParentUID": 1514699007,
+                "UID": 537383626,
+                "ParentUID": 531605083,
                 "Name": "Laser_Spin_Mid",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.10000000149011612,
                     1.0,
                     1.100000023841858
                 ],
                 "Rotation": [
-                    -7.738687912706155e-9,
-                    -1.4365550526918014e-8,
-                    -0.8782235980033875,
-                    0.47306564450263979
+                    -1.4969344874771197e-8,
+                    6.024766463497144e-9,
+                    0.36830392479896548,
+                    0.9151428937911987
                 ],
                 "Scale": [
                     1.5,
@@ -563,7 +573,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -576,6 +586,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 1.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -583,6 +594,8 @@
                         },
                         "ShapeType": 3,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
@@ -592,6 +605,8 @@
                         "ShapeRandAngle": 1.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -803,7 +818,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "ScriptName": "LinearMovement",
                         "ScriptVariables": [
                             {
@@ -812,7 +827,7 @@
                                 "VariableData": [
                                     0.10000000149011612,
                                     1.0,
-                                    7.130000114440918
+                                    15.0
                                 ]
                             },
                             {
@@ -864,21 +879,21 @@
                 ]
             },
             {
-                "UID": 265395881,
-                "ParentUID": 1514699007,
+                "UID": 539333014,
+                "ParentUID": 531605083,
                 "Name": "Laser_Spin_Mid_2",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.10000000149011612,
                     1.0,
                     0.8299999833106995
                 ],
                 "Rotation": [
-                    1.0210104761654293e-8,
-                    -1.2755871914293948e-8,
-                    -0.778289794921875,
-                    -0.6229768395423889
+                    -1.1412867984006425e-8,
+                    -1.1437810698566864e-8,
+                    -0.6978820562362671,
+                    0.6963008046150208
                 ],
                 "Scale": [
                     1.7897616624832154,
@@ -892,7 +907,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -905,6 +920,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -912,6 +928,8 @@
                         },
                         "ShapeType": 3,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
@@ -921,6 +939,8 @@
                         "ShapeRandAngle": 1.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -1132,7 +1152,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "ScriptName": "LinearMovement",
                         "ScriptVariables": [
                             {
@@ -1141,7 +1161,7 @@
                                 "VariableData": [
                                     0.10000000149011612,
                                     1.0,
-                                    7.130000114440918
+                                    15.0
                                 ]
                             },
                             {
@@ -1193,11 +1213,11 @@
                 ]
             },
             {
-                "UID": 492360341,
-                "ParentUID": 1514699007,
+                "UID": 541769749,
+                "ParentUID": 531605083,
                 "Name": "Lines",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -1221,11 +1241,11 @@
                 "Components": []
             },
             {
-                "UID": 678387653,
-                "ParentUID": 492360341,
+                "UID": 543719137,
+                "ParentUID": 541769749,
                 "Name": "Ultimte_Laser_Line",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.12000274658203125,
                     0.9700000286102295,
@@ -1249,7 +1269,7 @@
                 "Components": [
                     {
                         "ComponentType": 21,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 563896877,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
@@ -1265,8 +1285,8 @@
                         "Width": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.2000000476837159
+                                "MinValue": 2.0,
+                                "MaxValue": 2.200000047683716
                             },
                             "IsCurve": true,
                             "CurvePoints": [
@@ -1278,26 +1298,26 @@
                                 },
                                 {
                                     "Point": [
-                                        0.02500000037252903,
-                                        0.6100000143051148
+                                        0.019999999552965165,
+                                        0.7599999904632568
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.05999999865889549,
-                                        0.7350000143051148
+                                        0.06499999761581421,
+                                        0.9399999976158142
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.2775000035762787,
-                                        0.8799999952316284
+                                        0.2750000059604645,
+                                        1.0
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.4950000047683716,
-                                        0.9649999737739563
+                                        0.5074999928474426,
+                                        1.0
                                     ]
                                 },
                                 {
@@ -1337,15 +1357,15 @@
                 ]
             },
             {
-                "UID": 857452865,
-                "ParentUID": 678387653,
+                "UID": 545668525,
+                "ParentUID": 543719137,
                 "Name": "FinalPoint",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    7.800000190734863
+                    35.0
                 ],
                 "Rotation": [
                     0.0,
@@ -1365,24 +1385,24 @@
                 "Components": []
             },
             {
-                "UID": 1041600410,
-                "ParentUID": 857452865,
+                "UID": 547687534,
+                "ParentUID": 545668525,
                 "Name": "Ultimate_laser_End_V1",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
                     0.0
                 ],
                 "Rotation": [
+                    -1.0,
                     0.0,
                     0.0,
-                    0.0,
-                    1.0
+                    -4.371138828673793e-8
                 ],
                 "Scale": [
-                    0.9999999403953552,
+                    1.0,
                     1.0000001192092896,
                     1.0000001192092896
                 ],
@@ -1393,7 +1413,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 1711944677,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -1406,6 +1426,7 @@
                         "StretchedBillboard": true,
                         "StretchedRatio": 2.700000047683716,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -1413,6 +1434,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.014999999664723874,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.7850000262260437,
                         "ShapeSize": [
                             1.0,
@@ -1422,11 +1445,13 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.20000000298023225,
+                                "MinValue": 0.25,
                                 "MaxValue": 0.30000001192092898
                             },
                             "IsCurve": true,
@@ -1505,8 +1530,8 @@
                 ]
             },
             {
-                "UID": 1341249194,
-                "ParentUID": 1041600410,
+                "UID": 549567301,
+                "ParentUID": 547687534,
                 "Name": "Laser_End_Trail",
                 "Enabled": false,
                 "Active": false,
@@ -1633,11 +1658,11 @@
                 ]
             },
             {
-                "UID": 1522472657,
-                "ParentUID": 1041600410,
+                "UID": 551377447,
+                "ParentUID": 547687534,
                 "Name": "Laser_impact",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -1661,7 +1686,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 631868986,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -1672,15 +1697,18 @@
                         "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
-                        "StretchedRatio": 0.6000000238418579,
+                        "StretchedRatio": 0.5,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 0.30000001192092898,
+                            "MinValue": 0.5,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.0010000000474974514,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.7850000262260437,
                         "ShapeSize": [
                             1.0,
@@ -1690,11 +1718,13 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.5,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -1787,11 +1817,11 @@
                 ]
             },
             {
-                "UID": 1704670814,
-                "ParentUID": 678387653,
+                "UID": 553257214,
+                "ParentUID": 543719137,
                 "Name": "Ultimate_laser_Origin_contrast",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     -0.06474876403808594,
@@ -1815,7 +1845,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 299925969,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -1828,6 +1858,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -1835,6 +1866,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.009999999776482582,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.7850000262260437,
                         "ShapeSize": [
                             1.0,
@@ -1844,6 +1877,8 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
@@ -1941,11 +1976,11 @@
                 ]
             },
             {
-                "UID": 1885546172,
-                "ParentUID": 678387653,
+                "UID": 555345844,
+                "ParentUID": 543719137,
                 "Name": "Ultimate_laser_Origin",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     -0.06474876403808594,
@@ -1969,7 +2004,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 299925969,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -1982,6 +2017,7 @@
                         "StretchedBillboard": true,
                         "StretchedRatio": 0.5,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -1989,6 +2025,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.009999999776482582,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.7850000262260437,
                         "ShapeSize": [
                             1.0,
@@ -1998,6 +2036,8 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -2104,11 +2144,11 @@
                 ]
             },
             {
-                "UID": 2085845789,
-                "ParentUID": 492360341,
+                "UID": 557295232,
+                "ParentUID": 541769749,
                 "Name": "Ultimte_Laser_Line_contrast",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.12000274658203125,
                     0.9700000286102295,
@@ -2132,7 +2172,7 @@
                 "Components": [
                     {
                         "ComponentType": 21,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 1485191790,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
@@ -2148,8 +2188,8 @@
                         "Width": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.149999976158142
+                                "MinValue": 1.7999999523162842,
+                                "MaxValue": 1.899999976158142
                             },
                             "IsCurve": true,
                             "CurvePoints": [
@@ -2167,14 +2207,14 @@
                                 },
                                 {
                                     "Point": [
-                                        0.14749999344348908,
-                                        0.6699999570846558
+                                        0.1574999988079071,
+                                        0.8500000238418579
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.32499998807907107,
-                                        0.6949999928474426
+                                        0.32749998569488528,
+                                        0.8500000238418579
                                     ]
                                 },
                                 {
@@ -2209,8 +2249,8 @@
                                     "Time": 0.512499988079071,
                                     "Color": [
                                         0.0,
-                                        0.6633396148681641,
-                                        0.931654691696167,
+                                        0.2990402579307556,
+                                        0.42000001668930056,
                                         1.0
                                     ]
                                 }
@@ -2220,15 +2260,15 @@
                 ]
             },
             {
-                "UID": 120212194,
-                "ParentUID": 2085845789,
+                "UID": 559174999,
+                "ParentUID": 557295232,
                 "Name": "FinalPoint",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    8.0
+                    35.0
                 ],
                 "Rotation": [
                     0.0,
@@ -2248,11 +2288,11 @@
                 "Components": []
             },
             {
-                "UID": 301157173,
-                "ParentUID": 492360341,
+                "UID": 561054766,
+                "ParentUID": 541769749,
                 "Name": "Ultimte_Laser_Line_contrast (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.12000274658203125,
                     0.9700000286102295,
@@ -2276,7 +2316,7 @@
                 "Components": [
                     {
                         "ComponentType": 21,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 1485191790,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
@@ -2292,8 +2332,8 @@
                         "Width": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.30000001192092898,
-                                "MaxValue": 0.4000000059604645
+                                "MinValue": 1.0,
+                                "MaxValue": 1.100000023841858
                             },
                             "IsCurve": true,
                             "CurvePoints": [
@@ -2358,9 +2398,9 @@
                                 {
                                     "Time": 0.512499988079071,
                                     "Color": [
-                                        0.39297911524772646,
-                                        0.8921808004379273,
-                                        0.902877688407898,
+                                        0.3001600205898285,
+                                        0.554548978805542,
+                                        0.5600000023841858,
                                         1.0
                                     ]
                                 }
@@ -2370,15 +2410,15 @@
                 ]
             },
             {
-                "UID": 504798598,
-                "ParentUID": 301157173,
+                "UID": 563004154,
+                "ParentUID": 561054766,
                 "Name": "FinalPoint",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    8.0
+                    35.0
                 ],
                 "Rotation": [
                     0.0,

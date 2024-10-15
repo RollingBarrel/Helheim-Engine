@@ -17,6 +17,10 @@ CREATE(UltimateAttack)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mLinesGO);
+    MEMBER(MemberType::GAMEOBJECT, mFinalPoint1);
+    MEMBER(MemberType::GAMEOBJECT, mFinalPoint2);
+    MEMBER(MemberType::GAMEOBJECT, mFinalPoint3);
+    
     END_CREATE;
 }
 UltimateAttack::UltimateAttack(GameObject* owner) : Script(owner)
@@ -41,6 +45,7 @@ void UltimateAttack::Update()
     if (!mExpansionTimer.DelayWithoutReset(3.8f)) 
     {
         SetLength(100.0f, 25.0f);
+        SetFinalPoint();
     }
     else
     {
@@ -60,6 +65,29 @@ void UltimateAttack::SetLength(float targetPercent, float speed)
         mLengthPercent = Lerp(mLengthPercent, targetPercent, App->GetDt() * speed);
         scale.z = length * (mLengthPercent/100.0f);
         mLinesGO->SetLocalScale(scale);
+    }
+
+    //else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));a
+}
+
+void UltimateAttack::SetFinalPoint()
+{
+    float3 currentFinalpoint = mFinalPoint1->GetWorldPosition();
+    Hit hit;
+    Ray ray;
+    ray.dir = mGameObject->GetFront();
+    ray.pos = mGameObject->GetWorldPosition();
+    std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy" };
+    Physics::Raycast(hit, ray, 35.0f, &ignoreTags);
+    if (hit.IsValid()) {
+
+        /*currentFinalpoint.x = Lerp(currentFinalpoint.x, hit.mHitPoint.x, App->GetDt());
+        currentFinalpoint.z = Lerp(currentFinalpoint.z, hit.mHitPoint.z, App->GetDt());*/
+        currentFinalpoint.x = hit.mHitPoint.x;
+        currentFinalpoint.z = hit.mHitPoint.z;
+        mFinalPoint1->SetWorldPosition(currentFinalpoint);
+        mFinalPoint2->SetWorldPosition(currentFinalpoint);
+        mFinalPoint3->SetWorldPosition(currentFinalpoint);
     }
 }
 
@@ -86,17 +114,6 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
             }
         }
     }
-    else 
-    {
-        float3 currentScale = mGameObject->GetLocalScale();
-        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy"};
-        Physics::Raycast(hit, ray, 10.0f, &ignoreTags);
-        if (hit.IsValid()) {
-            float distance = Distance(float2(hit.mHitPoint.x, hit.mHitPoint.z), float2(mGameObject->GetWorldPosition().x, mGameObject->GetWorldPosition().z)) / 10;
-            
-            mGameObject->SetLocalScale(float3(currentScale.x, currentScale.y,distance + 0.1));
-        }
-        else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));
-    }
+
     
 }
