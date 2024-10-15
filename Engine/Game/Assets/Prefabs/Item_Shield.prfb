@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 323554119,
+                "UID": 15641018,
                 "ParentUID": 1,
                 "Name": "Item_Shield",
                 "Enabled": true,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
                 ],
                 "Tag": "Drop",
                 "PrefabUid": 0,
@@ -64,8 +64,8 @@
                 ]
             },
             {
-                "UID": 329541525,
-                "ParentUID": 323554119,
+                "UID": 125224472,
+                "ParentUID": 15641018,
                 "Name": "OB_Pickup_Heal",
                 "Enabled": true,
                 "Active": true,
@@ -81,9 +81,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.20000000298023225,
-                    0.20000000298023225,
-                    0.20000000298023225
+                    1.0,
+                    1.0,
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -99,8 +99,8 @@
                 ]
             },
             {
-                "UID": 331490913,
-                "ParentUID": 329541525,
+                "UID": 162053981,
+                "ParentUID": 125224472,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -127,8 +127,8 @@
                 "Components": []
             },
             {
-                "UID": 333997269,
-                "ParentUID": 331490913,
+                "UID": 193940399,
+                "ParentUID": 162053981,
                 "Name": "OB_Heal",
                 "Enabled": true,
                 "Active": true,
@@ -155,8 +155,8 @@
                 "Components": []
             },
             {
-                "UID": 334971963,
-                "ParentUID": 333997269,
+                "UID": 224225534,
+                "ParentUID": 193940399,
                 "Name": "OB_Heal",
                 "Enabled": true,
                 "Active": true,
@@ -190,7 +190,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 336016278,
+                                "GoId": 256042331,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -211,7 +211,7 @@
                                 ]
                             },
                             {
-                                "GoId": 336921351,
+                                "GoId": 301156739,
                                 "Matrix": [
                                     3.224123954772949,
                                     99.9480209350586,
@@ -232,7 +232,7 @@
                                 ]
                             },
                             {
-                                "GoId": 337826424,
+                                "GoId": 339935636,
                                 "Matrix": [
                                     1.4083137512207032,
                                     99.99008178710938,
@@ -253,7 +253,7 @@
                                 ]
                             },
                             {
-                                "GoId": 338592255,
+                                "GoId": 387904505,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -278,8 +278,8 @@
                 ]
             },
             {
-                "UID": 336016278,
-                "ParentUID": 331490913,
+                "UID": 256042331,
+                "ParentUID": 162053981,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
@@ -306,8 +306,8 @@
                 "Components": []
             },
             {
-                "UID": 336921351,
-                "ParentUID": 336016278,
+                "UID": 301156739,
+                "ParentUID": 256042331,
                 "Name": "smaller_circle",
                 "Enabled": true,
                 "Active": true,
@@ -334,8 +334,8 @@
                 "Components": []
             },
             {
-                "UID": 337826424,
-                "ParentUID": 336016278,
+                "UID": 339935636,
+                "ParentUID": 256042331,
                 "Name": "bigger_circle",
                 "Enabled": true,
                 "Active": true,
@@ -362,8 +362,8 @@
                 "Components": []
             },
             {
-                "UID": 338592255,
-                "ParentUID": 336016278,
+                "UID": 387904505,
+                "ParentUID": 256042331,
                 "Name": "particle",
                 "Enabled": true,
                 "Active": true,

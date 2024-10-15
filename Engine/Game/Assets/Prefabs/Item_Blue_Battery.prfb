@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1401728277,
+                "UID": 1964814556,
                 "ParentUID": 1,
                 "Name": "Item_Blue_Battery",
                 "Enabled": true,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
                 ],
                 "Tag": "Drop",
                 "PrefabUid": 0,
@@ -64,8 +64,8 @@
                 ]
             },
             {
-                "UID": 1522033365,
-                "ParentUID": 1401728277,
+                "UID": 2091942502,
+                "ParentUID": 1964814556,
                 "Name": "OB_Pickup_Rapid_Shot",
                 "Enabled": true,
                 "Active": true,
@@ -81,9 +81,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.15000000596046449,
-                    0.15000000596046449,
-                    0.15000000596046449
+                    1.0,
+                    1.0,
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -99,8 +99,8 @@
                 ]
             },
             {
-                "UID": 1559628705,
-                "ParentUID": 1522033365,
+                "UID": 2134132828,
+                "ParentUID": 2091942502,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -127,8 +127,8 @@
                 "Components": []
             },
             {
-                "UID": 1591236639,
-                "ParentUID": 1559628705,
+                "UID": 19162188,
+                "ParentUID": 2134132828,
                 "Name": "OB_Rapid_Shot",
                 "Enabled": true,
                 "Active": true,
@@ -155,8 +155,8 @@
                 "Components": []
             },
             {
-                "UID": 1623053436,
-                "ParentUID": 1591236639,
+                "UID": 49029597,
+                "ParentUID": 19162188,
                 "Name": "OB_Rapid_Shot",
                 "Enabled": true,
                 "Active": true,
@@ -190,7 +190,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1652503119,
+                                "GoId": 78479280,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -211,7 +211,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1681535076,
+                                "GoId": 108137826,
                                 "Matrix": [
                                     3.224128246307373,
                                     99.9480209350586,
@@ -232,7 +232,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1710636654,
+                                "GoId": 137448267,
                                 "Matrix": [
                                     1.4083088636398316,
                                     99.99007415771485,
@@ -253,7 +253,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1739390127,
+                                "GoId": 183676611,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -278,8 +278,8 @@
                 ]
             },
             {
-                "UID": 1652503119,
-                "ParentUID": 1559628705,
+                "UID": 78479280,
+                "ParentUID": 2134132828,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
@@ -306,8 +306,8 @@
                 "Components": []
             },
             {
-                "UID": 1681535076,
-                "ParentUID": 1652503119,
+                "UID": 108137826,
+                "ParentUID": 78479280,
                 "Name": "smaller_circle",
                 "Enabled": true,
                 "Active": true,
@@ -334,8 +334,8 @@
                 "Components": []
             },
             {
-                "UID": 1710636654,
-                "ParentUID": 1652503119,
+                "UID": 137448267,
+                "ParentUID": 78479280,
                 "Name": "bigger_circle",
                 "Enabled": true,
                 "Active": true,
@@ -362,8 +362,8 @@
                 "Components": []
             },
             {
-                "UID": 1739390127,
-                "ParentUID": 1652503119,
+                "UID": 183676611,
+                "ParentUID": 78479280,
                 "Name": "particle",
                 "Enabled": true,
                 "Active": true,

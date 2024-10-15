@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 22015755,
+                "UID": 671360417,
                 "ParentUID": 1,
                 "Name": "Item_Red_Battery",
                 "Enabled": true,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
                 ],
                 "Tag": "Drop",
                 "PrefabUid": 0,
@@ -64,8 +64,8 @@
                 ]
             },
             {
-                "UID": 28212024,
-                "ParentUID": 22015755,
+                "UID": 777114716,
+                "ParentUID": 671360417,
                 "Name": "OB_Pickup_Heavy_Shot",
                 "Enabled": true,
                 "Active": true,
@@ -81,9 +81,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.15000000596046449,
-                    0.15000000596046449,
-                    0.15000000596046449
+                    1.0,
+                    1.0,
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -99,8 +99,8 @@
                 ]
             },
             {
-                "UID": 29465202,
-                "ParentUID": 28212024,
+                "UID": 815058161,
+                "ParentUID": 777114716,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -127,8 +127,8 @@
                 "Components": []
             },
             {
-                "UID": 30648759,
-                "ParentUID": 29465202,
+                "UID": 847083821,
+                "ParentUID": 815058161,
                 "Name": "OB_Heavy_Shot",
                 "Enabled": true,
                 "Active": true,
@@ -155,8 +155,8 @@
                 "Components": []
             },
             {
-                "UID": 31414590,
-                "ParentUID": 30648759,
+                "UID": 875837294,
+                "ParentUID": 847083821,
                 "Name": "OB_Heavy_Shot",
                 "Enabled": true,
                 "Active": true,
@@ -190,7 +190,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 32319663,
+                                "GoId": 903616073,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -211,7 +211,7 @@
                                 ]
                             },
                             {
-                                "GoId": 33155115,
+                                "GoId": 930907505,
                                 "Matrix": [
                                     3.224128246307373,
                                     99.9480209350586,
@@ -232,7 +232,7 @@
                                 ]
                             },
                             {
-                                "GoId": 33920946,
+                                "GoId": 957990074,
                                 "Matrix": [
                                     1.4083088636398316,
                                     99.99007415771485,
@@ -253,7 +253,7 @@
                                 ]
                             },
                             {
-                                "GoId": 34756398,
+                                "GoId": 984585296,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -278,8 +278,8 @@
                 ]
             },
             {
-                "UID": 32319663,
-                "ParentUID": 29465202,
+                "UID": 903616073,
+                "ParentUID": 815058161,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
@@ -306,8 +306,8 @@
                 "Components": []
             },
             {
-                "UID": 33155115,
-                "ParentUID": 32319663,
+                "UID": 930907505,
+                "ParentUID": 903616073,
                 "Name": "smaller_circle",
                 "Enabled": true,
                 "Active": true,
@@ -334,8 +334,8 @@
                 "Components": []
             },
             {
-                "UID": 33920946,
-                "ParentUID": 32319663,
+                "UID": 957990074,
+                "ParentUID": 903616073,
                 "Name": "bigger_circle",
                 "Enabled": true,
                 "Active": true,
@@ -362,8 +362,8 @@
                 "Components": []
             },
             {
-                "UID": 34756398,
-                "ParentUID": 32319663,
+                "UID": 984585296,
+                "ParentUID": 903616073,
                 "Name": "particle",
                 "Enabled": true,
                 "Active": true,
