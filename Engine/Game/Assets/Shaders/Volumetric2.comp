@@ -252,7 +252,7 @@ uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in float cLength, 
 	return ret;
 }
 
-bool IntersectLightShapes(in vec3 rO, in vec3 rDir, out float t0, out float t1)
+bool IntersectLightShapes(in vec3 rO, in vec3 rDir, inout float t0, inout float t1)
 {
 	bool ret = false;
 	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy * screenDiv) / tileSize;
@@ -353,7 +353,6 @@ void main()
 				accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize)*exp(-extCoeff);
 				currPos += marchingStep;
 			}
-
 			imageStore(outInScattering, ivec2(gl_GlobalInvocationID.xy), vec4(accInScattering * fogIntensity, exp(-extCoeff)*fogIntensity));
 		}
 		else
