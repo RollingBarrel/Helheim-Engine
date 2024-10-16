@@ -1261,14 +1261,108 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "UID": 1712202367,
+                "ParentUID": 346916435,
+                "Name": "OB_Drone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 524583447,
+                "ParentUID": 1712202367,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1066165206,
+                "ParentUID": 524583447,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
                     }
                 ]
             },
@@ -2886,44 +2980,6 @@
                 ]
             },
             {
-                "UID": 372467342,
-                "ParentUID": 346916435,
-                "Name": "OB_Drone",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
                 "UID": 398087870,
                 "ParentUID": 297833630,
                 "Name": "OB_Drone (1)",
@@ -3029,21 +3085,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.0
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 1.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 446961812,
+                "UID": 1141213437,
                 "ParentUID": 422455220,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1703263770,
+                "ParentUID": 1141213437,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 138577514,
+                "ParentUID": 1703263770,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -3070,8 +3182,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -3086,7 +3198,7 @@
                 "Active": true,
                 "Translation": [
                     29.327823638916017,
-                    -2.619999885559082,
+                    0.1899999976158142,
                     35.90222930908203
                 ],
                 "Rotation": [
@@ -3143,7 +3255,7 @@
                                 "MemberType": 4,
                                 "VariableData": [
                                     -32.959999084472659,
-                                    -2.619999885559082,
+                                    0.1899999976158142,
                                     35.900001525878909
                                 ]
                             },
@@ -3184,21 +3296,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 521734766,
+                "UID": 96683743,
                 "ParentUID": 497228174,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 645157981,
+                "ParentUID": 96683743,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1192170178,
+                "ParentUID": 645157981,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -3225,8 +3393,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -3240,7 +3408,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -60.926761627197269,
+                    -52.336795806884769,
                     -3.6493802070617677,
                     30.618770599365236
                 ],
@@ -3339,21 +3507,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 615305390,
+                "UID": 1122378571,
                 "ParentUID": 579032849,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1674264238,
+                "ParentUID": 1122378571,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 70868706,
+                "ParentUID": 1674264238,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -3380,8 +3604,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -3494,21 +3718,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 693837878,
+                "UID": 227620328,
                 "ParentUID": 669400907,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 800531537,
+                "ParentUID": 227620328,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1347822218,
+                "ParentUID": 800531537,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -3535,8 +3815,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -3649,21 +3929,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 767218412,
+                "UID": 877323561,
                 "ParentUID": 742781441,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1510665798,
+                "ParentUID": 877323561,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2090887212,
+                "ParentUID": 1510665798,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -3690,8 +4026,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -3804,21 +4140,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 846029384,
+                "UID": 1422596473,
                 "ParentUID": 821105066,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (6)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1997596312,
+                "ParentUID": 1422596473,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 432910056,
+                "ParentUID": 1997596312,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -3845,8 +4237,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -3959,21 +4351,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 917251667,
+                "UID": 18733821,
                 "ParentUID": 893928632,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (7)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 576328410,
+                "ParentUID": 18733821,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1127796351,
+                "ParentUID": 576328410,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -4000,8 +4448,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -4114,21 +4562,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 987847361,
+                "UID": 297512895,
                 "ParentUID": 964454705,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (8)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -3.5527130435257906e-15,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 851835297,
+                "ParentUID": 297512895,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1403581722,
+                "ParentUID": 851835297,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -4155,8 +4659,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -4269,21 +4773,77 @@
                             {
                                 "VariableName": "mHoveringHeight",
                                 "MemberType": 1,
-                                "VariableData": 0.03999999910593033
+                                "VariableData": 0.05000000074505806
                             },
                             {
                                 "VariableName": "mHoveringFrequency",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 70.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1058094950,
+                "UID": 2095486371,
                 "ParentUID": 1034702294,
-                "Name": "OB_Drone",
+                "Name": "OB_Drone (9)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 524325362,
+                "ParentUID": 2095486371,
+                "Name": "HoverFrontLeft_low",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1085401001,
+                "ParentUID": 524325362,
+                "Name": "HoverFrontLeft_low",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -4310,8 +4870,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 75162304,
-                        "MaterialID": 75162309,
+                        "MeshID": 823943770,
+                        "MaterialID": 823943775,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
