@@ -72,6 +72,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
     MEMBER(MemberType::GAMEOBJECT, mDashVFX);
+    MEMBER(MemberType::GAMEOBJECT, mCharacterMesh);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
@@ -1202,7 +1203,7 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
         return;
     }
 
-    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge" || collisionData->collidedWith->GetTag() == "Enemy")
     {
         mCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")

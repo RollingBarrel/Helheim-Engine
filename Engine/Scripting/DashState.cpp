@@ -11,42 +11,12 @@
 
 #include "ScriptComponent.h"
 #include "PoolManager.h"
-#include "TrailComponent.h"
-#include "ParticleSystemComponent.h"
 #include "GameObject.h"
-#include "Trail.h"
 
 DashState::DashState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 	mDashVFX = mPlayerController->GetDashVFX();
-	if (mDashVFX)
-	{
-		mDashVFX->SetEnabled(true);
-
-		if (mDashVFX->GetChildren().size() == 3)
-		{
-			mDashParticles = mDashVFX->GetChildren()[0];
-			mBegginingParticles = mDashVFX->GetChildren()[1];
-			mEndingParticles = mDashVFX->GetChildren()[2];
-		}
-
-		if (mDashParticles)
-		{
-			mDashParticles->SetEnabled(false);
-			reinterpret_cast<ParticleSystemComponent*>(mDashParticles->GetComponent(ComponentType::PARTICLESYSTEM))
-				->SetDuration(mPlayerController->GetDashDuration());
-		}
-		if (mBegginingParticles)
-		{
-			mBegginingParticles->SetEnabled(false);
-			//Duration set from the inspector (the time should be low)
-		}
-		if (mEndingParticles)
-		{
-			mEndingParticles->SetEnabled(false);
-			//Duration set from the inspector
-		}
-	}
+	mCharacterMesh = mPlayerController->GetCharacterMesh();
 }
 
 DashState::~DashState()
@@ -108,21 +78,12 @@ void DashState::Enter()
 	mDashTimer = 0.0f;
 	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-
-	if (mDashParticles)
-	{
-		mDashParticles->SetEnabled(false);
-		mDashParticles->SetEnabled(true);
-	}
-	if (mBegginingParticles)
-	{
-		mBegginingParticles->SetEnabled(false);
-		mBegginingParticles->SetEnabled(true);
-	}
-
 	//Pause Animation -> Set animation time -> Pause player rotation(Already done in PlayerController::HandleRotation() -> rotate player in dash direction
 	//Option 2: Pause Animation -> Set animation time (look at current animation from lower state machine 8 move states)
 	
+	mDashVFX->SetEnabled(true);
+	mCharacterMesh->SetEnabled(false);
+
 	mPlayerController->SetIsAnimationPlaying(false);
 	/*
 	std::string moveDir = mPlayerController->GetLowerAnimState();
@@ -168,11 +129,9 @@ void DashState::Enter()
 
 void DashState::Exit()
 {
-	if (mEndingParticles)
-	{
-		mEndingParticles->SetEnabled(false);
-		mEndingParticles->SetEnabled(true);
-	}
+	mDashVFX->SetEnabled(false);
+	mCharacterMesh->SetEnabled(true);
+
 	//Unpause Animation -> Restart animation state -> Unpause player rotation
 	mPlayerController->SetIsAnimationPlaying(true);
 	//mPlayerController->RestartAnimationState();

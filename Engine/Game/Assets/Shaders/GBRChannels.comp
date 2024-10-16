@@ -1,0 +1,15 @@
+#version 460 core
+
+uniform layout(binding = 0, rgba8) restrict image2D outImage;
+layout(binding = 0) uniform sampler2D inTex;
+
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+void main()
+{
+	ivec2 imgSize = imageSize(outImage);
+	if(gl_GlobalInvocationID.x < imgSize.x && gl_GlobalInvocationID.y < imgSize.y)
+	{
+		vec2 uv = vec2(gl_GlobalInvocationID.xy) / vec2(imgSize);
+		imageStore(outImage, ivec2(gl_GlobalInvocationID.xy), texture(inTex, uv).gbra);
+	}
+}

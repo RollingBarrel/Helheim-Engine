@@ -45,6 +45,14 @@ void Shootgun::Enter()
     App->GetInput()->SetGameControllerRumble(50000, 0, 150);
 }
 
+void Shootgun::Exit()
+{
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
+}
+
 void Shootgun::Attack(float time)
 {
     //LOG("ShotGun Attack");

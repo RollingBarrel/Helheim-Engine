@@ -18,15 +18,16 @@ public:
 	ResourceTexture(
 		unsigned int uid,
 		unsigned int glTarget,
-		unsigned int width, 
-		unsigned int height, 
-		unsigned int internalFormat, 
-		unsigned int texFormat, 
-		unsigned int dataType, 
-		unsigned int mipLevels, 
+		unsigned int width,
+		unsigned int height,
+		unsigned int internalFormat,
+		unsigned int texFormat,
+		unsigned int dataType,
+		unsigned int mipLevels,
 		unsigned int numPixels,
 		bool hasAlpha,
-		unsigned int texelSize);
+		unsigned int texelSize,
+		bool compressed);
 
 	~ResourceTexture();
 
@@ -40,6 +41,7 @@ public:
 	unsigned int GetMipLevels() const { return mMipLevels; }
 	unsigned int GetPixelsSize() const { return mPixelsSize; }
 	bool HasAlpha() const { return mHasAlpha; }
+	bool IsCompressed() const { return mCompressed; }
 	unsigned int GetOpenGLId() const { return mOpenGLId; }
 	unsigned int GetTextureHandle() const { return static_cast<unsigned int>(mTexHandle); }
 	bool IsBindless() const { return mTexHandle != 0; }
@@ -63,6 +65,7 @@ private:
 	unsigned int mTexelSize;
 
 	bool mHasAlpha;
+	bool mCompressed;
 
 	unsigned int mOpenGLId;
 	mutable uint64_t mTexHandle;

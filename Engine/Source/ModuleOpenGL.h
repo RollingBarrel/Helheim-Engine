@@ -109,6 +109,7 @@ public:
 	unsigned int GetSpecPrefilteredProgramId() const { return mSpecPrefilteredProgramId; }
 	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
 	unsigned int GetScreenTexProgramId() const { return mGameProgramId; }
+	unsigned int GetBGRChannelsProgramId() const { return mBGRChannelsProgramId; }
 
 	float GetAoRange() const { return mAoRange; };
 	float GetAoBias() const { return mAoBias; };
@@ -262,6 +263,7 @@ private:
 	unsigned int mNoiseProgramId = 0;
 	unsigned int mVolLightProgramId = 0;
 	unsigned int mVolFogPostpoProgramId = 0;
+	unsigned int mBGRChannelsProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
