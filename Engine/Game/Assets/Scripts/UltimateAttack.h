@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "Geometry/AABB.h"
 #include "TimerScript.h"
 
 GENERATE_BODY(UltimateAttack);
@@ -38,5 +39,7 @@ private:
 	TimerScript mDamageTimer;
 	TimerScript mExpansionTimer;
 	float mLengthPercent = 10.0f;
+
+	AABB mNoDamageArea;
 };
 

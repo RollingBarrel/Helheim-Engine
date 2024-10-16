@@ -77,17 +77,31 @@ void UltimateAttack::SetFinalPoint()
     Ray ray;
     ray.dir = mGameObject->GetFront();
     ray.pos = mGameObject->GetWorldPosition();
-    std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy" };
+    std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy"};
     Physics::Raycast(hit, ray, 35.0f, &ignoreTags);
     if (hit.IsValid()) {
 
-        /*currentFinalpoint.x = Lerp(currentFinalpoint.x, hit.mHitPoint.x, App->GetDt());
-        currentFinalpoint.z = Lerp(currentFinalpoint.z, hit.mHitPoint.z, App->GetDt());*/
         currentFinalpoint.x = hit.mHitPoint.x;
         currentFinalpoint.z = hit.mHitPoint.z;
         mFinalPoint1->SetWorldPosition(currentFinalpoint);
         mFinalPoint2->SetWorldPosition(currentFinalpoint);
         mFinalPoint3->SetWorldPosition(currentFinalpoint);
+
+        float3 forwardDirection = ray.dir;
+
+        float distanceForward = 30.0f; 
+
+        float3 areaCenter = hit.mHitPoint + forwardDirection * (distanceForward / 2);
+
+        float3 halfExtents(distanceForward / 2, distanceForward / 2, distanceForward / 2);
+
+        float3 minPoint = areaCenter - halfExtents; 
+        float3 maxPoint = areaCenter + halfExtents; 
+
+
+        AABB exclusionArea(minPoint, maxPoint);
+
+        mNoDamageArea = exclusionArea;
     }
 }
 
@@ -99,8 +113,9 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
     ray.dir = mGameObject->GetFront();
     ray.pos = mGameObject->GetWorldPosition();
 
+    bool isBehind = mNoDamageArea.Contains(collisionGO->GetWorldPosition());
 
-    if (collisionGO->GetTag() == "Enemy")
+    if (collisionGO->GetTag() == "Enemy" && !isBehind )
     {
         Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(collisionGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (enemyScript)
