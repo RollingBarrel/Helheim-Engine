@@ -3014,8 +3014,8 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -3040,7 +3040,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -3056,7 +3056,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -3074,8 +3074,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3118,6 +3118,15 @@
                                     0.35600000619888308,
                                     0.35600000619888308,
                                     0.35600000619888308,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -3168,8 +3177,8 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -3194,7 +3203,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -3210,7 +3219,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -3228,8 +3237,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3282,6 +3291,15 @@
                                     0.2799999713897705,
                                     0.2799999713897705,
                                     -431602080.0
+                                ]
+                            },
+                            {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -3357,7 +3375,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -3373,7 +3391,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -3391,8 +3409,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3423,9 +3441,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -3435,6 +3453,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -3511,7 +3538,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -3527,7 +3554,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -3545,8 +3572,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3593,12 +3620,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -3612,24 +3648,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -3880,7 +3898,7 @@
                 ]
             },
             {
-                "UID": 1188646111,
+                "UID": 733666531,
                 "ParentUID": 422455220,
                 "Name": "Particles (1)",
                 "Enabled": true,
@@ -3908,14 +3926,14 @@
                 "Components": []
             },
             {
-                "UID": 1744987522,
-                "ParentUID": 1188646111,
+                "UID": 1290007942,
+                "ParentUID": 733666531,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -3940,7 +3958,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -3956,7 +3974,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -3974,8 +3992,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4022,6 +4040,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -4062,14 +4089,14 @@
                 ]
             },
             {
-                "UID": 183503832,
-                "ParentUID": 1188646111,
+                "UID": 1877191456,
+                "ParentUID": 733666531,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -4094,7 +4121,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -4110,7 +4137,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -4128,8 +4155,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4185,6 +4212,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -4225,8 +4261,8 @@
                 ]
             },
             {
-                "UID": 752446644,
-                "ParentUID": 1188646111,
+                "UID": 298302516,
+                "ParentUID": 733666531,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -4257,7 +4293,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -4273,7 +4309,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -4291,8 +4327,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4323,9 +4359,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -4335,6 +4371,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -4379,8 +4424,8 @@
                 ]
             },
             {
-                "UID": 1324870506,
-                "ParentUID": 1188646111,
+                "UID": 871909935,
+                "ParentUID": 733666531,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -4411,7 +4456,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -4427,7 +4472,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -4445,8 +4490,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4493,12 +4538,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -4512,24 +4566,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -4780,7 +4816,7 @@
                 ]
             },
             {
-                "UID": 88544868,
+                "UID": 1808604256,
                 "ParentUID": 497228174,
                 "Name": "Particles (2)",
                 "Enabled": true,
@@ -4808,14 +4844,14 @@
                 "Components": []
             },
             {
-                "UID": 645234384,
-                "ParentUID": 88544868,
+                "UID": 217810125,
+                "ParentUID": 1808604256,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -4840,7 +4876,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -4856,7 +4892,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -4874,8 +4910,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4922,6 +4958,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -4962,14 +5007,14 @@
                 ]
             },
             {
-                "UID": 1240145829,
-                "ParentUID": 88544868,
+                "UID": 806803785,
+                "ParentUID": 1808604256,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -4994,7 +5039,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -5010,7 +5055,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -5028,8 +5073,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5085,6 +5130,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -5125,8 +5179,8 @@
                 ]
             },
             {
-                "UID": 1810829166,
-                "ParentUID": 88544868,
+                "UID": 1373449104,
+                "ParentUID": 1808604256,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -5157,7 +5211,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -5173,7 +5227,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -5191,8 +5245,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5223,9 +5277,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -5235,6 +5289,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -5279,8 +5342,8 @@
                 ]
             },
             {
-                "UID": 238345358,
-                "ParentUID": 88544868,
+                "UID": 1945942587,
+                "ParentUID": 1808604256,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -5311,7 +5374,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -5327,7 +5390,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -5345,8 +5408,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5393,12 +5456,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -5412,24 +5484,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -5680,7 +5734,7 @@
                 ]
             },
             {
-                "UID": 953428814,
+                "UID": 502937432,
                 "ParentUID": 579032849,
                 "Name": "Particles (3)",
                 "Enabled": true,
@@ -5708,14 +5762,14 @@
                 "Components": []
             },
             {
-                "UID": 1514713316,
-                "ParentUID": 953428814,
+                "UID": 1056145898,
+                "ParentUID": 502937432,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -5740,7 +5794,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -5756,7 +5810,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -5774,8 +5828,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5822,6 +5876,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -5862,14 +5925,14 @@
                 ]
             },
             {
-                "UID": 2098206917,
-                "ParentUID": 953428814,
+                "UID": 1648620608,
+                "ParentUID": 502937432,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -5894,7 +5957,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -5910,7 +5973,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -5928,8 +5991,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5985,6 +6048,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -6025,8 +6097,8 @@
                 ]
             },
             {
-                "UID": 519457219,
-                "ParentUID": 953428814,
+                "UID": 73908928,
+                "ParentUID": 502937432,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -6057,7 +6129,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -6073,7 +6145,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -6091,8 +6163,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6123,9 +6195,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -6135,6 +6207,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -6179,8 +6260,8 @@
                 ]
             },
             {
-                "UID": 1091045629,
-                "ParentUID": 953428814,
+                "UID": 643826434,
+                "ParentUID": 502937432,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -6211,7 +6292,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -6227,7 +6308,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -6245,8 +6326,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6293,12 +6374,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -6312,24 +6402,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -6580,7 +6652,7 @@
                 ]
             },
             {
-                "UID": 1180341875,
+                "UID": 137918760,
                 "ParentUID": 669400907,
                 "Name": "Particles (4)",
                 "Enabled": true,
@@ -6608,14 +6680,14 @@
                 "Components": []
             },
             {
-                "UID": 1736335181,
-                "ParentUID": 1180341875,
+                "UID": 688760112,
+                "ParentUID": 137918760,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -6640,7 +6712,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -6656,7 +6728,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -6674,8 +6746,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6722,6 +6794,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -6762,14 +6843,14 @@
                 ]
             },
             {
-                "UID": 190655458,
-                "ParentUID": 1180341875,
+                "UID": 1303165437,
+                "ParentUID": 137918760,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -6794,7 +6875,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -6810,7 +6891,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -6828,8 +6909,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6885,6 +6966,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -6925,8 +7015,8 @@
                 ]
             },
             {
-                "UID": 763566667,
-                "ParentUID": 1180341875,
+                "UID": 1877886792,
+                "ParentUID": 137918760,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -6957,7 +7047,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -6973,7 +7063,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -6991,8 +7081,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7023,9 +7113,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -7035,6 +7125,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -7079,8 +7178,8 @@
                 ]
             },
             {
-                "UID": 1352560327,
-                "ParentUID": 1180341875,
+                "UID": 297675053,
+                "ParentUID": 137918760,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -7111,7 +7210,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -7127,7 +7226,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -7145,8 +7244,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7193,12 +7292,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -7212,24 +7320,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -7480,7 +7570,7 @@
                 ]
             },
             {
-                "UID": 1071642705,
+                "UID": 1379671755,
                 "ParentUID": 742781441,
                 "Name": "Particles (5)",
                 "Enabled": true,
@@ -7508,14 +7598,14 @@
                 "Components": []
             },
             {
-                "UID": 1633484175,
-                "ParentUID": 1071642705,
+                "UID": 1954741215,
+                "ParentUID": 1379671755,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -7540,7 +7630,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -7556,7 +7646,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -7574,8 +7664,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7622,6 +7712,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -7662,14 +7761,14 @@
                 ]
             },
             {
-                "UID": 84323402,
-                "ParentUID": 1071642705,
+                "UID": 402029771,
+                "ParentUID": 1379671755,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -7694,7 +7793,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -7710,7 +7809,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -7728,8 +7827,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7785,6 +7884,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -7825,8 +7933,8 @@
                 ]
             },
             {
-                "UID": 649228196,
-                "ParentUID": 1071642705,
+                "UID": 971947277,
+                "ParentUID": 1379671755,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -7857,7 +7965,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -7873,7 +7981,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -7891,8 +7999,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7923,9 +8031,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -7935,6 +8043,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -7979,8 +8096,8 @@
                 ]
             },
             {
-                "UID": 1220329259,
-                "ParentUID": 1071642705,
+                "UID": 1543048340,
+                "ParentUID": 1379671755,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -8011,7 +8128,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -8027,7 +8144,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -8045,8 +8162,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8093,12 +8210,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -8112,24 +8238,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -8380,7 +8488,7 @@
                 ]
             },
             {
-                "UID": 947637340,
+                "UID": 157143736,
                 "ParentUID": 821105066,
                 "Name": "Particles (6)",
                 "Enabled": true,
@@ -8408,14 +8516,14 @@
                 "Components": []
             },
             {
-                "UID": 1512472513,
-                "ParentUID": 947637340,
+                "UID": 710909170,
+                "ParentUID": 157143736,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -8440,7 +8548,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -8456,7 +8564,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -8474,8 +8582,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8522,6 +8630,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -8562,14 +8679,14 @@
                 ]
             },
             {
-                "UID": 2096940808,
-                "ParentUID": 947637340,
+                "UID": 1296143296,
+                "ParentUID": 157143736,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -8594,7 +8711,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -8610,7 +8727,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -8628,8 +8745,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8685,6 +8802,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -8725,8 +8851,8 @@
                 ]
             },
             {
-                "UID": 520767087,
-                "ParentUID": 947637340,
+                "UID": 1864250656,
+                "ParentUID": 157143736,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -8757,7 +8883,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -8773,7 +8899,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -8791,8 +8917,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8823,9 +8949,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -8835,6 +8961,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -8879,8 +9014,8 @@
                 ]
             },
             {
-                "UID": 1106697423,
-                "ParentUID": 947637340,
+                "UID": 287102241,
+                "ParentUID": 157143736,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -8911,7 +9046,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -8927,7 +9062,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -8945,8 +9080,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8993,12 +9128,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -9012,24 +9156,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -9280,7 +9406,7 @@
                 ]
             },
             {
-                "UID": 977039280,
+                "UID": 485199067,
                 "ParentUID": 893928632,
                 "Name": "Particles (7)",
                 "Enabled": true,
@@ -9308,14 +9434,14 @@
                 "Components": []
             },
             {
-                "UID": 1531500924,
-                "ParentUID": 977039280,
+                "UID": 1034021410,
+                "ParentUID": 485199067,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -9340,7 +9466,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -9356,7 +9482,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -9374,8 +9500,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -9422,6 +9548,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -9462,14 +9597,14 @@
                 ]
             },
             {
-                "UID": 2121121173,
-                "ParentUID": 977039280,
+                "UID": 1619882125,
+                "ParentUID": 485199067,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -9494,7 +9629,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -9510,7 +9645,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -9528,8 +9663,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -9585,6 +9720,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -9625,8 +9769,8 @@
                 ]
             },
             {
-                "UID": 546479114,
-                "ParentUID": 977039280,
+                "UID": 36119715,
+                "ParentUID": 485199067,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -9657,7 +9801,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -9673,7 +9817,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -9691,8 +9835,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -9723,9 +9867,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -9735,6 +9879,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -9779,8 +9932,8 @@
                 ]
             },
             {
-                "UID": 1119181460,
-                "ParentUID": 977039280,
+                "UID": 608613198,
+                "ParentUID": 485199067,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -9811,7 +9964,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -9827,7 +9980,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -9845,8 +9998,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -9893,12 +10046,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -9912,24 +10074,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -10180,7 +10324,7 @@
                 ]
             },
             {
-                "UID": 2033747544,
+                "UID": 1423599737,
                 "ParentUID": 964454705,
                 "Name": "Particles (8)",
                 "Enabled": true,
@@ -10208,14 +10352,14 @@
                 "Components": []
             },
             {
-                "UID": 437662217,
-                "ParentUID": 2033747544,
+                "UID": 1983631061,
+                "ParentUID": 1423599737,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -10240,7 +10384,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -10256,7 +10400,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -10274,8 +10418,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -10322,6 +10466,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -10362,14 +10515,14 @@
                 ]
             },
             {
-                "UID": 1061884103,
-                "ParentUID": 2033747544,
+                "UID": 428691745,
+                "ParentUID": 1423599737,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -10394,7 +10547,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -10410,7 +10563,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -10428,8 +10581,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -10485,6 +10638,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -10525,8 +10687,8 @@
                 ]
             },
             {
-                "UID": 1667865287,
-                "ParentUID": 2033747544,
+                "UID": 996033274,
+                "ParentUID": 1423599737,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -10557,7 +10719,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -10573,7 +10735,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -10591,8 +10753,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -10623,9 +10785,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -10635,6 +10797,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -10679,8 +10850,8 @@
                 ]
             },
             {
-                "UID": 75469873,
-                "ParentUID": 2033747544,
+                "UID": 1578761044,
+                "ParentUID": 1423599737,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -10711,7 +10882,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -10727,7 +10898,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -10745,8 +10916,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -10793,12 +10964,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -10812,24 +10992,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -11080,7 +11242,7 @@
                 ]
             },
             {
-                "UID": 370405189,
+                "UID": 369511720,
                 "ParentUID": 1034702294,
                 "Name": "Particles (9)",
                 "Enabled": true,
@@ -11108,14 +11270,14 @@
                 "Components": []
             },
             {
-                "UID": 933151732,
-                "ParentUID": 370405189,
+                "UID": 925087300,
+                "ParentUID": 369511720,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4586029052734377,
-                    -0.2809791564941406,
+                    2.4305267333984377,
+                    -0.38556671142578127,
                     2.3647613525390627
                 ],
                 "Rotation": [
@@ -11140,7 +11302,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -11156,7 +11318,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -11174,8 +11336,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -11222,6 +11384,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.782841682434082,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -11262,14 +11433,14 @@
                 ]
             },
             {
-                "UID": 1525626442,
-                "ParentUID": 370405189,
+                "UID": 1528701370,
+                "ParentUID": 369511720,
                 "Name": "Particle (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3454971313476564,
-                    -0.20163345336914063,
+                    2.2917251586914064,
+                    -0.40235137939453127,
                     -2.2242355346679689
                 ],
                 "Rotation": [
@@ -11294,7 +11465,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -11310,7 +11481,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -11328,8 +11499,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -11385,6 +11556,15 @@
                                 ]
                             },
                             {
+                                "Time": 0.7962467074394226,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
+                                ]
+                            },
+                            {
                                 "Time": 0.9932973384857178,
                                 "Color": [
                                     0.0,
@@ -11425,8 +11605,8 @@
                 ]
             },
             {
-                "UID": 2097284473,
-                "ParentUID": 370405189,
+                "UID": 2102169547,
+                "ParentUID": 369511720,
                 "Name": "Particle (6)",
                 "Enabled": true,
                 "Active": true,
@@ -11457,7 +11637,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -11473,7 +11653,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -11491,8 +11671,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -11523,9 +11703,9 @@
                             {
                                 "Time": 0.013404838740825653,
                                 "Color": [
-                                    0.5399999618530273,
-                                    0.5399999618530273,
-                                    0.5399999618530273,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
+                                    0.15200001001358033,
                                     1.0
                                 ]
                             },
@@ -11535,6 +11715,15 @@
                                     0.3320000171661377,
                                     0.3320000171661377,
                                     0.3320000171661377,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123325109481812,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
                                     1.0
                                 ]
                             },
@@ -11579,8 +11768,8 @@
                 ]
             },
             {
-                "UID": 528908304,
-                "ParentUID": 370405189,
+                "UID": 523489470,
+                "ParentUID": 369511720,
                 "Name": "Particle (7)",
                 "Enabled": true,
                 "Active": true,
@@ -11611,7 +11800,7 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 40.0,
+                        "EmissionRate": 20.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -11627,7 +11816,7 @@
                             "MaxValue": 2.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.20000000298023225,
@@ -11645,8 +11834,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MinValue": 1.75,
+                                "MaxValue": 3.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -11693,12 +11882,21 @@
                                 ]
                             },
                             {
-                                "Time": 0.10723860561847687,
+                                "Time": 0.09115283936262131,
                                 "Color": [
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.25599998235702517,
                                     0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8016090989112854,
+                                "Color": [
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    0.0117647061124444,
+                                    1.0
                                 ]
                             },
                             {
@@ -11712,24 +11910,6 @@
                             },
                             {
                                 "Time": 0.9812331199645996,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9839141964912415,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9892755746841431,
                                 "Color": [
                                     0.0,
                                     0.0,
