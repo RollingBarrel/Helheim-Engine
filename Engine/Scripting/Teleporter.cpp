@@ -18,6 +18,8 @@ CREATE(Teleporter)
     MEMBER(MemberType::FLOAT3, mEndPos);
     MEMBER(MemberType::FLOAT, mDuration);
     MEMBER(MemberType::FLOAT, mCameraDif);
+    MEMBER(MemberType::GAMEOBJECT, mDoorEntrance);
+    MEMBER(MemberType::GAMEOBJECT, mDoorExit);
     END_CREATE;
 }
 
@@ -58,6 +60,9 @@ void Teleporter::Update()
         mPlayer->SetWorldPosition(position);
         mGameObject->SetWorldPosition(position);
 
+        if (mDoorEntrance)
+            mDoorEntrance->SetEnabled(true);
+
         float missing_distance = position.Distance(mIsAtStart ? mEndPos : mStartPos);
         if (mCurrentTime > mDuration)
         {
@@ -69,7 +74,6 @@ void Teleporter::Update()
             {
                 mPlayerAnimation->SendTrigger("tWalkForward", 0.2f);
                 mPlayerAnimation->SendSpineTrigger("tWalkForward", 0.2f);
-
             }
 
             if (mIsAtStart)
@@ -92,7 +96,6 @@ void Teleporter::Update()
 
             }
 
-
         }
     }
     else if (mIsEntering)
@@ -104,6 +107,9 @@ void Teleporter::Update()
         float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (mCurrentTime / mEnterDuration);
         mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
         
+
+        if (mDoorEntrance)
+            mDoorEntrance->SetEnabled(false);
 
         if (mCurrentTime > mEnterDuration)
         {
@@ -148,6 +154,9 @@ void Teleporter::Update()
         float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (1-(mCurrentTime / mEnterDuration));
         mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
 
+
+        if (mDoorExit)
+            mDoorExit->SetEnabled(false);
         
         if (mCurrentTime > mEnterDuration)
         {
@@ -166,6 +175,9 @@ void Teleporter::Update()
             GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, true);
             GameManager::GetInstance()->GetAudio()->Release(SFX::ELEVATOR, mElevatorAudio);
             mIsCooldown = true;
+           
+            if(mDoorExit)
+                mDoorExit->SetEnabled(true);
         }
     }
     if (mIsCooldown)

@@ -88,6 +88,16 @@
                                 "VariableName": "mCameraDif",
                                 "MemberType": 1,
                                 "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mDoorEntrance",
+                                "MemberType": 3,
+                                "VariableData": 1029815982
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 1050423798
                             }
                         ]
                     },
@@ -380,7 +390,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -34.060001373291019,
+                    -33.65999984741211,
                     0.6406631469726563,
                     -0.47674083709716799
                 ],
@@ -409,8 +419,8 @@
                                 "VariableName": "mStartPos",
                                 "MemberType": 4,
                                 "VariableData": [
-                                    85.63999938964844,
-                                    65.12000274658203,
+                                    84.41000366210938,
+                                    65.08999633789063,
                                     13.010000228881836
                                 ]
                             },
@@ -418,8 +428,8 @@
                                 "VariableName": "mEndPos",
                                 "MemberType": 4,
                                 "VariableData": [
-                                    69.5,
-                                    36.33000183105469,
+                                    69.80999755859375,
+                                    36.20000076293945,
                                     13.010000228881836
                                 ]
                             },
@@ -432,6 +442,16 @@
                                 "VariableName": "mCameraDif",
                                 "MemberType": 1,
                                 "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mDoorEntrance",
+                                "MemberType": 3,
+                                "VariableData": 1056576404
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 1094380607
                             }
                         ]
                     },
@@ -439,13 +459,13 @@
                         "ComponentType": 17,
                         "IsEnabled": true,
                         "Center": [
-                            0.0,
-                            1.850000023841858,
-                            0.05000000074505806
+                            0.20000000298023225,
+                            1.649999976158142,
+                            0.0
                         ],
                         "Size": [
-                            5.5,
-                            2.3499999046325685,
+                            4.699999809265137,
+                            2.0999999046325685,
                             3.299999952316284
                         ],
                         "ColliderType": 0,
@@ -460,7 +480,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.4000000059604645,
+                    0.0,
                     0.6200000047683716,
                     0.05000000074505806
                 ],
