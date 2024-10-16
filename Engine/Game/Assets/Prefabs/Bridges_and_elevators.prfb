@@ -110,7 +110,7 @@
                 ]
             },
             {
-                "UID": 2062460666,
+                "UID": 942511248,
                 "ParentUID": 2050276991,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
@@ -138,14 +138,14 @@
                 "Components": []
             },
             {
-                "UID": 2074017752,
-                "ParentUID": 2062460666,
+                "UID": 1029815982,
+                "ParentUID": 942511248,
                 "Name": "OB_BB_Puerta.001",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.20000000298023225,
-                    0.38499999046325686,
+                    4.679999828338623,
+                    -0.10000000149011612,
                     -0.10000000149011612
                 ],
                 "Rotation": [
@@ -166,8 +166,8 @@
                 "Components": []
             },
             {
-                "UID": 2083207724,
-                "ParentUID": 2074017752,
+                "UID": 1041373068,
+                "ParentUID": 1029815982,
                 "Name": "OB_BB_Puerta.001",
                 "Enabled": true,
                 "Active": true,
@@ -195,8 +195,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 1109235289,
-                        "MaterialID": 1109235294,
+                        "MeshID": 1050802481,
+                        "MaterialID": 1050802486,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -204,14 +204,80 @@
                 ]
             },
             {
-                "UID": 2092328075,
-                "ParentUID": 2062460666,
-                "Name": "OB_Mini_Elevator",
+                "UID": 1050423798,
+                "ParentUID": 942511248,
+                "Name": "OB_BB_Puerta.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.289999961853027,
+                    -0.10210364311933518,
+                    -0.10000000149011612
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1059126423,
+                "ParentUID": 1050423798,
+                "Name": "OB_BB_Puerta.002",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1050802494,
+                        "MaterialID": 1050802486,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1067689806,
+                "ParentUID": 942511248,
+                "Name": "OB_Mini_Elevator",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    -0.4855532944202423,
                     0.0
                 ],
                 "Rotation": [
@@ -232,8 +298,8 @@
                 "Components": []
             },
             {
-                "UID": 2101309184,
-                "ParentUID": 2092328075,
+                "UID": 1076044326,
+                "ParentUID": 1067689806,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -261,8 +327,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 1109235295,
-                        "MaterialID": 1109235300,
+                        "MeshID": 1050802487,
+                        "MaterialID": 1050802492,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -270,8 +336,8 @@
                 ]
             },
             {
-                "UID": 2110429535,
-                "ParentUID": 2092328075,
+                "UID": 1084189983,
+                "ParentUID": 1067689806,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -299,8 +365,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 1109235301,
-                        "MaterialID": 1109235294,
+                        "MeshID": 1050802493,
+                        "MaterialID": 1050802486,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -314,7 +380,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -32.558197021484378,
+                    -34.060001373291019,
                     0.6406631469726563,
                     -0.47674083709716799
                 ],
@@ -388,13 +454,13 @@
                 ]
             },
             {
-                "UID": 2129923415,
+                "UID": 947480297,
                 "ParentUID": 2119549886,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.6000000238418579,
+                    0.4000000059604645,
                     0.14000000059604646,
                     0.05000000074505806
                 ],
@@ -405,7 +471,7 @@
                     1.0
                 ],
                 "Scale": [
-                    0.8999999761581421,
+                    1.0,
                     1.0,
                     1.0
                 ],
@@ -416,14 +482,14 @@
                 "Components": []
             },
             {
-                "UID": 2139183008,
-                "ParentUID": 2129923415,
+                "UID": 1056576404,
+                "ParentUID": 947480297,
                 "Name": "OB_BB_Puerta.001",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.20000000298023225,
-                    0.38499999046325686,
+                    4.679999828338623,
+                    -0.10000000149011612,
                     -0.10000000149011612
                 ],
                 "Rotation": [
@@ -444,8 +510,8 @@
                 "Components": []
             },
             {
-                "UID": 750091,
-                "ParentUID": 2139183008,
+                "UID": 1071893024,
+                "ParentUID": 1056576404,
                 "Name": "OB_BB_Puerta.001",
                 "Enabled": true,
                 "Active": true,
@@ -473,8 +539,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 1109235289,
-                        "MaterialID": 1109235294,
+                        "MeshID": 1050802481,
+                        "MaterialID": 1050802486,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -482,14 +548,80 @@
                 ]
             },
             {
-                "UID": 9870442,
-                "ParentUID": 2129923415,
-                "Name": "OB_Mini_Elevator",
+                "UID": 1094380607,
+                "ParentUID": 947480297,
+                "Name": "OB_BB_Puerta.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.289999961853027,
+                    -0.10210364311933518,
+                    -0.10000000149011612
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1117494779,
+                "ParentUID": 1094380607,
+                "Name": "OB_BB_Puerta.002",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1050802494,
+                        "MaterialID": 1050802486,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1141722887,
+                "ParentUID": 947480297,
+                "Name": "OB_Mini_Elevator",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    -0.4855532944202423,
                     0.0
                 ],
                 "Rotation": [
@@ -510,8 +642,8 @@
                 "Components": []
             },
             {
-                "UID": 19130035,
-                "ParentUID": 9870442,
+                "UID": 1163583881,
+                "ParentUID": 1141722887,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -539,8 +671,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 1109235295,
-                        "MaterialID": 1109235300,
+                        "MeshID": 1050802487,
+                        "MaterialID": 1050802492,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -548,8 +680,8 @@
                 ]
             },
             {
-                "UID": 28250386,
-                "ParentUID": 9870442,
+                "UID": 1186210706,
+                "ParentUID": 1141722887,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -577,8 +709,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 1109235301,
-                        "MaterialID": 1109235294,
+                        "MeshID": 1050802493,
+                        "MaterialID": 1050802486,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
