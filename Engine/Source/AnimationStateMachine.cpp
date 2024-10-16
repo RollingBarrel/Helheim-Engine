@@ -16,6 +16,9 @@ AnimationStateMachine::AnimationStateMachine(unsigned int animationUid = 0)
 	mStates[0].mLoop = true;
 }
 
+AnimationStateMachine::AnimationStateMachine(const AnimationStateMachine& other): 
+	mStates(other.mStates), mTransitions(other.mTransitions), mName(other.mName), mResourceUID(other.mResourceUID), mAnimationUID(other.mAnimationUID) {}
+
 
 AnimationStateMachine::~AnimationStateMachine()
 {
@@ -129,6 +132,7 @@ void AnimationStateMachine::AddTransition(const std::string& sourceName, const s
 {
 	AnimationTransition newTransition = AnimationTransition(sourceName, targetName, trigger);
 	mTransitions.push_back(newTransition);
+	mTransitionMap[sourceName][trigger] = targetName;
 }
 
 void AnimationStateMachine::RemoveTransition(int index)
@@ -193,6 +197,12 @@ void AnimationStateMachine::SetTransitionTarget(int index, const std::string& ta
 	mTransitions[index].mTarget = targetName;
 }
 
+void AnimationStateMachine::PushBackTransition(const AnimationTransition& transition)
+{
+	mTransitions.push_back(transition);
+	mTransitionMap[transition.mSource][transition.mTrigger] = transition.mTarget;
+
+}
 void AnimationStateMachine::SaveResource(const char* path, bool isLibrary) const
 {
 	unsigned int header[3] = { mAnimationUID, GetNumStates(), GetNumTransitions() };
@@ -373,6 +383,19 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 		delete[] smname;
 		delete[] fileBuffer;
 	}
+
+}
+
+const std::string AnimationStateMachine::GetNextState(const std::string& currentState, const std::string& trigger) const
+{
+	auto sourceIt = mTransitionMap.find(currentState);
+	if (sourceIt != mTransitionMap.end()) {
+		auto triggerIt = sourceIt->second.find(trigger);
+		if (triggerIt != sourceIt->second.end()) {
+			return triggerIt->second; // Return the target state
+		}
+	}
+	return currentState; // No transition found, return the current state
 
 }
 

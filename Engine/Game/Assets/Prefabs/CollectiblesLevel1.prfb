@@ -1,0 +1,138 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 555904744,
+                "ParentUID": 224743922,
+                "Name": "Section3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -89.64684295654297,
+                    -3.7434139699144e-7,
+                    7.734513282775879
+                ],
+                "Rotation": [
+                    6.181724643283815e-8,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 315460085,
+                "ParentUID": 555904744,
+                "Name": "Decal_Section3_Number",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    -0.4000000059604645,
+                    5.405644416809082
+                ],
+                "Rotation": [
+                    -0.5,
+                    -0.5,
+                    -0.5,
+                    0.5
+                ],
+                "Scale": [
+                    5.0,
+                    5.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 1971390245,
+                        "EmisiveName": "Alpha_3.png",
+                        "EmisiveColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 365656826,
+                "ParentUID": 555904744,
+                "Name": "Decal_Section3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    -0.4000000059604645,
+                    -1.5907268524169922
+                ],
+                "Rotation": [
+                    -0.5,
+                    -0.5,
+                    -0.5,
+                    0.5
+                ],
+                "Scale": [
+                    10.0,
+                    10.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 587914962,
+                        "EmisiveName": "Alpha_Section.png",
+                        "EmisiveColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            }
+        ]
+    }
+}

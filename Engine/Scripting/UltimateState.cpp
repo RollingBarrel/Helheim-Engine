@@ -44,6 +44,7 @@ void UltimateState::Enter()
 	mUltimateDuration = mPlayerController->GetUltimateDuration();
 	mPlayerController->EnableUltimate(true);
 	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed()*mPlayerController->GetUltimateSlow());
+
 }
 
 void UltimateState::Exit()
@@ -54,10 +55,13 @@ void UltimateState::Exit()
 
 	if (GameManager::GetInstance()->GetHud())
 	{
-		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mPlayerController->GetUltimateCooldown());
+		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(0.0f);
 	}
 
 	mPlayerController->EnableLaser(true);
+	mPlayerController->UseUltimateResource();
+	mPlayerController->SetSpineAnimation("tAim", 0.3f);
+
 
 }
 
@@ -68,9 +72,8 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsUltimateUnlocked()
-		&& (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN ||
-			App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
+	if (mPlayerController->GetUltimateGO() && mPlayerController->IsUltimateUnlocked() && mPlayerController->GetUltimateResource() >= 100
+		&& (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
 		)
 	{
 		return true;

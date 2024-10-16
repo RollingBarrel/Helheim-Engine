@@ -17,6 +17,7 @@
 #include "ModuleWindow.h"
 #include "AudioManager.h"
 #include "GameManager.h"
+#include "PlayerStats.h"
 
 CREATE(PauseMenu)
 {
@@ -32,18 +33,24 @@ CREATE(PauseMenu)
     SEPARATOR("SETTINGS");
     MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOffGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOnGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncImageOn_On);
     MEMBER(MemberType::GAMEOBJECT, mVSyncImageOff_On);
+    MEMBER(MemberType::GAMEOBJECT, mVSyncBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOnGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOffGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenImageOn_On);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenImageOff_On);
+	MEMBER(MemberType::GAMEOBJECT, mFullscreenBackgroundGO);
+
 
     SEPARATOR("Play Btn");
     MEMBER(MemberType::GAMEOBJECT, mPlayGO);
@@ -68,6 +75,9 @@ CREATE(PauseMenu)
     MEMBER(MemberType::GAMEOBJECT, mQuitText);
     MEMBER(MemberType::GAMEOBJECT, mQuitHover);
     MEMBER(MemberType::GAMEOBJECT, mQuitClicked);
+
+    SEPARATOR("Back Btn");
+    MEMBER(MemberType::GAMEOBJECT, mBackGO);
 
     SEPARATOR("Keyboard Btn");
     MEMBER(MemberType::GAMEOBJECT, mKeyboardGO);
@@ -107,9 +117,6 @@ CREATE(PauseMenu)
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeUp);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeDown);
 
-    SEPARATOR("OTHERS");
-    MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
-
     END_CREATE;
 }
 
@@ -138,6 +145,9 @@ void PauseMenu::Start()
     mQuitButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnQuitButtonClick, this)));
     mQuitButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&PauseMenu::OnQuitButtonHover, this)));
     mQuitButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&PauseMenu::OnQuitButtonHoverOff, this)));
+
+    mBackButton = static_cast<ButtonComponent*>(mBackGO->GetComponent(ComponentType::BUTTON));
+    mBackButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnBackButtonClick, this)));
 
     // Options buttons
 
@@ -180,14 +190,21 @@ void PauseMenu::Start()
 
     mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mGeneralVolumeBackground = static_cast<ImageComponent*>(mGeneralVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
 
     mMusicVolumeSlider = static_cast<SliderComponent*>(mMusicVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mMusicVolumeFill = static_cast<ImageComponent*>(mMusicVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mMusicVolumeBackground = static_cast<ImageComponent*>(mMusicVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
+
     mEffectsVolumeSlider = static_cast<SliderComponent*>(mEffectsVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mEffectsVolumeFill = static_cast<ImageComponent*>(mEffectsVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mEffectsVolumeBackground = static_cast<ImageComponent*>(mEffectsVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
 
+    mVSyncBackground = static_cast<ImageComponent*>(mVSyncBackgroundGO->GetComponent(ComponentType::IMAGE));
     mVSyncOnButton = static_cast<ButtonComponent*>(mVSyncButtonOnGO->GetComponent(ComponentType::BUTTON));
     mVSyncOffButton = static_cast<ButtonComponent*>(mVSyncButtonOffGO->GetComponent(ComponentType::BUTTON));
+
+    mFullscreenBackground = static_cast<ImageComponent*>(mFullscreenBackgroundGO->GetComponent(ComponentType::IMAGE));
     mFullscreenOnButton = static_cast<ButtonComponent*>(mFullscreenButtonOnGO->GetComponent(ComponentType::BUTTON));
     mFullscreenOffButton = static_cast<ButtonComponent*>(mFullscreenButtonOffGO->GetComponent(ComponentType::BUTTON));
 
@@ -196,14 +213,12 @@ void PauseMenu::Start()
     mFullscreenOnButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnFullscreenButtonOnClick, this)));
     mFullscreenOffButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnFullscreenButtonOffClick, this)));
 
-    if (mAudioManagerGO)
-    {
-        ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
-        mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
-        mBGMID = mAudioManager->Play(BGM::MAINMENU);
-    }
+    mAudioManager = GameManager::GetInstance()->GetAudio();
 
     // Init the volume setting sliders
+    mMasterVolumeValue = App->GetAudio()->GetVolume("bus:/");
+    mMusicVolumeValue = App->GetAudio()->GetVolume("bus:/music");
+    mEffectsVolumeValue = App->GetAudio()->GetVolume("bus:/sfx");
     App->GetAudio()->SetVolume("bus:/", mMasterVolumeValue);
     mGeneralVolumeSlider->SetValue(mMasterVolumeValue);
     App->GetAudio()->SetVolume("bus:/music", mMusicVolumeValue);
@@ -214,25 +229,52 @@ void PauseMenu::Start()
     OpenMenu(MENU_TYPE::MAIN);
     OnPlayButtonHover(); // Hover first option when the menu is first laoded    
     OnKeyboardButtonHover(); // Pre-hover the first option
+
+    // Init the volume sliders alpha
+    mGeneralVolumeFill->SetAlpha(0.8f);
+    mMusicVolumeFill->SetAlpha(0.8f);
+    mEffectsVolumeFill->SetAlpha(0.8f);
+
 }
 
 void PauseMenu::Update()
 {
     Controls();
 
-    /*if (mIsScrolling)
+    if (mIsScrolling)
     {
         float3 currentPosition = mTextTransform->GetPosition();
-        if (currentPosition.y > 3400.0f) mTextTransform->SetPosition(float3(currentPosition.x, -500.0f, currentPosition.z));
-        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
-    }*/
+        if (currentPosition.y > 3800.0f) mTextTransform->SetPosition(float3(currentPosition.x, -700.0f, currentPosition.z));
+        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
+    }
+    mTimePassed += App->GetDt();
+}
+
+void PauseMenu::Reset()
+{
+    OpenMenu(MENU_TYPE::MAIN);
+
+    mPlayClicked->SetEnabled(false);
+    mOptionsClicked->SetEnabled(false);
+    mCreditsClicked->SetEnabled(false);
+    mQuitClicked->SetEnabled(false);
+
+    mControllerClicked->SetEnabled(false);
+    mKeyboardClicked->SetEnabled(false);
+    mAudioClicked->SetEnabled(false);
+    mSettingsClicked->SetEnabled(false);
+
+    OnPlayButtonHover(); // Hover first option when the menu is first laoded    
+    OnKeyboardButtonHover(); // Pre-hover the first option
 }
 
 void PauseMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) < -0.9f && mTimePassed >= mDebounceTime)))
     {
+        if (mIsAdjustingAudio) return;
+        mTimePassed = 0.0f; // Restart debounce timer
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
         if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         {
@@ -248,13 +290,15 @@ void PauseMenu::Controls()
         }
         else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
+
+
             if (mOptionsOption > 4)
             {
                 mOptionsOption--;
             }
             else
             {
-                mOptionsOption = 4;
+                mOptionsOption = 7;
             }
             HoverMenu(static_cast<MENU_TYPE>(mOptionsOption));
         }
@@ -285,9 +329,11 @@ void PauseMenu::Controls()
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) > 0.9f && mTimePassed >= mDebounceTime)))
     {
+        if (mIsAdjustingAudio) return;
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
+        mTimePassed = 0.0f; // Restart debounce timer
         if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         {
             if (mMainOption < 3)
@@ -340,69 +386,76 @@ void PauseMenu::Controls()
         }
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
-    {
+	if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
+		App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+		App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+	{
+		if (mCurrentMenu == MENU_TYPE::MAIN)
+		{
+			mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
 
-        if (mCurrentMenu == MENU_TYPE::MAIN)
-        {
-            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+			ClickMenu(static_cast<MENU_TYPE>(mMainOption));
+		}
+		else if (mCurrentMenu == MENU_TYPE::OPTIONS)
+		{
+			mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
 
-            ClickMenu(static_cast<MENU_TYPE>(mMainOption));
-        }
-        else if (mCurrentMenu == MENU_TYPE::OPTIONS)
-        {
-            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+			OpenMenu(static_cast<MENU_TYPE>(mOptionsOption));
+		}
+		else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
+		{
+			if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::VSYNC)
+			{
+				if (App->GetCurrentClock()->GetVsyncStatus())
+				{
+					OnVSyncButtonOffClick();
+				}
+				else
+				{
+					OnVSyncButtonOnClick();
+				}
+			}
+			else if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::FULL_SCREEN)
+			{
+				if (App->GetWindow()->IsWindowFullscreen())
+				{
+					OnFullscreenButtonOffClick();
+				}
+				else
+				{
+					OnFullscreenButtonOnClick();
+				}
+			}
+		}
+		else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+		{
+			mIsAdjustingAudio = true;
+			if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MASTER)
+			{
+				mGeneralVolumeFill->SetAlpha(1.f);
+			}
+			else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MUSIC)
+			{
+				mMusicVolumeFill->SetAlpha(1.f);
+			}
+			else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::EFFECTS)
+			{
+				mEffectsVolumeFill->SetAlpha(1.f);
+			}
+		}
 
-            OpenMenu(static_cast<MENU_TYPE>(mOptionsOption));
-        }
-        else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
-        {
-            if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::VSYNC)
-            {
-                if (App->GetCurrentClock()->GetVsyncStatus()) OnVSyncButtonOffClick();
-                else OnVSyncButtonOnClick();
-            }
-            else if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::FULL_SCREEN)
-            {
-                if (App->GetWindow()->IsWindowFullscreen()) OnFullscreenButtonOffClick();
-                else OnFullscreenButtonOnClick();
-            }
-        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) < -0.9f && mTimePassed >= mDebounceTime)))
     {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+        mTimePassed = 0.0f; // Restart debounce timer
+
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
+        {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.01f);
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
-    {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
-            OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.01f);
-    }
-
-    if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
-    {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
-            OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.1f);
-    }
-
-    if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
-    {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
-            OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.1f);
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
-    {
-        mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
-        if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD)
+        }
+        else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD)
         {
             if (mCurrentMenu == MENU_TYPE::KEYBOARD)
             {
@@ -421,14 +474,144 @@ void PauseMenu::Controls()
                 mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
                 mOptionsOption = 6;
                 mAudioClicked->SetEnabled(false);
+                OnAudioSettingsButtonHover();
             }
             else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
                 mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
                 mOptionsOption = 7;
                 mSettingsClicked->SetEnabled(false);
+                OnVideoSettingsButtonHover();
             }
+            OpenMenu(MENU_TYPE::OPTIONS);
+        }
+        else
+        {
+            mOptionsClicked->SetEnabled(false);
+            mCreditsClicked->SetEnabled(false);
+            OpenMenu(MENU_TYPE::MAIN);
+        }
+    }
 
+    if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) > 0.9f && mTimePassed >= mDebounceTime)))
+    {
+        mTimePassed = 0.0f; // Restart debounce timer
+
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
+        {
+            OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.01f);
+        }
+        else if (mCurrentMenu == MENU_TYPE::MAIN)
+        {
+            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+
+            ClickMenu(static_cast<MENU_TYPE>(mMainOption));
+        }
+        else if (mCurrentMenu == MENU_TYPE::OPTIONS)
+        {
+            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+
+            OpenMenu(static_cast<MENU_TYPE>(mOptionsOption));
+        }
+        else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
+        {
+            if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::VSYNC)
+            {
+                if (App->GetCurrentClock()->GetVsyncStatus())
+                {
+                    OnVSyncButtonOffClick();
+                }
+                else
+                {
+                    OnVSyncButtonOnClick();
+                }
+            }
+            else if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::FULL_SCREEN)
+            {
+                if (App->GetWindow()->IsWindowFullscreen())
+                {
+                    OnFullscreenButtonOffClick();
+                }
+                else
+                {
+                    OnFullscreenButtonOnClick();
+                }
+            }
+        }
+    }
+
+    if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+            OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.1f);
+    }
+
+    if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+            OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.1f);
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentMenu == MENU_TYPE::MAIN && GameManager::GetInstance()->IsPaused())
+        {
+            GameManager::GetInstance()->SetPaused(false, true);
+            return;
+        }
+
+        mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
+        if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD)
+        {
+            if (mCurrentMenu == MENU_TYPE::KEYBOARD)
+            {
+                mOptionsOption = 4;
+                mKeyboardClicked->SetEnabled(false);
+                OnKeyboardButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::CONTROLS)
+            {
+                mOptionsOption = 5;
+                mControllerClicked->SetEnabled(false);
+                OnControllerButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+            {
+                if (mIsAdjustingAudio)
+                {
+                    // TODO: Unselect the current volume slider 
+                    mIsAdjustingAudio = false;
+                    if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MASTER)
+                    {
+                        mGeneralVolumeFill->SetAlpha(0.8f);
+                    }
+                    else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MUSIC)
+                    {
+                        mMusicVolumeFill->SetAlpha(0.8f);
+                    }
+                    else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::EFFECTS)
+                    {
+                        mEffectsVolumeFill->SetAlpha(0.8f);
+                    }
+                    return; // Early return to avoid OpenMenu() call
+                }
+                else
+                {
+                    mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
+                    mOptionsOption = 6;
+                    mAudioClicked->SetEnabled(false);
+                    OnAudioSettingsButtonHover();
+                }
+            }
+            else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
+            {
+                mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
+                mOptionsOption = 7;
+                mSettingsClicked->SetEnabled(false);
+                OnVideoSettingsButtonHover();
+            }
             OpenMenu(MENU_TYPE::OPTIONS);
         }
         else
@@ -469,8 +652,8 @@ void PauseMenu::OpenMenu(MENU_TYPE type)
         break;
     case MENU_TYPE::CREDITS:
         mCreditsMenu->SetEnabled(true);
-        //mIsScrolling = true;
-        //mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
+        mIsScrolling = true;
+        mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
         mOptionsClicked->SetEnabled(false);
         mCreditsClicked->SetEnabled(true);
         break;
@@ -543,6 +726,7 @@ void PauseMenu::OnMainButtonClick()
 
 void PauseMenu::OnQuitButtonClick() 
 {
+    App->GetScene()->GetPlayerStats()->ResetStats();
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
@@ -554,6 +738,13 @@ void PauseMenu::OnOptionsButtonClick()
 void PauseMenu::OnCreditsButtonClick()
 {
     OpenMenu(MENU_TYPE::CREDITS);
+}
+
+void PauseMenu::OnBackButtonClick()
+{
+    mOptionsClicked->SetEnabled(false);
+    mCreditsClicked->SetEnabled(false);
+    OpenMenu(MENU_TYPE::MAIN);
 }
 
 void PauseMenu::OnPlayButtonClick()
@@ -778,19 +969,17 @@ void PauseMenu::HoverVideoMenu(VIDEO_SETTING_TYPE type)
     {
     case VIDEO_SETTING_TYPE::VSYNC:
         OnVSyncButtonHover();
-        LOG("VSYNC");
         break;
     case VIDEO_SETTING_TYPE::FULL_SCREEN:
         OnFullscreenButtonHover();
-        LOG("FULLSCREEN");
         break;
     }
 }
 
 void PauseMenu::OnGeneralVolumeHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    mGeneralVolumeFill->SetAlpha(1.f);
+    //TODO: Use when the slider is active - mGeneralVolumeFill->SetAlpha(1.f);
+    mGeneralVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::MASTER;
 
     //TODO: Abstract this abomination (in all of the hover functions)
@@ -800,7 +989,8 @@ void PauseMenu::OnGeneralVolumeHover()
 
 void PauseMenu::OnMusicVolumeHover()
 {
-    mMusicVolumeFill->SetAlpha(1.f);
+    // mMusicVolumeFill->SetAlpha(1.f);
+    mMusicVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::MUSIC;
 
     OnGeneralVolumeHoverOff();
@@ -809,7 +999,8 @@ void PauseMenu::OnMusicVolumeHover()
 
 void PauseMenu::OnEffectsVolumeHover()
 {
-    mEffectsVolumeFill->SetAlpha(1.f);
+    // mEffectsVolumeFill->SetAlpha(1.f);
+    mEffectsVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::EFFECTS;
 
     OnGeneralVolumeHoverOff();
@@ -818,28 +1009,26 @@ void PauseMenu::OnEffectsVolumeHover()
 
 void PauseMenu::OnVSyncButtonHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
-    //image->SetAlpha(1.f);
+
     mCurrentVideoSetting = VIDEO_SETTING_TYPE::VSYNC;
+    mVSyncBackground->SetAlpha(0.1f);
 
     OnGeneralVolumeHoverOff();
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    //OnFullscreenButtonHoverOff();
+    OnFullscreenButtonHoverOff();
 }
 
 void PauseMenu::OnFullscreenButtonHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
-    //image->SetAlpha(1.f);
     mCurrentVideoSetting = VIDEO_SETTING_TYPE::FULL_SCREEN;
+    mFullscreenBackground->SetAlpha(0.1f);
 
     OnGeneralVolumeHoverOff();
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    //OnVSyncButtonHoverOff();
+    OnVSyncButtonHoverOff();
 }
-
 void PauseMenu::OnQuitButtonHover()
 {
     if (mMainOption != 3)
@@ -1029,30 +1218,29 @@ void PauseMenu::OnVideoSettingsButtonHoverOff()
 
 void PauseMenu::OnGeneralVolumeHoverOff()
 {
-    mGeneralVolumeFill->SetAlpha(0.8f);
+    mGeneralVolumeBackground->SetAlpha(0.f);
 }
 
 void PauseMenu::OnMusicVolumeHoverOff()
 {
-    mMusicVolumeFill->SetAlpha(0.8f);
+    mMusicVolumeBackground->SetAlpha(0.f);
 }
 
 void PauseMenu::OnEffectsVolumeHoverOff()
 {
-    mEffectsVolumeFill->SetAlpha(0.8f);
+    mEffectsVolumeBackground->SetAlpha(0.f);
 }
 
-/*void PauseMenu::OnVSyncButtonHoverOff()
+void PauseMenu::OnVSyncButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-}*/
+    mVSyncBackground->SetAlpha(0.f);
+}
 
-/*void PauseMenu::OnFullscreenButtonHoverOff()
+void PauseMenu::OnFullscreenButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-}*/
+    mFullscreenBackground->SetAlpha(0.f);
+
+}
 
 void PauseMenu::OnGeneralUp()
 {

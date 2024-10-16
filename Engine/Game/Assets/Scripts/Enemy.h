@@ -6,9 +6,10 @@
 #include "TimerScript.h"
 
 class GameObject;
+class Component;
 class AnimationComponent;
 class AIAgentComponent;
-class Component;
+class BoxColliderComponent;
 
 enum class EnemyState
 {
@@ -21,7 +22,6 @@ enum class EnemyState
 	//Boss States
 	CHARGING_BULLET_HELL,
 	CHARGING_LASER,
-	WAKE,
 	DOWN,
 	PHASE
 };
@@ -54,6 +54,7 @@ protected:
 	virtual void Flee();
 	virtual void PlayStepAudio();
 	virtual void PlayAttackAudio() {};
+	void RotateHorizontally(const float3& target, float speed);
 
 	bool IsPlayerInRange(float range);
 	bool IsPlayerReachable();
@@ -82,6 +83,7 @@ protected:
 	GameObject* mPlayer = nullptr;
 	AnimationComponent* mAnimationComponent = nullptr;
 	AIAgentComponent* mAiAgentComponent = nullptr;
+	BoxColliderComponent* mCollider = nullptr;
 
 	//Timers
 	TimerScript mChargeDurationTimer;
@@ -96,10 +98,12 @@ protected:
 	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
-	float mFleeToAttackTime = 1.0f;
+	float mFleeToAttackTime = 1.25f;
 	TimerScript mDeathTimer;
 	float mVanishingTime = 0.0f;
 	float mDeathTime = 1.4f;
+	bool mFirstAttack = true;
+
 	//Transition Times
 	float mIdleTransitionDuration = 0.2f;
 	float mChaseTransitionDuration = 0.2f;
@@ -107,8 +111,10 @@ protected:
 	float mAttackTransitionDuration = 0.2f;
 	float mDeathTransitionDuration = 0.2f;
 
+
 	//Movement
 	float3 mEnemyCollisionDirection = float3::zero;
+	bool mIsFleeing = false;
 	// Step Sound
 	TimerScript mStepTimer;
 	float mStepDuration = 0.0f;

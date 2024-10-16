@@ -22,6 +22,8 @@ enum class PoolType
 	CREATURE_RANGE,		//9
 	ROBOT_EXPLOSIVE,	//10
 
+	BOSS_BULLET,		//11
+
 	LAST
 };
 
@@ -31,7 +33,8 @@ class PoolManager : public Script
 	FRIEND(PoolManager);
 public:	
 
-	PoolManager(GameObject* owner);
+	PoolManager(GameObject* owner) : Script(owner) {}
+	~PoolManager() {}
 
 	void Start() override;
 

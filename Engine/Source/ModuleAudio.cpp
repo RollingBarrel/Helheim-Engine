@@ -81,6 +81,7 @@ update_status ModuleAudio::Update(float dt)
 
 update_status ModuleAudio::PostUpdate(float dt)
 {
+	UpdatePendingReleases();
 	return UPDATE_CONTINUE;
 }
 
@@ -239,13 +240,25 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	return count - 1;
 }
 
+void ModuleAudio::Restart(const FMOD::Studio::EventDescription* eventDescription, const int id)
+{
+	if (id != -1)
+	{
+		FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
+		eventInstance->start();
+	}
+}
+
 void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
 	
+	int count = 0;
+	CheckError(eventDescription->getInstanceCount(&count));
+
 	if (eventInstance != nullptr)
 	{
-		eventInstance->setPaused(pause);
+		CheckError(eventInstance->setPaused(pause));
 	}
 	else 
 	{
@@ -258,13 +271,13 @@ FMOD::Channel* ModuleAudio::Play(const std::string& fileName)
 	FMOD::Sound* sound = nullptr;
 	FMOD::Channel* channel = nullptr;
 
-	FMOD_RESULT result = mCoreSystem->createSound(fileName.c_str(), FMOD_DEFAULT, nullptr, &sound);
+	FMOD_RESULT result = mCoreSystem->createStream(fileName.c_str(), FMOD_DEFAULT, nullptr, &sound);
 	CheckError(result);
 
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
-	//sound->set3DMinMaxDistance(0.5f, 100.0f);
+	sound->set3DMinMaxDistance(5.0f, 30.0f);
 	channel->setMode(FMOD_LOOP_NORMAL);
 	channel->setChannelGroup(mAudioChannelGroup);
 	return channel;
@@ -281,8 +294,9 @@ FMOD::Channel* ModuleAudio::PlayOneShot(const std::string& fileName)
 	FMOD::Channel* channel = nullptr; 
 
 	// Create the sound using the FMOD system
-	FMOD_RESULT result = mCoreSystem->createSound(fileName.c_str(), FMOD_DEFAULT, nullptr, &sound);
+	FMOD_RESULT result = mCoreSystem->createStream(fileName.c_str(), FMOD_DEFAULT, nullptr, &sound);
 	CheckError(result);
+	sound->set3DMinMaxDistance(5.0f, 30.0f);
 
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
@@ -299,7 +313,8 @@ void ModuleAudio::Release(FMOD::Channel* channel)
 
 	if (sound)
 	{
-		sound->release();  // Release the sound when playback ends
+		channel->stop();
+		sound->release();
 	}
 }
 
@@ -323,13 +338,64 @@ void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription
 
 	if (eventInstance != nullptr)
 	{
-		eventInstance->release();
+		FMOD_STUDIO_PLAYBACK_STATE state;
+		eventInstance->getPlaybackState(&state);
+
+		char eventPath[256];
+		eventDescription->getPath(eventPath, sizeof(eventPath), nullptr);
+
+		if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+		{
+			eventInstance->release();
+			LOG("Released event: %s", eventPath); 
+		}
+		else
+		{
+			LOG("Event '%s' is not stopped, cannot release", eventPath);
+			eventsPendingRelease.push_back(eventInstance);
+		}
 	}
-	else 
+	else
 	{
-		LOG("Cannot release event");
+		LOG("Cannot release event, eventInstance not found");
 	}
 }
+
+
+void ModuleAudio::UpdatePendingReleases()
+{
+	for (auto it = eventsPendingRelease.begin(); it != eventsPendingRelease.end();)
+	{
+		FMOD_STUDIO_PLAYBACK_STATE state;
+		(*it)->getPlaybackState(&state);
+
+		if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+		{
+			FMOD::Studio::EventDescription* eventDescription = nullptr;
+			(*it)->getDescription(&eventDescription);
+
+			char eventPath[256];
+			if (eventDescription != nullptr)
+			{
+				eventDescription->getPath(eventPath, sizeof(eventPath), nullptr);
+			}
+			else
+			{
+				snprintf(eventPath, sizeof(eventPath), "Unknown event");
+			}
+
+			(*it)->release();
+			LOG("Released event: %s", eventPath);
+
+			it = eventsPendingRelease.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
 
 void ModuleAudio::ReleaseAllAudio()
 {
@@ -349,7 +415,17 @@ void ModuleAudio::ReleaseAllAudio()
 				{
 					if (instance) 
 					{
-						instance->release();
+						FMOD_STUDIO_PLAYBACK_STATE state;
+						instance->getPlaybackState(&state);
+
+						if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+						{
+							instance->release();
+						}
+						else
+						{
+							eventsPendingRelease.push_back(instance);
+						}
 					}
 				}
 			}
@@ -421,9 +497,6 @@ void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 audioPosition)
 		channel->setMode(FMOD_3D);
 
 		FMOD::Sound* sound = nullptr;
-		if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
-			sound->set3DMinMaxDistance(0.5f, 100.0f);
-		}
 
 		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
@@ -495,20 +568,23 @@ void ModuleAudio::SetVolume(std::string busname, float value) const
 
 	CheckError(bus->setVolume(value));
 
+	// We can remove this +0.1 if it feels unbalances
+	float finalVolume = (value + 0.1)* GetVolume("bus:/");
+
 	if (busname.compare("bus:/music") == 0)
 	{
-		CheckError(mAudioChannelGroup->setVolume(value));
+		CheckError(mAudioChannelGroup->setVolume(finalVolume));
 	}
-	
+
 	if (busname.compare("bus:/sfx") == 0)
 	{
-		CheckError(mOneShotChannelGroup->setVolume(value));
+		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
 	}
-	
+
 	if (busname.compare("bus:/") == 0)
 	{
-		CheckError(mOneShotChannelGroup->setVolume(value));
-		CheckError(mAudioChannelGroup->setVolume(value));
+		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
+		CheckError(mAudioChannelGroup->setVolume(finalVolume));
 	}
 }
 

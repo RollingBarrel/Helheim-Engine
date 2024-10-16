@@ -44,7 +44,7 @@ private:
 
     bool mAttackWhenPossible = false;
     TimerScript mPressedAttackTimer;
-    float mAttackPressedCoolDown = 0.4f;
+    float mAttackPressedCoolDown = 0.23f;
 
     // Player Dash
     float  mMoveRange = 10.f;

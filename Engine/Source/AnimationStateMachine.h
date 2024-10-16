@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 
 struct AnimationState
@@ -12,6 +13,8 @@ public:
 		mEndTime = 100.0f; 
 		mLoop = true;
 	};
+	AnimationState(const AnimationState& other) : 
+		mName(other.mName), mStartTime(other.mStartTime), mEndTime(other.mEndTime), mLoop(other.mLoop) {}
 
 	std::string mName;
 	float mStartTime, mEndTime;
@@ -27,6 +30,8 @@ public:
 		mTarget = targetName;
 		mTrigger = trigger;
 	};
+	AnimationTransition(const AnimationTransition& other) : 
+		mTrigger(other.mTrigger), mSource(other.mSource), mTarget(other.mTarget){}
 	std::string mTrigger;
 	std::string mSource;
 	std::string mTarget;
@@ -37,6 +42,7 @@ class ENGINE_API AnimationStateMachine
 
 public:
 	AnimationStateMachine(unsigned int animUID);
+	AnimationStateMachine(const AnimationStateMachine& other);
 	~AnimationStateMachine();
 
 	//States
@@ -77,7 +83,7 @@ public:
 	const std::vector<AnimationTransition>& GetTransitions() const { return mTransitions; }
 
 	void PushBackState(const AnimationState& state) { mStates.push_back(state); };
-	void PushBackTransition(const AnimationTransition& transition) { mTransitions.push_back(transition); };
+	void PushBackTransition(const AnimationTransition& transition);
 
 	void SaveResource(const char* path, bool isLibrary) const;
 	void LoadResource(const char* fileName);
@@ -87,15 +93,16 @@ public:
 
 	unsigned int GetUID() const { return mResourceUID; }
 	void SetUID(unsigned int uid) { mResourceUID = uid; }
+
+	// Optimization
+	const std::string GetNextState(const std::string& currentState, const std::string& trigger) const;
 private:
-	
+	using TransitionMap = std::unordered_map<std::string, std::unordered_map<std::string, std::string>>;
 	std::vector<AnimationState> mStates;
 	std::vector<AnimationTransition> mTransitions;
 	std::string mName = "Simple";
 	unsigned int mResourceUID = 0;
 	unsigned int mAnimationUID = 0;
-	
-	
-
+	TransitionMap mTransitionMap;
 };
 

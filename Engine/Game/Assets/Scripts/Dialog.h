@@ -8,6 +8,7 @@ class GameObject;
 class TextComponent;
 class ImageComponent;
 class ButtonComponent;
+class Transform2DComponent;
 class PlayerStats;
 
 GENERATE_BODY(Dialog);
@@ -26,22 +27,44 @@ public:
 
 private:
     void UpdateDialog();
-    void OnClick();
+    void OnNextClick();
     void OnSkipClick();
     void Controls();
 
+    void AnimationToMain();
+    void StartAnimationToMain();
+    void AnimationToIntro();
+    void StartAnimationToIntro();
+    void AnimationToOutro();
+    void StartAnimationToOutro();
+    void StartAnimationToEnd();
+    void AnimationToEnd();
+
+    void FinishDialogue();
+
     GameObject* mDialogGO = nullptr;
+
     GameObject* mProtagonistGO = nullptr;
     GameObject* mWifeGO = nullptr;
-    ImageComponent* mProtagonistImage = nullptr;
-    ImageComponent* mWifeImage = nullptr;
 
     GameObject* mTextGO = nullptr;
     TextComponent* mText = nullptr;
-    ButtonComponent* mDialogButton = nullptr;
+
+    GameObject* mNextBtnGO = nullptr;
+    ButtonComponent* mNextButton = nullptr;
 
     GameObject* mSkipBtnGO = nullptr;
     ButtonComponent* mSkipButton = nullptr;
+
+    GameObject* mIntroGO = nullptr;
+    ImageComponent* mIntroImage = nullptr;
+    GameObject* mOutroGO = nullptr;
+    ImageComponent* mOutroImage = nullptr;
+
+    GameObject* mTopGO = nullptr;
+    Transform2DComponent* mTopTransform = nullptr;
+    GameObject* mBotGO = nullptr;
+    Transform2DComponent* mBotTransform = nullptr;
 
     std::vector<std::vector<std::string>> mDialogList = {
         { 
@@ -60,10 +83,9 @@ private:
             "I know you are better than them but stay on your guard.",
         },
         {
-            "What happened down there? Just this morning everything was fine.",
-            "I'm not sure, something happened with the others. They went crazy all of a sudden and start attacking people.",
+            "I'm not sure, what could have happened. Everyone went crazy all of a sudden and started attacking people.",
             "That's it? Some sort of psychotic attack and now we all have to die?",
-            "He released something, Elios. Something dangerous. You'll see when you get down here."
+            "No, I don't think it was something as simple and unfortunate as that."
         },
         {
             "Hmmm... I think the elevator for the Lab Staff is broken... Do you have your personal ID card?",
@@ -83,6 +105,12 @@ private:
             "No... Something down here has *affected* the staff, changed them. They are no longer humans Elios. And they are way more dangerous than the robots."
         },
         {
+
+            "Did you manage to beat them all?",
+            "Yeah, they were tough but I managed, however I don't think anyone else have survived...",
+            "It's a pity, I guess, but you need to come here, I need you Elios"
+        },
+        {
             "*Sight*, in a way we deserve what's happening you know. What we were up to down here, the things we did to them. We are just getting our fair comeuppance.",
             "Don't say that, none of this is your fault. This shit is just plain horrible.",
             "Maybe it's just human nature, humanity takes pride on being explorers, on going everywhere and unveiling everything.",
@@ -91,15 +119,14 @@ private:
             "..."
         },
         {
-            "I think that was the last of them. Next should be your room.",
             "Finally! Just get me out of here quickly please! Get me out!",
-            "I'm almost there already honey. Just hold on for a moment.",
+            "I'm almost there already. Just hold on for a moment.",
             "Yes, come get me out now. GET ME OUT!",
             "Calm down, the worst part is already over. We Will get out of here.",
             "GET ME OUT, GET ME OUT, GET ME OUT.",
             "Uuuuh, Eury? You sure you are ok? This is creeping me out even more than the monsters.",
             "GET ME OUT, GET ME OUT, GET ME OUT,GET ME OUT,  GET ME OUT, GET ME OUT...",
-            "...Shit."
+            "..."
         }
     };
     int mCurrentDialogSet = 0; 
@@ -119,4 +146,13 @@ private:
     PlayerStats* mPlayerStats = nullptr;
 
     bool firstTime = true;
+
+    // Animations 
+    TimerScript mAnimationTimer;
+    bool mAnimationToIntro = false;
+
+    bool mAnimationToMain = false;
+    bool mAnimationToMainDone = false;
+    bool mAnimationToEnd = false;
+    bool mAnimationToOutro = false;
 };

@@ -15,13 +15,14 @@ void Importer::Texture::Save(const ResourceTexture* rTexture, const unsigned cha
         rTexture->GetDataType(),
         rTexture->GetMipLevels(),
         rTexture->GetPixelsSize(),
-        rTexture->GetTexelSize()
+        rTexture->GetTexelSize(),
     };
 
 
     unsigned int pixelsSize = rTexture->GetPixelsSize();
     bool hasAlpha = rTexture->HasAlpha();
-    unsigned int size = sizeof(header) + sizeof(hasAlpha) + sizeof(unsigned char) * pixelsSize;
+    bool compressed = rTexture->IsCompressed();
+    unsigned int size = sizeof(header) + sizeof(hasAlpha) + sizeof(compressed) + sizeof(unsigned char) * pixelsSize;
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -32,6 +33,10 @@ void Importer::Texture::Save(const ResourceTexture* rTexture, const unsigned cha
 
     bytes = sizeof(hasAlpha);
     memcpy(cursor, &hasAlpha, bytes);
+    cursor += bytes;
+
+    bytes = sizeof(compressed);
+    memcpy(cursor, &compressed, bytes);
     cursor += bytes;
 
     bytes = sizeof(unsigned char) * pixelsSize;
@@ -72,9 +77,14 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         memcpy(&hasAlpha, cursor, bytes);
         cursor += bytes;
 
+        bool compressed;
+        bytes = sizeof(compressed);
+        memcpy(&compressed, cursor, bytes);
+        cursor += bytes;
+
         unsigned char* pixels = reinterpret_cast<unsigned char*>(cursor);
 
-        texture = new ResourceTexture(uid, glTarget, width, height, internalFormat, texFormat, dataType, mipLevels, pixelsSize, hasAlpha, texelSize);
+        texture = new ResourceTexture(uid, glTarget, width, height, internalFormat, texFormat, dataType, mipLevels, pixelsSize, hasAlpha, texelSize, compressed);
         glBindTexture(glTarget, texture->GetOpenGLId());
 
         //TODO: Compression !!
@@ -95,15 +105,31 @@ ResourceTexture* Importer::Texture::Load(const char* filePath, unsigned int uid)
         {
             if (glTarget == GL_TEXTURE_2D)
             {
-                glTexImage2D(glTarget, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
-                pixels += texelSize * width * height;
+                if (texture->IsCompressed())
+                {
+                    glCompressedTexImage2D(glTarget, i, internalFormat, width, height, 0, ((width * height + 15) / 16) * texelSize, pixels);
+                    pixels += ((width * height + 15) / 16) * texelSize;
+                }
+                else
+                {
+                    glTexImage2D(glTarget, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+                    pixels += texelSize * width * height;
+                }
             }
             if (glTarget == GL_TEXTURE_CUBE_MAP)
             {
                 for (unsigned int j = 0; j < 6; ++j)
                 {
-                    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
-                    pixels += texelSize * width * height;
+                    if (texture->IsCompressed())
+                    {
+                        glCompressedTexImage2D(glTarget, i, internalFormat, width, height, 0, ((width * height + 15) / 16) * texelSize, pixels);
+                        pixels += ((width * height + 15) / 16) * texelSize;
+                    }
+                    else
+                    {
+                        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + j, i, internalFormat, width, height, 0, texFormat, dataType, pixels);
+                        pixels += texelSize * width * height;
+                    }
                 }
             }
             if(width > 1)

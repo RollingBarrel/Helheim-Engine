@@ -14,6 +14,9 @@
 #include "PlayerController.h"
 #include "PlayerCamera.h"
 #include "Timer.h"
+#include "MathFunc.h"
+
+#include "CinematicCamera.h"
 
 CREATE(GameManager)
 {
@@ -23,6 +26,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
     MEMBER(MemberType::GAMEOBJECT, mFirstTutorial);
     MEMBER(MemberType::GAMEOBJECT, mSecondTutorial);
@@ -58,7 +62,12 @@ void GameManager::Awake()
 
 void GameManager::Start()
 {
-    //App->GetWindow()->SetCursor(857248271, 50, 50);
+    //float2 gameSize = App->GetWindow()->GetScreenSize();
+    //unsigned int xSize = 46 / (2560 / gameSize.x);
+    //unsigned int ySize = 46 / (1440 / gameSize.y);
+    //App->GetWindow()->SetCursor(674180654, xSize, ySize, xSize/2, ySize/2);
+
+    App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 
     if (mHudControllerGO)
     {
@@ -85,6 +94,12 @@ void GameManager::Start()
         StartAudio();
     }
 
+    if (mCinematicManagerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mCinematicManagerGO->GetComponent(ComponentType::SCRIPT));
+        mCinematicCamera = static_cast<CinematicCamera*>(script->GetScriptInstance());
+    }
+
     if (mFirstTutorial) 
     {
         mFirstTutorial->SetEnabled(true);
@@ -92,6 +107,8 @@ void GameManager::Start()
         UnlockUltimate(false);
     }
     mGameTimer = App->GetCurrentClock();
+
+    mPlayerController->ResetEnergy();
 }
 
 void GameManager::Update()
@@ -119,10 +136,35 @@ void GameManager::Update()
         HitStopTime(mHitStopTime);
     }
 
+    if (mCameraLerp)
+    {
+        BossCameraMovement();
+    }
+
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
-        SetPaused(!mPaused, true);
+        if (!mPlayingCinematic)
+        {
+            if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true);
+        }
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_N) == KeyState::KEY_DOWN)
+    {
+        mDialogue = !mDialogue;
+        GameManager::GetInstance()->GetHud()->SetDialogue(!mDialogue);
+    }
+
+    if (mCinematicCamera)
+    {
+        mPlayingCinematic = mCinematicCamera->GetPlayingCinematic();
+    }
+
+    if (mController != App->GetInput()->isGamepadAvailable())
+    {
+        mController = App->GetInput()->isGamepadAvailable();
+        mHudController->ChangeBindings(mController);
     }
 }
 
@@ -149,8 +191,13 @@ bool GameManager::UsingController() const
 void GameManager::SetPaused(bool value, bool screen)
 {
     mPaused = value;
+    mPauseScreen = screen;
+    mHudController->SetHud(!value);
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
+
+    if (value) App->GetWindow()->SetCursor(152793723);
+    else App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
@@ -227,6 +274,7 @@ void GameManager::ActivateSecondTutorial()
 
 void GameManager::UnlockSecondary()
 {
+    if (mPlayerController->GetCurrentEnergy() == 0)
     mPlayerController->RechargeBattery(EnergyType::RED);
 }
 
@@ -242,28 +290,83 @@ void GameManager::UnlockGrenade(bool unlock)
 
 void GameManager::HandleBossAudio(int stage)
 {
-    if (mIsFightingBoss && stage >= 0)
+    if (mBackgroundAudioID == -1 && stage == -1)
+    {
+        mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
+    }
+    if (mIsFightingBoss && mBackgroundAudioID != -1 && stage >= 0)
     {
         if (mLastAudioID != 2 && stage == 2)
         {
-            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 2);
+            mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 4);
             mLastAudioID = 2;
         }
         else if (mLastAudioID != 1 && stage == 1)
         {
-            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 1);
+            mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 3);
             mLastAudioID = 1;
         }
         else if (mLastAudioID != 0 && stage == 0)
         {
-            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, true);
-            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, false);
-
-            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 0);
+            mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 2);
             mLastAudioID = 0;
         }
     }
 }
+
+void GameManager::RegisterPlayerKill()
+{
+    mPlayerController->AddKill();
+}
+
+void GameManager::PlayPlayerFootStepSound()
+{
+    std::string sceneName = App->GetScene()->GetName();
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene")
+    {
+        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR, mPlayerController->GetPlayerPosition());
+    }
+    else if (sceneName == "Level3Scene")
+    {
+        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL, mPlayerController->GetPlayerPosition());
+    }
+}
+
+void GameManager::ActivateBossCamera(float targetDistance)
+{
+    mCameraLerp = true;
+    mBossCameraTarget = targetDistance;
+    BossCameraMovement();
+}
+
+void GameManager::BossCameraMovement()
+{
+    float distance = mPlayerCamera->GetDistanceToPlayer();
+    float3 rotation = RadToDeg(mPlayerCameraGO->GetLocalEulerAngles());
+    float offset = mPlayerCamera->GetOffset();
+    float rotationY = rotation.y;
+
+    distance = Lerp(distance, mBossCameraTarget, App->GetDt());
+    rotationY = Lerp(rotationY, -90.0f, App->GetDt()*1.3f);
+    offset = Lerp(offset, 0.25f, App->GetDt());
+
+    float diffRot = -90.0f - rotationY;
+    float diffDis = mBossCameraTarget - distance;
+    float diffOff = 0.45 - offset;
+    if (diffDis <= 0.01f && diffRot <= -0.01f && diffOff <= 0.001f)
+    {
+        mCameraLerp = false;
+        distance = mBossCameraTarget;
+        rotationY = -90.0f;
+        offset = 0.25f;
+    }
+
+    rotation.y = rotationY;
+    mPlayerCamera->SetDistanceToPlayer(distance);
+    mPlayerCameraGO->SetWorldRotation(DegToRad(rotation));
+    mPlayerCamera->SetOffset(offset);
+}
+
 void GameManager::PauseBackgroundAudio(bool pause)
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -277,6 +380,10 @@ void GameManager::PauseBackgroundAudio(bool pause)
         {
             mAudioManager->Pause(BGM::LEVEL2, mBackgroundAudioID, pause);
         }
+        else if (sceneName == "Level3Scene")
+        {
+            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, pause);
+        }
     }
 }
 
@@ -288,18 +395,15 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(BGM::GAMEOVER);
 
     // Player
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_ULTIMATE);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
-    //mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
+    mAudioManager->AddAudioToASComponent(SFX::BOSS_LASER);
+
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")
@@ -310,10 +414,10 @@ void GameManager::PrepareAudio()
     {
         mAudioManager->AddAudioToASComponent(BGM::LEVEL2);
     }
-    else if (sceneName == "BossTestingRoom")
+    else if (sceneName == "Level3Scene")
     {
-        mAudioManager->AddAudioToASComponent(BGM::BOSS_ROOM);
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
+        mAudioManager->AddAudioToASComponent(SFX::BOSS_FIRE);
     }
 }
 
@@ -330,12 +434,9 @@ void GameManager::StartAudio()
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL2);
     }
-    else if (sceneName == "BossTestingRoom")
+    else if (sceneName == "Level3Scene")
     {
-        mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
-        mBackgroundAudioID2 = mAudioManager->Play(BGM::BOSS_ROOM);
-
-        mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, true);
+        //mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
     }
 }
 
@@ -356,10 +457,6 @@ void GameManager::HandleAudio()
     {
         HandleLevel2Audio();
     }
-    else if (sceneName == "BossTestingRoom")
-    {
-        HandleBossAudio(-1);
-    }
 }
 
 void GameManager::EndAudio()
@@ -375,6 +472,10 @@ void GameManager::EndAudio()
         else if (sceneName == "Level2Scene")
         {
             mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL2, mBackgroundAudioID);
+        }
+        else if (sceneName == "Level3Scene")
+        {
+            mBackgroundAudioID = mAudioManager->Release(BGM::BOSS, mBackgroundAudioID);
         }
     }
 
@@ -407,13 +508,23 @@ void GameManager::HandleLevel1Audio()
 
 void GameManager::HandleLevel2Audio()
 {
+    //if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
+    //{
+    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 1);
+    //    mLastAudioID = 1;
+    //}
+    //else if (mActiveBattleArea == nullptr && mLastAudioID != 0)
+    //{
+    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 0);
+    //    mLastAudioID = 0;
+    //}
     if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 2)
     {
         mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 2);
         mLastAudioID = 2;
     }
     else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
-    {
+    { 
         mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 1);
         mLastAudioID = 1;
     }

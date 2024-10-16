@@ -1,0 +1,3598 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 767259133,
+                "ParentUID": 1,
+                "Name": "Doors_and_alarm_Level_1_With_Emissive",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1834841745,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Panel.003 (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    53.292930603027347,
+                    3.5071818828582765,
+                    -16.35696029663086
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.010761573910713196,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1869791487,
+                "ParentUID": 1834841745,
+                "Name": "OB_Door_Panel.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636663,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 881576815,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Closed.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -33.56043243408203,
+                    1.2998019456863404,
+                    11.144854545593262
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071066498756409,
+                    0.0,
+                    0.70710688829422
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 908729005,
+                "ParentUID": 881576815,
+                "Name": "OB_Door_Closed.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636610,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 933792565,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Panel.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -33.402069091796878,
+                    3.5068442821502687,
+                    10.982751846313477
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071066498756409,
+                    0.0,
+                    0.70710688829422
+                ],
+                "Scale": [
+                    0.009999998845160008,
+                    0.009999999776482582,
+                    0.009999998845160008
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 958647262,
+                "ParentUID": 933792565,
+                "Name": "OB_Door_Panel.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636663,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 983293096,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Closed",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    88.73470306396485,
+                    1.3001378774642945,
+                    11.722228050231934
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071066498756409,
+                    0.0,
+                    0.70710688829422
+                ],
+                "Scale": [
+                    1.0599998235702515,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1007381962,
+                "ParentUID": 983293096,
+                "Name": "OB_Door_Closed",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636704,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1031122723,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Closed.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    53.464759826660159,
+                    1.3001394271850587,
+                    -16.356918334960939
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.059999942779541,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1055002726,
+                "ParentUID": 1031122723,
+                "Name": "OB_Door_Closed.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636704,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1082990368,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Closed.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    81.97775268554688,
+                    1.3001391887664796,
+                    -7.244743347167969
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.059999942779541,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1119959119,
+                "ParentUID": 1082990368,
+                "Name": "OB_Door_Closed.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636704,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1154073409,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Panel.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    53.292930603027347,
+                    3.5071818828582765,
+                    -16.35696029663086
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.010761573910713196,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1186725658,
+                "ParentUID": 1154073409,
+                "Name": "OB_Door_Panel.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636663,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1218333592,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Panel_Security",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    81.80592346191406,
+                    3.507181406021118,
+                    -7.086465835571289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.010616699233651162,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1249523800,
+                "ParentUID": 1218333592,
+                "Name": "OB_Door_Panel_Security",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636793,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1280783629,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Panel.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    88.57643127441406,
+                    3.5071802139282228,
+                    11.550394058227539
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071066498756409,
+                    0.0,
+                    0.70710688829422
+                ],
+                "Scale": [
+                    0.009999998845160008,
+                    0.009999999776482582,
+                    0.009999998845160008
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1312252321,
+                "ParentUID": 1280783629,
+                "Name": "OB_Door_Panel.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636663,
+                        "MaterialID": 285175701,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1341702004,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Closed.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    59.224212646484378,
+                    1.29695725440979,
+                    -16.77626609802246
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    0.8437651991844177,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1381525216,
+                "ParentUID": 1341702004,
+                "Name": "OB_Door_Closed.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636806,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1422810469,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Closed.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    64.83700561523438,
+                    1.29695725440979,
+                    -16.77626609802246
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    0.8346171975135803,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1453374088,
+                "ParentUID": 1422810469,
+                "Name": "OB_Door_Closed.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636806,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1477741438,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Closed.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    70.76211547851563,
+                    1.29695725440979,
+                    -16.749513626098634
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -1.9470718370939722e-7
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1507260742,
+                "ParentUID": 1477741438,
+                "Name": "OB_Door_Closed.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636806,
+                        "MaterialID": 175650272,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1530862261,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Panel_Lab.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -13.687744140625,
+                    3.5068440437316896,
+                    11.345453262329102
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.010903401300311089,
+                    0.009999999776482582,
+                    0.010000000707805157
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1554603022,
+                "ParentUID": 1530862261,
+                "Name": "OB_Door_Panel_Lab.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636929,
+                        "MaterialID": 2074952808,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1578274162,
+                "ParentUID": 767259133,
+                "Name": "OB_Door_Open",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -13.67901611328125,
+                    1.2997981309890748,
+                    10.889350891113282
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1601945302,
+                "ParentUID": 1578274162,
+                "Name": "OB_Door_Open",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636938,
+                        "MaterialID": 836920524,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1629584839,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.041",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    16.125316619873048,
+                    2.876661539077759,
+                    8.489363670349121
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.3056488037109375,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1664116855,
+                "ParentUID": 1629584839,
+                "Name": "OB_alarm_wall_round.041",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1696977967,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.040",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    15.494251251220704,
+                    2.424955129623413,
+                    8.489363670349121
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.3056488037109375,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1720788349,
+                "ParentUID": 1696977967,
+                "Name": "OB_alarm_wall_round.040",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1744389868,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.039",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    15.412464141845704,
+                    3.204697608947754,
+                    8.489363670349121
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.3056488037109375,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1767852145,
+                "ParentUID": 1744389868,
+                "Name": "OB_alarm_wall_round.039",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1791453664,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.038",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    17.4486026763916,
+                    2.876661539077759,
+                    -28.360687255859376
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.30564871430397036,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693070411682129,
+                    0.8693070411682129,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1815403288,
+                "ParentUID": 1791453664,
+                "Name": "OB_alarm_wall_round.038",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1839144049,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.037",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    16.817537307739259,
+                    2.424955129623413,
+                    -28.360687255859376
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.30564871430397036,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693070411682129,
+                    0.8693070411682129,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1862606326,
+                "ParentUID": 1839144049,
+                "Name": "OB_alarm_wall_round.037",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1885998982,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.036",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    16.735750198364259,
+                    3.204697608947754,
+                    -28.360687255859376
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.30564871430397036,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693070411682129,
+                    0.8693070411682129,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1909322017,
+                "ParentUID": 1885998982,
+                "Name": "OB_alarm_wall_round.036",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1932853915,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.035",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.120291709899902,
+                    2.876661539077759,
+                    -28.360687255859376
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.30564871430397036,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693070411682129,
+                    0.8693070411682129,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1956664297,
+                "ParentUID": 1932853915,
+                "Name": "OB_alarm_wall_round.035",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1979917711,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.034",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.751357078552246,
+                    2.424955129623413,
+                    -28.360687255859376
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.30564871430397036,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693070411682129,
+                    0.8693070411682129,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2003658472,
+                "ParentUID": 1979917711,
+                "Name": "OB_alarm_wall_round.034",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 2027120749,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.033",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.833144187927246,
+                    3.204697608947754,
+                    -28.360687255859376
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.30564871430397036,
+                    0.9521443247795105
+                ],
+                "Scale": [
+                    0.8693070411682129,
+                    0.8693070411682129,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2050791889,
+                "ParentUID": 2027120749,
+                "Name": "OB_alarm_wall_round.033",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 2074811134,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.032",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -16.293575286865236,
+                    2.876661539077759,
+                    -19.367700576782228
+                ],
+                "Rotation": [
+                    0.21612636744976045,
+                    0.6732678413391113,
+                    0.21612636744976045,
+                    0.6732675433158875
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2115052072,
+                "ParentUID": 2074811134,
+                "Name": "OB_alarm_wall_round.032",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 15049947,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.031",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -16.293575286865236,
+                    2.424955129623413,
+                    -18.736635208129884
+                ],
+                "Rotation": [
+                    0.21612636744976045,
+                    0.6732678413391113,
+                    0.21612636744976045,
+                    0.6732675433158875
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 45404703,
+                "ParentUID": 15049947,
+                "Name": "OB_alarm_wall_round.031",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 73670829,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.030",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -16.293575286865236,
+                    3.204697608947754,
+                    -18.654848098754884
+                ],
+                "Rotation": [
+                    0.21612636744976045,
+                    0.6732678413391113,
+                    0.21612636744976045,
+                    0.6732675433158875
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 96993864,
+                "ParentUID": 73670829,
+                "Name": "OB_alarm_wall_round.030",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 127905588,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.029",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3.677368402481079,
+                    3.6370084285736086,
+                    -28.810537338256837
+                ],
+                "Rotation": [
+                    0.3056487739086151,
+                    0.9521443247795105,
+                    0.0,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.7994073629379273,
+                    0.7994073629379273,
+                    0.7994074821472168
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 151785591,
+                "ParentUID": 127905588,
+                "Name": "OB_alarm_wall_round.029",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 175387110,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.028",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    5.268222332000732,
+                    3.6370084285736086,
+                    -28.810537338256837
+                ],
+                "Rotation": [
+                    0.3056487739086151,
+                    0.9521443247795105,
+                    0.0,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.7994073629379273,
+                    0.7994073629379273,
+                    0.7994074821472168
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 198779766,
+                "ParentUID": 175387110,
+                "Name": "OB_alarm_wall_round.028",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 222311664,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.027",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    7.1442484855651859,
+                    3.6370084285736086,
+                    -28.810537338256837
+                ],
+                "Rotation": [
+                    0.3056487739086151,
+                    0.9521443247795105,
+                    0.0,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.7994073629379273,
+                    0.7994073629379273,
+                    0.7994074821472168
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 245634699,
+                "ParentUID": 222311664,
+                "Name": "OB_alarm_wall_round.027",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 272926131,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.026",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    8.865814208984375,
+                    3.6370084285736086,
+                    -28.810537338256837
+                ],
+                "Rotation": [
+                    0.3056487739086151,
+                    0.9521443247795105,
+                    0.0,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.7994073629379273,
+                    0.7994073629379273,
+                    0.7994074821472168
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 314698731,
+                "ParentUID": 272926131,
+                "Name": "OB_alarm_wall_round.026",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 344705382,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.025",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    10.535070419311524,
+                    3.6370084285736086,
+                    -28.810537338256837
+                ],
+                "Rotation": [
+                    0.3056487739086151,
+                    0.9521443247795105,
+                    0.0,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.7994073629379273,
+                    0.7994073629379273,
+                    0.7994074821472168
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 368028417,
+                "ParentUID": 344705382,
+                "Name": "OB_alarm_wall_round.025",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 391351452,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.024",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    12.393454551696778,
+                    3.6370084285736086,
+                    -28.810537338256837
+                ],
+                "Rotation": [
+                    0.3056487739086151,
+                    0.9521443247795105,
+                    0.0,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.7994073629379273,
+                    0.7994073629379273,
+                    0.7994074821472168
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 414535245,
+                "ParentUID": 391351452,
+                "Name": "OB_alarm_wall_round.024",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 439459563,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.023",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    14.090678215026856,
+                    3.6370084285736086,
+                    -28.810537338256837
+                ],
+                "Rotation": [
+                    0.3056487739086151,
+                    0.9521443247795105,
+                    0.0,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.7994073629379273,
+                    0.7994073629379273,
+                    0.7994074821472168
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 463200324,
+                "ParentUID": 439459563,
+                "Name": "OB_alarm_wall_round.023",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 502814673,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.022",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -16.293575286865236,
+                    2.876661539077759,
+                    0.15668344497680665
+                ],
+                "Rotation": [
+                    0.21612636744976045,
+                    0.6732678413391113,
+                    0.21612636744976045,
+                    0.6732675433158875
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 543125232,
+                "ParentUID": 502814673,
+                "Name": "OB_alarm_wall_round.022",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 578214216,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.021",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -16.293575286865236,
+                    2.424955129623413,
+                    0.7877485752105713
+                ],
+                "Rotation": [
+                    0.21612636744976045,
+                    0.6732678413391113,
+                    0.21612636744976045,
+                    0.6732675433158875
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 602024598,
+                "ParentUID": 578214216,
+                "Name": "OB_alarm_wall_round.021",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 625486875,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.009",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -16.293575286865236,
+                    3.204697608947754,
+                    0.8695356845855713
+                ],
+                "Rotation": [
+                    0.21612636744976045,
+                    0.6732678413391113,
+                    0.21612636744976045,
+                    0.6732675433158875
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 648879531,
+                "ParentUID": 625486875,
+                "Name": "OB_alarm_wall_round.009",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 674151954,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.017",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    2.876661539077759,
+                    -30.458904266357423
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 697544610,
+                "ParentUID": 674151954,
+                "Name": "OB_alarm_wall_round.017",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 724627179,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.016",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    2.424955129623413,
+                    -31.0899658203125
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 750247707,
+                "ParentUID": 724627179,
+                "Name": "OB_alarm_wall_round.016",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 776842929,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.010",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    3.204697608947754,
+                    -31.1717529296875
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 801767247,
+                "ParentUID": 776842929,
+                "Name": "OB_alarm_wall_round.010",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 830729583,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.008",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    2.876661539077759,
+                    -25.897262573242189
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 872154078,
+                "ParentUID": 830729583,
+                "Name": "OB_alarm_wall_round.008",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 905432916,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.007",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    2.424955129623413,
+                    -26.52832794189453
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 953541027,
+                "ParentUID": 905432916,
+                "Name": "OB_alarm_wall_round.007",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 987724938,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    3.204697608947754,
+                    -26.61011505126953
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1017105000,
+                "ParentUID": 987724938,
+                "Name": "OB_alarm_wall_round.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1048016724,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    2.876661539077759,
+                    -21.20176887512207
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1086447516,
+                "ParentUID": 1048016724,
+                "Name": "OB_alarm_wall_round.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1122093468,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    2.424955129623413,
+                    -21.832834243774415
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1164840762,
+                "ParentUID": 1122093468,
+                "Name": "OB_alarm_wall_round.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1189486596,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.49751281738281,
+                    3.204697608947754,
+                    -21.914621353149415
+                ],
+                "Rotation": [
+                    -0.21612638235092164,
+                    -0.673267662525177,
+                    0.21612630784511567,
+                    0.6732677221298218
+                ],
+                "Scale": [
+                    0.8693069815635681,
+                    0.8693069815635681,
+                    0.8693069815635681
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1213018494,
+                "ParentUID": 1189486596,
+                "Name": "OB_alarm_wall_round.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1241075757,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.015",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    10.581141471862793,
+                    2.876661539077759,
+                    7.456174850463867
+                ],
+                "Rotation": [
+                    0.30564871430397036,
+                    0.9521443247795105,
+                    9.328190677236766e-16,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.8693071603775024,
+                    0.8693070411682129,
+                    0.8693071603775024
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1285215471,
+                "ParentUID": 1241075757,
+                "Name": "OB_alarm_wall_round.015",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1318215825,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.014",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.212206840515137,
+                    2.424955129623413,
+                    7.456174850463867
+                ],
+                "Rotation": [
+                    0.30564871430397036,
+                    0.9521443247795105,
+                    9.328190677236766e-16,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.8693071603775024,
+                    0.8693070411682129,
+                    0.8693071603775024
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1347526266,
+                "ParentUID": 1318215825,
+                "Name": "OB_alarm_wall_round.014",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1387001373,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.011",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.293993949890137,
+                    3.204697608947754,
+                    7.456174850463867
+                ],
+                "Rotation": [
+                    0.30564871430397036,
+                    0.9521443247795105,
+                    9.328190677236766e-16,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.8693071603775024,
+                    0.8693070411682129,
+                    0.8693071603775024
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1412134554,
+                "ParentUID": 1387001373,
+                "Name": "OB_alarm_wall_round.011",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1436153799,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.013",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    19.592395782470704,
+                    2.876661539077759,
+                    7.456174850463867
+                ],
+                "Rotation": [
+                    0.30564871430397036,
+                    0.9521443247795105,
+                    9.328190677236766e-16,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.8693071603775024,
+                    0.8693070411682129,
+                    0.8693071603775024
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1460173044,
+                "ParentUID": 1436153799,
+                "Name": "OB_alarm_wall_round.013",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1499300046,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.012",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    20.223461151123048,
+                    2.424955129623413,
+                    7.456174850463867
+                ],
+                "Rotation": [
+                    0.30564871430397036,
+                    0.9521443247795105,
+                    9.328190677236766e-16,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.8693071603775024,
+                    0.8693070411682129,
+                    0.8693071603775024
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1538844774,
+                "ParentUID": 1499300046,
+                "Name": "OB_alarm_wall_round.012",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1563769092,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    20.305248260498048,
+                    3.204697608947754,
+                    7.456174850463867
+                ],
+                "Rotation": [
+                    0.30564871430397036,
+                    0.9521443247795105,
+                    9.328190677236766e-16,
+                    -5.6752220700673209e-8
+                ],
+                "Scale": [
+                    0.8693071603775024,
+                    0.8693070411682129,
+                    0.8693071603775024
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1587509853,
+                "ParentUID": 1563769092,
+                "Name": "OB_alarm_wall_round.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636900,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1611320235,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_round.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    74.79383087158203,
+                    2.6207404136657717,
+                    0.759209394454956
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071066498756409,
+                    0.0,
+                    0.70710688829422
+                ],
+                "Scale": [
+                    0.7895689010620117,
+                    0.7895690202713013,
+                    0.7895689010620117
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1635060996,
+                "ParentUID": 1611320235,
+                "Name": "OB_alarm_wall_round.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636694,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1658662515,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_cylinder.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    79.9350357055664,
+                    3.1923294067382814,
+                    14.334529876708985
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    1.4901162614933129e-7
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1682333655,
+                "ParentUID": 1658662515,
+                "Name": "OB_alarm_wall_cylinder.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636693,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1716517566,
+                "ParentUID": 767259133,
+                "Name": "OB_alarm_wall_cylinder.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    84.716796875,
+                    3.1923294067382814,
+                    14.334529876708985
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    1.4901162614933129e-7
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1757245851,
+                "ParentUID": 1716517566,
+                "Name": "OB_alarm_wall_cylinder.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 80636693,
+                        "MaterialID": 2080628404,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}

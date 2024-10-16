@@ -1,0 +1,24 @@
+{
+    "Name": "top_exit_3_door",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+    ],
+    "BaseColorTex": 80636670,
+    "MetallicRoughTex": 80636671,
+    "NormalTex": 80636672,
+    "EmissiveTex": 80636673,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

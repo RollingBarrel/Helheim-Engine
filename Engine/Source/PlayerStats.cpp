@@ -6,6 +6,10 @@ void PlayerStats::SetInitLevelStats()
 	mIniSpeed = mSpeed;
 	mIniDamage = mDamageModifier;
 	mIniDialogIdx = mDialogIndex;
+
+	mInitHealthLvl = mHealthLvl;
+	mInitSpeedLvl = mSpeedLvl;
+	mInitDamageLvl = mDamageLvl;
 }
 
 void PlayerStats::TryAgainStats() 
@@ -14,6 +18,10 @@ void PlayerStats::TryAgainStats()
 	mSpeed = mIniSpeed;
 	mDamageModifier = mIniDamage;
 	mDialogIndex = mIniDialogIdx;
+
+	mHealthLvl = mInitHealthLvl;
+	mSpeedLvl = mInitSpeedLvl;
+	mDamageLvl = mInitDamageLvl;
 }
 
 void PlayerStats::ResetStats() 
@@ -22,4 +30,10 @@ void PlayerStats::ResetStats()
 	mSpeed = 5.5f;
 	mDamageModifier = 1.0f;
 	mDialogIndex = 0;
+
+	mHealthLvl = 0;
+	mSpeedLvl = 0;
+	mDamageLvl = 0;
+
+	mGameFinished = false;
 }

@@ -27,6 +27,11 @@ CREATE(EnemyCreatureMelee)
 	MEMBER(MemberType::FLOAT, mAttackDistance);
 	SEPARATOR("VFX");
 	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
+	MEMBER(MemberType::GAMEOBJECT, mDashAttackVFX);
+	MEMBER(MemberType::GAMEOBJECT, mDashRightVFX);
+	MEMBER(MemberType::GAMEOBJECT, mDashLeftVFX);
+	MEMBER(MemberType::GAMEOBJECT, mDashIndicator);
+	MEMBER(MemberType::GAMEOBJECT, mDashIndicatorFinal);
 	END_CREATE;
 }
 
@@ -41,7 +46,7 @@ void EnemyCreatureMelee::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyCreatureMelee::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
-	mAudioPlayed = false;
+	mAttackAudioPlayed = false;
 	mDeathAudioPlayed = false;
 	mDisengageTime = 0.0f;
 	mDeathTime = 2.20f;
@@ -50,70 +55,52 @@ void EnemyCreatureMelee::Start()
 void EnemyCreatureMelee::Update()
 {
 	Enemy::Update();
-	if (mCurrentState == EnemyState::ATTACK && !mAudioPlayed)
+	if (mCurrentState == EnemyState::ATTACK && !mAttackAudioPlayed)
 	{
-		mAudioPlayed = true;
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
+		mAttackAudioPlayed = true;
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, mGameObject->GetWorldPosition());
 	}
-	else
+
+	if (mAttackCoolDownTimer.DelayWithoutReset(mAttackCoolDown))
 	{
-		mAudioPlayed = false;
+		mAttack = true;
 	}
+
 }
 
 void EnemyCreatureMelee::Chase()
 {
-	PlayStepAudio();
-	if (IsPlayerInRange(mChaseDistance))
+	if (mAiAgentComponent)
 	{
-		if (mAiAgentComponent)
+		PlayStepAudio();
+		if (IsPlayerReachable())
 		{
-			if (IsPlayerInRange(mAttackDistance))
-			{	
-				//TODO: CHANGE WITH GOOD ROTATION BEHAVIOUR
-				mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
-				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-				direction.y = 0;
-				direction.Normalize();
-				float angle = std::atan2(direction.x, direction.z);;
-
-				if (mGameObject->GetWorldRotation().y != angle)
-				{
-					mGameObject->SetWorldRotation(float3(0, angle, 0));
-				}
-				if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
-				{
-					GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
-
-					mCurrentState = EnemyState::CHARGE;
-				}
-			}
-			else
+			mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
+			RotateHorizontally(mPlayer->GetWorldPosition(), mRotationSpeed);
+			if (mAttack)
 			{
-				//TODO: CHANGE WITH GOOD ROTATION BEHAVIOUR
-				mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-				direction.y = 0;
-				direction.Normalize();
-				float angle = std::atan2(direction.x, direction.z);;
-
-				if (mGameObject->GetWorldRotation().y != angle)
-				{
-					mGameObject->SetWorldRotation(float3(0, angle, 0));
-				}
-			}	
+				RotateHorizontally(mPlayer->GetWorldPosition(), 100.0f);
+				mCurrentState = EnemyState::CHARGE;
+				mDashAttackVFX->SetEnabled(true);
+				mDashRightVFX->SetEnabled(true);
+				mDashLeftVFX->SetEnabled(true);
+				mDashIndicator->SetEnabled(true);
+				mDashIndicatorFinal->SetLocalPosition(float3(0, 0, 0));
+			}
 		}
-	}
-	else
-	{
-		mCurrentState = EnemyState::IDLE;
+		else
+		{
+			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+			float3 dir = mAiAgentComponent->GetDirection();
+			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + float3(dir.x, 0.0f, dir.z));
+		}
 	}
 }
 
 void EnemyCreatureMelee::Charge()
 {
 	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
-
+	mDashIndicatorFinal->SetLocalPosition(float3(0,0,mAttackDistance * mChargeDurationTimer.GetTimePassed() / mChargeDuration));
 	Enemy::Charge();
 	mHit = false;
 }
@@ -123,11 +110,19 @@ void EnemyCreatureMelee::Attack()
 	if (mAttackDurationTimer.Delay(mAttackDuration))
 	{
 		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
+		mAttackCoolDownTimer.Reset();
+		mAttack = false;
 		mCurrentState = EnemyState::CHASE;
+		mDashAttackVFX->SetEnabled(false);
+		mDashRightVFX->SetEnabled(false);
+		mDashLeftVFX->SetEnabled(false);
+		mDashIndicator->SetEnabled(false);
+		mAttackAudioPlayed = false;
 	}
-	
+
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
 	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
+	mDashIndicatorFinal->SetLocalPosition(float3(0, 0, mAttackDistance * (1 - mAttackDurationTimer.GetTimePassed() / mAttackDuration)));
 }
 
 void EnemyCreatureMelee::TakeDamage(float damage)
@@ -139,6 +134,9 @@ void EnemyCreatureMelee::TakeDamage(float damage)
 void EnemyCreatureMelee::Death()
 {
 	Enemy::Death();
+	mDashLeftVFX->SetEnabled(false);
+	mDashRightVFX->SetEnabled(false);
+	mDashIndicator->SetEnabled(false);
 	if (!mDeathAudioPlayed)
 	{
 		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
@@ -146,6 +144,14 @@ void EnemyCreatureMelee::Death()
 	}
 }
 
+void EnemyCreatureMelee::SetAttracted(bool attracted)
+{
+	Enemy::SetAttracted(attracted);
+
+	if (mCurrentState == EnemyState::CHARGE || mCurrentState == EnemyState::ATTACK)
+		mDashIndicator->SetEnabled(!attracted);
+	
+}
 
 void EnemyCreatureMelee::OnCollisionEnter(CollisionData* collisionData)
 {

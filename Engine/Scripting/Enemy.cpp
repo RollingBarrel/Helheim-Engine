@@ -21,7 +21,7 @@
 #include "ItemDrop.h"
 #include "BattleArea.h"
 #include <cmath>
-#include <iostream>
+
 #include "Math/MathFunc.h"
 
 void Enemy::Start()
@@ -44,13 +44,13 @@ void Enemy::Start()
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
 	}
+	
 	mAiAgentComponent = static_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
 	
-	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-	if (mAnimationComponent)
-	{
-		mAnimationComponent->SetIsPlaying(true);
-	}
+	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
+	if (mAnimationComponent) mAnimationComponent->SetIsPlaying(true);
+	
+	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 }
 
 void Enemy::Update()
@@ -84,16 +84,6 @@ void Enemy::CheckHitEffect()
         }
     }
 }
-
-//void Enemy::CheckUltHitVFX()
-//{
-//	if (mUltHit)
-//	{
-//		if (mUltEffectTimer.Delay(mUltEffectTime)) {
-//			ActivateUltVFX();
-//		}
-//	}
-//}
 
 void Enemy::ResetEnemyColor()
 {
@@ -143,6 +133,11 @@ void Enemy::ActivateEnemy()
 	{
 		mBeAttracted = false;
 		mAiAgentComponent->SetEnable(true);
+		if (mCurrentState == EnemyState::DEATH)
+		{
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+			Death();
+		}
 	}
 }
 
@@ -156,6 +151,7 @@ void Enemy::Idle()
 
 void Enemy::Chase()
 {
+	mIsFleeing = false;
 	PlayStepAudio();
 
 		if (mAiAgentComponent)
@@ -176,37 +172,50 @@ void Enemy::Flee()
 {
 	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
 	{
-		mCurrentState = EnemyState::ATTACK;
+		mIsFleeing = false;
+		mCurrentState = EnemyState::CHARGE;
 		return;
 	}
 	PlayStepAudio();	
-		if (mAiAgentComponent)
-		{
-			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
-			float3 newDir = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
-			float collisionDotProduct = newDir.Dot(mEnemyCollisionDirection);
-			if (collisionDotProduct < 0.0f)
-			{
-				newDir = newDir - mEnemyCollisionDirection.Mul(collisionDotProduct);
-			}
-			float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
-			mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+ 		if (mAiAgentComponent  && !mIsFleeing)
+		{		
+			mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition());
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
-		
 		}
 
 		if (!IsPlayerInRange(mAttackDistance))
 		{
+			mIsFleeing = false;
 			mCurrentState = EnemyState::IDLE;
 		}
 }
 
 void Enemy::PlayStepAudio()
 {
-	if (mStepTimer.Delay(mStepDuration))
-	{
-		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
-	}
+	//if (mStepTimer.Delay(mStepDuration))
+	//{
+	//	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
+	//}
+}
+
+void Enemy::RotateHorizontally(const float3& target, float speed)
+{
+	float3 direction = (target - mGameObject->GetWorldPosition());
+	direction.y = 0.0f;
+	direction.Normalize();
+
+	float3 currentDirection = mGameObject->GetFront();
+	currentDirection.y = 0.0f;
+	currentDirection.Normalize();
+	float currentRadianAngle = std::atan2(currentDirection.x, currentDirection.z);
+
+	float angleDifference = currentDirection.AngleBetween(direction);
+	angleDifference = (currentDirection.Cross(direction).y > 0) ? angleDifference : angleDifference * -1;
+
+	float rotationSpeed = speed * App->GetDt();
+	float newAngle = currentRadianAngle + Clamp(angleDifference, -rotationSpeed, rotationSpeed);
+
+	mGameObject->SetLocalRotation(float3(0.0f, newAngle, 0.0f));
 }
 
 void Enemy::Charge()
@@ -219,13 +228,10 @@ void Enemy::Charge()
 
 void Enemy::Attack()
 {
-	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
 	bool playerReachable = IsPlayerReachable();
 	if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
 	{
-		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
-		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 	}
 	else if (mAttackDurationTimer.Delay(mAttackDuration))
 	{
@@ -235,16 +241,16 @@ void Enemy::Attack()
 
 bool Enemy::IsPlayerInRange(float range)
 {
-	float distance = 0.0f;
-	distance = (mPlayer) ? mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition()) : inf;
+	float distanceSq = 0.0f;
+	distanceSq = (mPlayer) ? mGameObject->GetWorldPosition().DistanceSq(mPlayer->GetWorldPosition()) : inf;
 
-	return (distance <= range);
+	return (distanceSq <= (range * range));
 }
 
 bool Enemy::IsPlayerReachable()
 {
 	bool reachable = false;
-
+	
 	if (IsPlayerInRange(mAttackDistance))
 	{
 		Hit hit;
@@ -271,7 +277,7 @@ bool Enemy::IsPlayerReachable()
 
 void Enemy::TakeDamage(float damage)
 {
-	if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
+	if (mHealth > 0)
 	{
 		ActivateHitEffect();
 		mHealth -= damage;
@@ -279,14 +285,10 @@ void Enemy::TakeDamage(float damage)
 		if (mHealth <= 0)
 		{
 			mCurrentState = EnemyState::DEATH;
-
-			BoxColliderComponent* collider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-			if (collider) collider->SetEnable(false);
-
+			if (mCollider) mCollider->SetEnable(false);
 			if (mAiAgentComponent)	mAiAgentComponent->PauseCrowdNavigation();
 		}
 	}
-	LOG("Enemy Health: %f", mHealth);
 }
 
 void Enemy::ActivateHitEffect()
@@ -314,16 +316,15 @@ void Enemy::ActivateUltVFX()
 void Enemy::Death()
 {
 	mVanishingTime += App->GetDt();
-	if (mVanishingTime >= mDeathTime*0.75)
+	if (mVanishingTime >= mDeathTime*0.35)
 	{
 		for (size_t i = 0; i < mMeshComponents.size(); i++)
 		{
-		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
-		const ResourceMaterial* material = meshRender->GetResourceMaterial();
-		float4 baseColor = material->GetBaseColorFactor();
-		float4 endColor = baseColor;
-		endColor.w = 0.0f;
-		meshRender->SetBaseColorFactor(baseColor.Lerp(endColor, mVanishingTime /(mDeathTime*10)));
+			MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+			const ResourceMaterial* material = meshRender->GetResourceMaterial();
+			float4 baseColor = material->GetBaseColorFactor();
+			baseColor.w = baseColor.w - App->GetDt()*0.4f;
+			meshRender->SetBaseColorFactor(baseColor);
 		}
 	}
 	if (mVanishingTime>=mDeathTime)
@@ -339,6 +340,7 @@ void Enemy::Death()
 		mVanishingTime = 0.0f;
 		mGameObject->SetEnabled(false);
 		DropItem();
+		GameManager::GetInstance()->RegisterPlayerKill();
 
 		if (mAnimationComponent)
 		{
@@ -391,8 +393,7 @@ void Enemy::Paralyzed(float percentage, bool paralyzed)
 void Enemy::SetAttracted(bool attracted)
 { 
 	mBeAttracted = attracted;
-	// Sometime, AI component is over everything, I need to set it disable to make blackhole works
-	mAiAgentComponent->SetEnable(!attracted);
+	if (mAiAgentComponent) mAiAgentComponent->SetEnable(!attracted);
 }
 
 

@@ -1,0 +1,664 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1377005352,
+                "ParentUID": 1,
+                "Name": "Lights_Alpha3_Level3_Without_Volumetrics",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1392670077,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    85.4212646484375,
+                    8.950952529907227,
+                    0.0
+                ],
+                "Rotation": [
+                    0.24332621693611146,
+                    -0.6639247536659241,
+                    0.24332547187805177,
+                    0.6639194488525391
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            85.4212646484375,
+                            8.950952529907227,
+                            0.0,
+                            50.0
+                        ],
+                        "Direction": [
+                            -0.7631701827049255,
+                            -0.6461976170539856,
+                            -0.0000073909759521484379,
+                            0.9702957272529602
+                        ],
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.7771459221839905
+                        ],
+                        "Range": 14.0,
+                        "CastShadow": true,
+                        "Bias": 0.000019999999494757504,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 1397822031,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    67.55097961425781,
+                    8.950952529907227,
+                    -0.5302016735076904
+                ],
+                "Rotation": [
+                    0.5000002980232239,
+                    -0.5000054240226746,
+                    0.4999997019767761,
+                    0.49999454617500307
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            67.55097961425781,
+                            8.950952529907227,
+                            -0.5302016735076904,
+                            200.0
+                        ],
+                        "Direction": [
+                            2.9802322387695315e-8,
+                            -1.0,
+                            -0.000011444091796875,
+                            0.8571673035621643
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.8191520571708679
+                        ],
+                        "Range": 26.0,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 1403530953,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    51.8912239074707,
+                    8.950952529907227,
+                    -0.5302016735076904
+                ],
+                "Rotation": [
+                    0.5000002980232239,
+                    -0.5000054240226746,
+                    0.4999997019767761,
+                    0.49999454617500307
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            51.8912239074707,
+                            8.950952529907227,
+                            -0.5302016735076904,
+                            200.0
+                        ],
+                        "Direction": [
+                            2.9802322387695315e-8,
+                            -1.0,
+                            -0.000011444091796875,
+                            0.8571673035621643
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.8191520571708679
+                        ],
+                        "Range": 26.0,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 1408752528,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    33.57880401611328,
+                    8.950952529907227,
+                    -0.5302016735076904
+                ],
+                "Rotation": [
+                    0.5000002980232239,
+                    -0.5000054240226746,
+                    0.4999997019767761,
+                    0.49999454617500307
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            33.57880401611328,
+                            8.950952529907227,
+                            -0.5302016735076904,
+                            200.0
+                        ],
+                        "Direction": [
+                            2.9802322387695315e-8,
+                            -1.0,
+                            -0.000011444091796875,
+                            0.8571673035621643
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.8191520571708679
+                        ],
+                        "Range": 26.0,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 1416341217,
+                "ParentUID": 1377005352,
+                "Name": "Pointlight",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    7.62589693069458,
+                    0.7514950037002564,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            7.62589693069458,
+                            0.7514950037002564,
+                            0.0
+                        ],
+                        "Radius": 10.5,
+                        "Color": [
+                            1.0,
+                            0.23600000143051148,
+                            0.23600000143051148
+                        ],
+                        "Intensity": 30.0
+                    }
+                ]
+            },
+            {
+                "UID": 1421214687,
+                "ParentUID": 1377005352,
+                "Name": "Pointlight (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.224268674850464,
+                    1.8339663743972779,
+                    9.34195327758789
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            2.224268674850464,
+                            1.8339663743972779,
+                            9.34195327758789
+                        ],
+                        "Radius": 10.5,
+                        "Color": [
+                            1.0,
+                            0.23600000143051148,
+                            0.23600000143051148
+                        ],
+                        "Intensity": 50.0
+                    }
+                ]
+            },
+            {
+                "UID": 1424695737,
+                "ParentUID": 1377005352,
+                "Name": "Pointlight (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.224268674850464,
+                    1.8339663743972779,
+                    -9.720389366149903
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            2.224268674850464,
+                            1.8339663743972779,
+                            -9.720389366149903
+                        ],
+                        "Radius": 10.5,
+                        "Color": [
+                            1.0,
+                            0.23600000143051148,
+                            0.23600000143051148
+                        ],
+                        "Intensity": 50.0
+                    }
+                ]
+            },
+            {
+                "UID": 1429360344,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3.8169872760772707,
+                    -4.896342754364014,
+                    -0.5308050513267517
+                ],
+                "Rotation": [
+                    -0.49999746680259707,
+                    0.5000026226043701,
+                    0.5000026226043701,
+                    0.49999746680259707
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            3.8169872760772707,
+                            -4.896342754364014,
+                            -0.5308050513267517,
+                            200.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            -2.3841852225814365e-7,
+                            0.9659258127212524
+                        ],
+                        "Color": [
+                            0.22656001150608064,
+                            0.806251585483551,
+                            0.9440000057220459,
+                            0.8191520571708679
+                        ],
+                        "Range": 19.5,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 1432284426,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (6)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -3.2024965286254885,
+                    13.58717155456543,
+                    -24.355867385864259
+                ],
+                "Rotation": [
+                    0.3691283166408539,
+                    -0.19965030252933503,
+                    0.6783487200737,
+                    0.6030979156494141
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -3.2024965286254885,
+                            13.58717155456543,
+                            -24.355867385864259,
+                            17.0
+                        ],
+                        "Direction": [
+                            0.2599780559539795,
+                            -0.7161060571670532,
+                            0.6477680802345276,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            0.9399999976158142,
+                            0.9313068389892578,
+                            0.8760799765586853,
+                            0.8480480909347534
+                        ],
+                        "Range": 33.5,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 1435695855,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (7)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -5.669251918792725,
+                    12.322101593017579,
+                    22.0000057220459
+                ],
+                "Rotation": [
+                    0.7468572854995728,
+                    0.5319449305534363,
+                    0.061220116913318637,
+                    0.39432334899902346
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -5.669251918792725,
+                            12.322101593017579,
+                            22.0000057220459,
+                            17.0
+                        ],
+                        "Direction": [
+                            0.5109620094299316,
+                            -0.5238750576972961,
+                            -0.6815224885940552,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            0.9399999976158142,
+                            0.9313068389892578,
+                            0.8760799765586853,
+                            0.8480480909347534
+                        ],
+                        "Range": 35.0,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 1438619937,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (9)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.09549464285373688,
+                    12.387748718261719,
+                    0.03232347220182419
+                ],
+                "Rotation": [
+                    0.5000002980232239,
+                    -0.5000054240226746,
+                    0.4999997019767761,
+                    0.49999454617500307
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -0.09549464285373688,
+                            12.387748718261719,
+                            0.03232347220182419,
+                            100.0
+                        ],
+                        "Direction": [
+                            2.9802322387695315e-8,
+                            -1.0,
+                            -0.000011444091796875,
+                            1.0
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.8191520571708679
+                        ],
+                        "Range": 22.5,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            },
+            {
+                "UID": 21793139,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (10)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -3.415940523147583,
+                    6.776387691497803,
+                    -0.1977308988571167
+                ],
+                "Rotation": [
+                    0.6886232495307922,
+                    -0.16063623130321504,
+                    0.6886149644851685,
+                    0.16063477098941804
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -3.415940523147583,
+                            6.776387691497803,
+                            -0.1977308988571167,
+                            200.0
+                        ],
+                        "Direction": [
+                            0.8967850208282471,
+                            -0.44246670603752139,
+                            -0.000011920928955078125,
+                            1.0
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.9360003471374512,
+                            0.8191520571708679
+                        ],
+                        "Range": 28.5,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
+            }
+        ]
+    }
+}

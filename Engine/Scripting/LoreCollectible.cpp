@@ -18,6 +18,7 @@ CREATE(LoreCollectible)
 {
 	CLASS(owner);
 	MEMBER(MemberType::GAMEOBJECT, mMeshGO);
+	MEMBER(MemberType::INT, mLoreIndex);
 	END_CREATE;
 }
 
@@ -36,33 +37,22 @@ void LoreCollectible::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_EXIT, new std::function<void(CollisionData*)>(std::bind(&LoreCollectible::OnCollisionExit, this, std::placeholders::_1)));
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
-	if (mGameObject->GetComponent(ComponentType::TEXT))
-		mLoreText = static_cast<TextComponent*>(mGameObject->GetComponent(ComponentType::TEXT))->GetText();
-
-	if (mMeshGO && mMeshGO->GetComponent(ComponentType::MESHRENDERER)) 
-		mMesh = static_cast<MeshRendererComponent*>(mMeshGO->GetComponent(ComponentType::MESHRENDERER));
-	
+		
+	mLoreText = &(mTextList[mLoreIndex]);
+	mTitleText = &(mTitleList[mLoreIndex]);
+	mSubtitleText = &(mSubtitleList[mLoreIndex]);
 }
 
 void LoreCollectible::Update()
 {
-	/*if (!isColliding)
-	{
-		GameManager::GetInstance()->GetHud()->SetInteract(false);
-	}*/
-
-	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN ||
+		App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
 	{
 		GameManager::GetInstance()->GetHud()->DisableCollectible();
+
 	}
 
-	if (mUsed|| mInteractTimer.Delay(5.0f))
-		GameManager::GetInstance()->GetHud()->SetInteract(false);
-
-	if (mInteractTimer.Delay(10.0f))
-		mUsed = false;
-
-	if (mMesh) ColorChange();
+	if (mColliding) CheckDistance();
 }
 
 void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
@@ -71,22 +61,20 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 	GameObject* collisionGO = collisionData->collidedWith;
 
 	//Make prompt appear 
-	if (!mUsed && collisionGO->GetTag() == "Player")
+	if (collisionGO->GetTag() == "Player")
 	{
 		GameManager::GetInstance()->GetHud()->SetInteract(true);
+		mColliding = true;
 	
 		if ( App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
-			App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN) {
+			App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN) {
 
 			if (GameManager::GetInstance()->GetHud())
 			{
 				GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_INTERACT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-
 				GameManager::GetInstance()->SetPaused(true, false);
-				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data());
+				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data(), mTitleText->data(), mSubtitleText->data());
 				GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
-				GameManager::GetInstance()->GetHud()->SetInteract(false);
-				mUsed = true;
 			}
 		}
 	}
@@ -99,21 +87,16 @@ void LoreCollectible::OnCollisionExit(CollisionData* collisionData)
 	
 }
 
-void LoreCollectible::ColorChange()
+void LoreCollectible::CheckDistance()
 {
-	Clamp01(mColor);
-
-	if (!mChange) 
+	float3 playerPosition = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
+	float distanceToCollectible = (playerPosition - mGameObject->GetWorldPosition()).Length();
+	//float3 playerToCollectible = (mGameObject->GetWorldPosition() - playerPosition).Normalized();
+	if (distanceToCollectible > 2.0f) 
 	{
-		mColor = Lerp(mColor, 0.0f, App->GetDt()*1.4);
-		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-		if (mColor < 0.1f) mChange = true;
+		GameManager::GetInstance()->GetHud()->SetInteract(false);
+		mColliding = false;
 	}
-	else
-	{
-		mColor = Lerp(mColor, 1.0f, App->GetDt() * 1.4);
-		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-		if (mColor > 0.9f)  mChange = false;
-	}
-
 }
+
+

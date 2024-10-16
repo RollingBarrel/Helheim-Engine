@@ -63,9 +63,9 @@ void ItemDrop::Update()
         mGameObject->SetEnabled(false);
     }
 
-    if (mInteractTimer.Delay(mUIDeactivateTimer))
+    if (mCollided)
     {
-        GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
+        CheckDistance();
     }
 }
 
@@ -74,6 +74,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
         PlayerController* playerScript = static_cast<PlayerController*>(static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        mCollided = true; 
         if (playerScript != nullptr && !mAlreadyUsed)
         {
             switch (mDropId)
@@ -92,7 +93,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                 {
                     GameManager::GetInstance()->GetHud()->SetPickupPrompt(true);
                     if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
-                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
+                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
                     {
                         GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
@@ -115,7 +116,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                 {
                     GameManager::GetInstance()->GetHud()->SetPickupPrompt(true);
                     if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
-                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
+                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
                     {
                         GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
@@ -138,7 +139,16 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
             }
         }
 
+    }
+}
 
-
+void ItemDrop::CheckDistance()
+{
+    float3 playerPosition = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
+    float distanceToPickUp = (playerPosition - mGameObject->GetWorldPosition()).Length();
+    if (distanceToPickUp > 2.0f)
+    {
+        GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
+        mCollided = false;
     }
 }

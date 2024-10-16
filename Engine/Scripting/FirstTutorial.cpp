@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "AnimationComponent.h"
 #include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
@@ -94,6 +95,7 @@ void FirstTutorial::Update()
     {
         if (mDoor1)
         {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR);
             AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
             if (doorAnimation1)
             {
@@ -101,7 +103,11 @@ void FirstTutorial::Update()
                 doorAnimation1->SendTrigger("tOpen", 0.6f);
 
             }
-
+            if (mBorderEnter && mTopRender)
+            {
+                mTopRender->SetEmissiveColor(float3(0.0f, 255.0f, 0.0f));
+                mBorderEnter->SetEmissiveColor(float3(0.0f, 255.0f, 0.0f));
+            }
             BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
             if (door1Collider)
             {
@@ -124,8 +130,9 @@ void FirstTutorial::Tutorial()
                 App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
                 App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
             {
-                //mMoveTutorialCon->SetEnabled(false);
                 mMoveTutorial->SetEnabled(false);
+                mMoveTutorialCon->SetEnabled(false);
+                mDashTutorialCon->SetEnabled(false);
                 mDashTutorial->SetEnabled(true);
                 mCurrentStep = 2;
             }
@@ -133,8 +140,8 @@ void FirstTutorial::Tutorial()
         case 2:
             if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
             {
-                //mDashTutorialCon->SetEnabled(false);
                 mDashTutorial->SetEnabled(false);
+                mDashTutorialCon->SetEnabled(false);
                 mCompleted = true;
             }
             break;
@@ -150,8 +157,9 @@ void FirstTutorial::Tutorial()
             if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
                 App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
             {
-                //mMoveTutorial->SetEnabled(false);
+                mMoveTutorial->SetEnabled(false);
                 mMoveTutorialCon->SetEnabled(false);
+                mDashTutorial->SetEnabled(false);
                 mDashTutorialCon->SetEnabled(true);
                 mCurrentStep = 2;
             }
@@ -159,7 +167,7 @@ void FirstTutorial::Tutorial()
         case 2:
             if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
             {
-                //mDashTutorialCon->SetEnabled(false);
+                mDashTutorialCon->SetEnabled(false);
                 mDashTutorialCon->SetEnabled(false);
                 mCompleted = true;
             }

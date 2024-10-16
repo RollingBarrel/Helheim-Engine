@@ -44,6 +44,8 @@ public:
 
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
+	void SetUpperAnimSpeed(float speed);
+	void SetLowerAnimSpeed(float speed);
 	void SetAnimSpeed(float speed);
 
 	std::string GetCurrentStateName();
@@ -76,6 +78,7 @@ public:
 
 	void SetSpineControllerTime(float time);
 	float GetSpineControllerTime() const;
+	void SetObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
 
 private:
 

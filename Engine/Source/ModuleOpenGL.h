@@ -79,19 +79,21 @@ public:
 	//void BindGFramebuffer();
 	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
-	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
+	unsigned int GetGBufferSpecularRough() const { return mGMetallicRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }
 	unsigned int GetGBufferNormals() const { return mGNormals; }
 	unsigned int GetGBufferDepth() const { return mGDepth; }
 	unsigned int GetGBufferPos() const { return mGPosition; }
 	unsigned int GetGBufferSSAO() const { return mSSAO; }
 	unsigned int GetBluredTexture() const { return mBlurTex[0]; }
+	unsigned int GetVolumetricTexture() const { return mVolTexId; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetTrailProgramId() const { return mTrailProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
+	unsigned int GetUICopyBlurTexProgram() const { return mUiCopyBlurTexProgramId; }
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
@@ -107,6 +109,7 @@ public:
 	unsigned int GetSpecPrefilteredProgramId() const { return mSpecPrefilteredProgramId; }
 	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
 	unsigned int GetScreenTexProgramId() const { return mGameProgramId; }
+	unsigned int GetBGRChannelsProgramId() const { return mBGRChannelsProgramId; }
 
 	float GetAoRange() const { return mAoRange; };
 	float GetAoBias() const { return mAoBias; };
@@ -131,7 +134,7 @@ public:
 	void AddDecal(const DecalComponent& decal);
 	void RemoveDecal(const DecalComponent& decal);
 
-	void AddParticleSystem(ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+	void AddParticleSystem(ParticleSystemComponent* component);
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
 	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
@@ -151,6 +154,8 @@ public:
 	float mAoBias = 0.0001f;
 	
 	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0) const;
+	void GaussianBlurTexture(unsigned int texId, unsigned int passes);
+	unsigned int SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize);
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };
@@ -176,6 +181,16 @@ public:
 	void SetVolStepSize(float volStepSize);
 	int GetVolMaxSteps() const { return mVolMaxSteps; }
 	void SetVolMaxSteps(int volMaxSteps);
+	unsigned int GetVolInvScale() const { return mVolInvScale; }
+	void SetVolInvScale(int volInvScale);
+
+	unsigned int GetQuadVBO() const { return mQuadVBO; }
+	unsigned int GetQuadVAO() const { return mQuadVAO; }
+
+	unsigned int AlignedStructSize(unsigned int structSize, unsigned int alignment) const
+	{
+		return (structSize + (alignment - 1)) & ~(alignment - 1);
+	}
 
 private:
 	void* context = nullptr;
@@ -189,7 +204,7 @@ private:
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
-	unsigned int mGSpecularRough;
+	unsigned int mGMetallicRough;
 	unsigned int mGPosition;
 	unsigned int mGNormals;
 	unsigned int mGEmissive;
@@ -198,7 +213,7 @@ private:
 	//AO
 	unsigned int mSSAO;
 	//bloom bramebuffer
-	static const unsigned int mBlurPasses = 3;
+	static const unsigned int mBlurPasses = 4;
 	unsigned int mBlurTex[mBlurPasses + 1];
 	unsigned int mBlurFBO;
 	float mBloomIntensity = 0.5f;
@@ -222,6 +237,7 @@ private:
 	unsigned int mPbrGeoPassProgramId = 0;
 	unsigned int mPbrLightingPassProgramId = 0;
 	unsigned int mPassThroughProgramId = 0;
+	unsigned int mUiCopyBlurTexProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
@@ -242,12 +258,12 @@ private:
 	unsigned int mDownsampleProgramId = 0;
 	unsigned int mUpsampleProgramId = 0;
 	unsigned int mGaussianBlurProgramId = 0;
-	//unsigned int mSsaoBlurProgramId = 0;
-	unsigned int mFogProgramId = 0;
+	unsigned int mSimpleBlurProgramId = 0;
 	unsigned int mGameProgramId = 0;
 	unsigned int mNoiseProgramId = 0;
 	unsigned int mVolLightProgramId = 0;
-	unsigned int mPostpoProgramId = 0;
+	unsigned int mVolFogPostpoProgramId = 0;
+	unsigned int mBGRChannelsProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
@@ -282,8 +298,8 @@ private:
 	unsigned int mPLightListImgBuffer;
 	unsigned int mSLightListImgTex;
 	unsigned int mSLightListImgBuffer;
-	unsigned int mVolPLightListImgTex;
-	unsigned int mVolPLightListImgBuffer;
+	//unsigned int mVolPLightListImgTex;
+	//unsigned int mVolPLightListImgBuffer;
 	unsigned int mVolSLightListImgTex;
 	unsigned int mVolSLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
@@ -308,12 +324,17 @@ private:
 
 	unsigned int mNoiseTexId = 0;
 
+	unsigned int mVolTexId = 0;
+	unsigned int mVolInvScale = 2;
 	float mBaseExtCoeff = 0.04f;
 	float mNoiseAmount = 1.0f;
 	float mVolIntensity = 1.0f;
 	float mVolAnisotropy = 0.35f;
 	float mVolStepSize = 1.0f;
 	int mVolMaxSteps = 16;
+
+	unsigned int mQuadVBO = 0;
+	unsigned int mQuadVAO = 0;
 };
 
 #endif /* _MODULEOPENGL_H_ */

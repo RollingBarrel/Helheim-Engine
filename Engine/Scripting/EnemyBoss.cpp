@@ -15,6 +15,8 @@
 #include "HudController.h"
 #include "MathFunc.h"
 #include "BossBattleArea.h"
+#include "ImageComponent.h"
+#include <algorithm>
 
 #define LASER_WIND_UP 2.625f
 #define BULLETS_ANIMATION 146.0f / 24.0f
@@ -28,6 +30,7 @@
 #define DEFENSE_END_ANIMATION 1.2f
 #define HIT_ANIMATION 1.25f
 #define BEAT_TIME 0.428571435f
+#define ATTACK_CONE_RADIANTS 4.1f
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -40,7 +43,11 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mPhaseShiftTime);
     MEMBER(MemberType::FLOAT, mPhase1Hp);
     MEMBER(MemberType::FLOAT, mPhase2Hp);
-    MEMBER(MemberType::FLOAT, mDeathTime);
+    MEMBER(MemberType::GAMEOBJECT, mShieldGO);
+    SEPARATOR("AREA POSITIONS");
+    MEMBER(MemberType::GAMEOBJECT, mAreas[0]);
+    MEMBER(MemberType::GAMEOBJECT, mAreas[1]);
+    MEMBER(MemberType::GAMEOBJECT, mAreas[2]);
     SEPARATOR("BULLET HELL");
     MEMBER(MemberType::FLOAT, mBulletHellDuration);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
@@ -54,6 +61,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
     MEMBER(MemberType::FLOAT, mLaserDamage);
     MEMBER(MemberType::FLOAT, mLaserSpeed);
+    MEMBER(MemberType::FLOAT, mLaserDuration);
 
     END_CREATE;
 }
@@ -71,19 +79,35 @@ void EnemyBoss::Start()
 
     for (const char* prefab : mTemplateNames)
     {
-        GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
-        if (bombTemplate)
-        {
-            bombTemplate->SetEnabled(false);
-            mTemplates.push_back(bombTemplate);
-        }
+		for (int i = 0; i < 3; i++)
+		{
+            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject->GetParent());
+            if (bombTemplate)
+            {
+                bombTemplate->SetEnabled(false);
+                mTemplates.push_back(bombTemplate);
+            }
+		}
     }
 
     mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
-        mAnimationComponent->SetLoop(false);
+        mAnimationComponent->SetAnimSpeed(0.5f);
+    }
+
+    for (int i = 0; i < std::size(mAreas); ++i) 
+    {
+        if (mAreas[i]) 
+        {
+            mAreaPositions.push_back(mAreas[i]->GetWorldPosition());
+        }
+    }
+
+    if (mShieldGO)
+    {
+        mSpritesheet = static_cast<ImageComponent*>(mShieldGO->GetComponent(ComponentType::IMAGE));
     }
 }
 
@@ -98,37 +122,46 @@ void EnemyBoss::Update()
     if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
     {
         //Phase change
+        phaseChange = 0;
         ++mStage;
         if (mStage == 1) mHealth = mMaxHealth * mPhase1Hp;
         else if (mStage == 2) mHealth = mMaxHealth * mPhase2Hp;
         mCurrentState = EnemyState::PHASE;
-        mBulletHell = BulletPattern::NONE;
+        InterruptAttacks();
+        mInvulnerable = true;
+        GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
+        if (mSpritesheet) 
+        {
+            mShieldGO->SetEnabled(true);
+            mSpritesheet->PlayAnimation();
+            mShieldDelay = 18.0f / mSpritesheet->GetFrameDuration();
+            mShieldTimer.Reset();
+        }
         return;
     }
 
+   
+
     if (!mBeAttracted)
     {
+        switch (mStage)
+        {
+        case 0:
+            UpdatePhase1();
+            break;
+        case 1:
+            UpdatePhase2();
+            break;
+        case 2:
+            UpdatePhase3();
+            break;
+        }
+
         switch (mCurrentState)
         {
-        case EnemyState::IDLE:
-        case EnemyState::ATTACK:
-
-            switch (mStage)
-            {
-            case 0:
-                UpdatePhase1();
-                break;
-            case 1:
-                UpdatePhase2();
-                break;
-            case 2:
-                UpdatePhase3();
-                break;
-            }
-            
-            break;
         case EnemyState::PHASE:
+            
             switch (phaseChange)
             {
             case 0:
@@ -137,6 +170,10 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseStart", mDeathTransitionDuration);
                     ++phaseChange;
                     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+                }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet) mSpritesheet->PauseAnimation();
                 }
                 break;
             case 1:
@@ -147,6 +184,10 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseLoop", mDeathTransitionDuration);
                     ++phaseChange;
                 }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet) mSpritesheet->PauseAnimation();
+                }
                 break;
             case 2:
                 if (mWakeUp)
@@ -154,6 +195,10 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseEnd", 1.0f);
                     ++phaseChange;
                     mWakeUp = false;
+                    mInvulnerable = false;
+                    GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
+                    if (mSpritesheet) mSpritesheet->PlayAnimation();
+                    mShieldTimer.Reset();
                 }
                 break;
             case 3:
@@ -163,8 +208,14 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
                     ++phaseChange;
                     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_AWAKE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-
-                    //GameManager::GetInstance()->HandleBossAudio(mStage);
+                }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet)
+                    {
+                        mSpritesheet->StopAnimation();
+                        mShieldGO->SetEnabled(false);
+                    }
                 }
                 break;
             case 4:
@@ -175,13 +226,21 @@ void EnemyBoss::Update()
                     LookAt(mFront, BEAT_TIME);
                     phaseChange = 0;
                 }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet)
+                    {
+                        mSpritesheet->StopAnimation();
+                        mShieldGO->SetEnabled(false);
+                    }
+                }
                 break;
             }
            
             break;
         case EnemyState::DEATH:
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
-            mBulletHell = BulletPattern::NONE;
+            InterruptAttacks();
             Death();
             break;
         case EnemyState::CHARGING_BULLET_HELL:
@@ -198,22 +257,17 @@ void EnemyBoss::Update()
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
             }
             break;
-        case EnemyState::WAKE:
-            if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
-            {
-                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
-                mCurrentState = EnemyState::IDLE;
-            }
-            break;
         case EnemyState::DOWN:
             if (mWakeUp)
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 GameManager::GetInstance()->SetIsFightingBoss(true);
+                mAnimationComponent->SetAnimSpeed(1.0f);
                 mWakeUp = false;
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", mDeathTransitionDuration);
-                mCurrentState = EnemyState::WAKE;
+                mInvulnerable = false;
+                GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
+                mCurrentState = EnemyState::IDLE;
             }
         }
     }
@@ -249,6 +303,7 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_BULLET);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
+    mBulletHellTimer.Reset();
     mBulletHell = pattern;
     mBulletsWave = 0;
     mAttackDurationTimer.Reset();
@@ -257,13 +312,15 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
 void EnemyBoss::LaserAttack()
 {
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_LASER);
+    LookAt(mFront, 2 * BEAT_TIME);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
 
     if (mLaserGO)
     {
-        float3 laserSpawnOffset = float3(0.0f, 3.6f, 0.36f);
-        mLaserGO->SetLocalPosition(laserSpawnOffset);
+        float3 laserSpawn = mGameObject->GetWorldPosition();
+        laserSpawn.y = mPlayer->GetWorldPosition().y + 2.0f;
+        mLaserGO->SetWorldPosition(laserSpawn);
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (laserScript)
         {
@@ -272,31 +329,76 @@ void EnemyBoss::LaserAttack()
     }
 }
 
-void EnemyBoss::BombAttack()
+void EnemyBoss::BombAttack(const char* pattern)
 {
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_ERUPTION);
     mCurrentState = EnemyState::ATTACK;
+    const int n = sizeof(mTemplateNames) / sizeof(mTemplateNames[0]);
+
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
-    float3 target = mPlayer->GetWorldPosition();
-    int index = rand() % mTemplates.size();
-    GameObject* bombGO = mTemplates[index];
-    bombGO->SetWorldPosition(target);
-	float randRotation = static_cast<float>(rand() % 360);
-	float3 bombRotation = float3(0.0f, randRotation, 0.0f);
-	bombGO->SetWorldRotation(bombRotation);
+    const char** targetPtr = std::find(&mTemplateNames[0], mTemplateNames + n, pattern);
+    int index = targetPtr - mTemplateNames;
+
+    if (index == 2)
+    {
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+			float playerAreaDistance = mPlayer->GetWorldPosition().Distance(mAreaPositions[i]);
+            mPlayerAreaDistances[playerAreaDistance] = i;
+        }
+
+		int playerZone = mPlayerAreaDistances.begin()->second;
+		int freeZone = 0;
+
+		//If the player is in the middle, the free are will be the hardest to reach for the player
+		if (playerZone == 1) freeZone = mPlayerAreaDistances.rbegin()->second;
+		else freeZone = mPlayerAreaDistances.at(std::next(mPlayerAreaDistances.begin(), 1)->first);
+
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+			if (i == freeZone) continue;
+
+            int templateIndex = index * 3 + i;
+            GameObject* bombGO = mTemplates[templateIndex];
+            SetupBomb(bombGO, mAreaPositions[i]);
+        }
+		mPlayerAreaDistances.clear();
+    }
+    else
+    {
+        if (index == 1)
+        {
+            //Spawn 2 single bombs on the area separators
+            SetupBomb(mTemplates[10], mAreaPositions[0] + math::float3(2.45f, 0.0f, -4.55f));
+            SetupBomb(mTemplates[11], mAreaPositions[2] + math::float3(2.45f, 0.0f, 4.55f));
+        }
+
+        SetupBomb(mTemplates[9], mPlayer->GetWorldPosition());
+
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+            int templateIndex = index * 3 + i;
+            SetupBomb(mTemplates[templateIndex], mAreaPositions[i]);
+        }
+    }
+}
+
+void EnemyBoss::SetupBomb(GameObject* bombGO, const math::float3& position)
+{
+    bombGO->SetWorldPosition(position);
+    bombGO->SetEnabled(true);
+
     std::vector<Component*> scriptComponents;
     bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
-    bombGO->SetEnabled(true);
-    for (Component* scriptComponent : scriptComponents)
-    {
+    for (Component* scriptComponent : scriptComponents) {
         BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-        bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+        bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage, mBombsDelay);
     }
 }
 
 void EnemyBoss::Death()
 {
-    if (mDeathTimer.Delay(mDeathTime))
+    if (mDeathTimer.Delay(DEATH_ANIMATION))
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM);
 
@@ -309,10 +411,10 @@ void EnemyBoss::Death()
 
 void EnemyBoss::BulletHellPattern1() //Circular
 {
-    if (mBulletHellTimer.Delay(4 * BEAT_TIME)) //Each pattern will need different rythm
+    if (mBulletHellTimer.Delay(2 * BEAT_TIME)) //Each pattern will need different rythm
     {
-        unsigned int nBullets = 10;
-        float alpha = DegToRad(180.0f / (nBullets - 1));
+        unsigned int nBullets = 14;
+        float alpha = ATTACK_CONE_RADIANTS / (nBullets - 1);
         float offset = 0.0f;
         if (mBulletsWave % 2 == 1)
         {
@@ -324,9 +426,8 @@ void EnemyBoss::BulletHellPattern1() //Circular
         float3 rotation = mGameObject->GetWorldEulerAngles();
         for (unsigned int i = 0; i < nBullets; ++i)
         {
-            // Give bullet random directon
-            float angle = (-pi / 2) + offset + i * alpha;
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            float angle = (-ATTACK_CONE_RADIANTS / 2) + offset + i * alpha;
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             bulletGO->SetWorldPosition(bulletOriginPosition);
 
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
@@ -336,7 +437,10 @@ void EnemyBoss::BulletHellPattern1() //Circular
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
 
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            if (i % 2 == 0)
+            {
+                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            }
         }
         mBulletsWave++;
     }
@@ -367,17 +471,24 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         
         for (int i : { -1, 1 })
         {
-            // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * space * (mBulletsWave % nBullets) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
-
         }
+
+        if (mBulletsWave % 2 == 0)
+        {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletOriginPosition);
+        }
+        else 
+        {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PISTOL, bulletOriginPosition);
+        }
+
         mBulletsWave++;
     }
 }
@@ -394,8 +505,7 @@ void EnemyBoss::BulletHellPattern3() //Two streams
 
         for (int i : { -1, 1 })
         {
-            // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float angle = alpha * i;
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
             direction.Normalize();
@@ -435,14 +545,14 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
 
         for (int i : { -1, 1 })
         {
-            // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * width * sin((pi*3/4)* (mBulletsWave % nBullets) / (nBullets - 1)) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
 
             GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
@@ -453,18 +563,18 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
 void EnemyBoss::BulletHellPattern5() //Stream
 {
 
-    if (mBulletHellTimer.Delay(BEAT_TIME/8)) //Each pattern will need different rythm
+    if (mBulletHellTimer.Delay(BEAT_TIME * 0.25)) //Each pattern will need different rythm
     {
-        const unsigned int nBullets = 16;
-        float alpha = (pi / 2) - pi * (mBulletsWave % nBullets) / (nBullets - 1);
+        const unsigned int nBullets = 20;
+        float alpha = (ATTACK_CONE_RADIANTS / 2) - ATTACK_CONE_RADIANTS * (mBulletsWave % nBullets) / (nBullets - 1);
         if (mBulletsWave % (2*nBullets) >= nBullets)
         {
-            alpha = pi / (nBullets * 2) - alpha;
+            alpha = ATTACK_CONE_RADIANTS / (nBullets * 2) - alpha;
         }
         float3 bulletOriginPosition = mGameObject->GetWorldPosition();
         bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
 
-        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
         float3 direction = float3(mFront.x * cos(alpha) - mFront.z * sin(alpha), mFront.y, mFront.x * sin(alpha) + mFront.z * cos(alpha));
         LookAt(direction, BEAT_TIME / 8);
         direction.Normalize();
@@ -474,7 +584,8 @@ void EnemyBoss::BulletHellPattern5() //Stream
         bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         mBulletsWave++;
 
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+        // We use player shot sound because other sounds may reach the max limit defined by composer, causing some sounds to be dropped
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PISTOL, bulletGO->GetWorldPosition()); 
     }
 }
 
@@ -492,13 +603,16 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
             float alpha = 2 * pi * i / nBullets;
             float3 direction = float3(front.x * cos(alpha) - front.z * sin(alpha), front.y, front.x * sin(alpha) + front.z * cos(alpha));
             direction.Normalize();
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(target - direction*radius, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
 
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            if (i % 2 == 0)
+            {
+                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            }
         }
     }
 }
@@ -515,17 +629,18 @@ void EnemyBoss::UpdatePhase1()
             switch (sequence)
             {
             case 0:
-                StartBulletAttack(BulletPattern::WAVE);
+                StartBulletAttack(BulletPattern::CIRCLES);
                 break;
             case 1:
                 StartBulletAttack(BulletPattern::ARROW);
                 break;
             case 2:
-                StartBulletAttack(BulletPattern::CIRCLES);
+                StartBulletAttack(BulletPattern::WAVE);
                 break;
             }
         }
         break;
+    case EnemyState::CHARGING_LASER:
     case EnemyState::ATTACK:
         if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
         {
@@ -538,10 +653,11 @@ void EnemyBoss::UpdatePhase1()
     }
 }
 
-void EnemyBoss::UpdatePhase2()
+void EnemyBoss::UpdatePhase3()
 {
+    static int test = 1;
     GameManager::GetInstance()->HandleBossAudio(mStage);
-    static unsigned int sequence = 0;
+    static unsigned int sequence = -1;
     static unsigned int attack = 0;
     switch (mCurrentState)
     {
@@ -550,36 +666,69 @@ void EnemyBoss::UpdatePhase2()
         {
             switch (sequence)
             {
+            case -1:
+                BombAttack("BombingTemplate3.prfb");
+                break;
             case 0:
                 LaserAttack();
                 break;
             case 1:
-                StartBulletAttack(BulletPattern::WAVE);
-                break;
-            case 2:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 break;
+            case 2:
+                BombAttack("BombingTemplate2.prfb");
+                break;
             case 3:
-                StartBulletAttack(BulletPattern::CIRCLES);
+                StartBulletAttack(BulletPattern::ARROW);
                 break;
             }
         }
         break;
+    case EnemyState::CHARGING_LASER:
     case EnemyState::ATTACK:
         switch (sequence * 10 + attack)
         {
         case 0:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
-                StartBulletAttack(BulletPattern::ARROW);
+                StartBulletAttack(BulletPattern::CIRCLES);
+                attack++;
+            }
+            break;
+        case 1:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                BombAttack("BombingTemplate1.prfb"); // Big
                 attack++;
             }
             break;
         case 10:
-        case 30:
+        case 20:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
                 LaserAttack();
+                attack++;
+            }
+            break;
+        case 30:           
+        case 11:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                BombAttack("BombingTemplate3.prfb"); // Big
+                attack++;
+            }
+            break;
+        case 21:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                StartBulletAttack(BulletPattern::WAVE);
+                attack++;
+            }
+            break;
+        case 31:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 attack++;
             }
             break;
@@ -595,9 +744,10 @@ void EnemyBoss::UpdatePhase2()
             break;
         }
     }
+    test++;
 }
 
-void EnemyBoss::UpdatePhase3()
+void EnemyBoss::UpdatePhase2()
 {
     GameManager::GetInstance()->HandleBossAudio(mStage);
     static int sequence = -1;
@@ -609,50 +759,49 @@ void EnemyBoss::UpdatePhase3()
         {
             switch (sequence)
             {
-            case 0:
-                StartBulletAttack(BulletPattern::WAVE);
-                break;
             case 1:
-                BombAttack();
+                LaserAttack();
                 break;
             case 2:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
+                break;
+            case 0:
+                StartBulletAttack(BulletPattern::WAVE);
                 break;
             case 3:
                 StartBulletAttack(BulletPattern::CIRCLES);
                 break;
             case -1:// Start with bombs. Never repeat this sequence
-                BombAttack();
+                LaserAttack();
                 break;
-
             }
         }
         break;
+    case EnemyState::CHARGING_LASER:
     case EnemyState::ATTACK:
         switch (sequence * 10 + attack)
         {
-        case 0:
-        case 11:
-        case 30:
+        case 10:
+        case 31:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
-                BombAttack();
+                StartBulletAttack(BulletPattern::ARROW);
                 attack++;
             }
             break;
-        case 1:
-        case 10:
-        case 20:
+        case 30:
+        case 11:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
                 LaserAttack();
                 attack++;
             }
             break;
-        case 31:
+        case 0:
+        case 20:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
-                StartBulletAttack(BulletPattern::WAVE);
+                StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 attack++;
             }
             break;
@@ -672,15 +821,16 @@ void EnemyBoss::UpdatePhase3()
 
 void EnemyBoss::LookAt(float3 direction, float time)
 { 
-    LookAt(direction.xz(), mGameObject->GetFront().AngleBetween(direction) / time); 
+    float angle = mGameObject->GetFront().AngleBetween(direction);
+    LookAt(direction.xz().Normalized(), angle / time);
 }
 
 void EnemyBoss::LookAt(float2 direction, float speed)
 {
-    mTargetRotation = direction.AngleBetweenNorm(float2::unitY);
+    mTargetRotation = direction.AngleBetween(float2::unitY);
     if (direction.x < 0)
     {
-        mTargetRotation *= -1;
+        mTargetRotation = 2*pi - mTargetRotation;
     }
     mRotationSpeed = speed;
 }
@@ -691,6 +841,7 @@ void EnemyBoss::Rotate()
     {
         float deltaTime = App->GetDt();
         float angle = mTargetRotation - mGameObject->GetLocalEulerAngles().y;
+        if (angle > pi) angle -= 2 * pi;
 
         float rotationAmount = mRotationSpeed * deltaTime;
         float3 currentRotation = mGameObject->GetLocalEulerAngles();
@@ -709,7 +860,7 @@ void EnemyBoss::Rotate()
 
 void EnemyBoss::TakeDamage(float damage)
 {
-    if (mCurrentState == EnemyState::PHASE) return;
+    if (mInvulnerable) return;
     if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_HIT);
@@ -722,5 +873,19 @@ void EnemyBoss::TakeDamage(float damage)
             // Use Hit2 animation before Death??
             mCurrentState = EnemyState::DEATH;
         }
+    }
+}
+
+void EnemyBoss::InterruptAttacks() 
+{
+    mBulletHell = BulletPattern::NONE;
+    BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (laserScript)
+    {
+        laserScript->Interrupt();
+    }
+    for (GameObject* bombGO : mTemplates)
+    {
+        bombGO->SetEnabled(false);
     }
 }

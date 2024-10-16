@@ -46,13 +46,20 @@ Component* VideoComponent::Clone(GameObject* owner) const
 
 void VideoComponent::Update()
 {
-	if (mIsPlaying)
+	if (!mFirstFrame)
 	{
-		mElapsedTime += App->GetDt();
-		while (mElapsedTime > mFrameTime)
+		if (mIsPlaying)
 		{
-			ReadNextFrame();
+			mElapsedTime += App->GetDt();
+			while (mElapsedTime > mFrameTime)
+			{
+				ReadNextFrame();
+			}
 		}
+	}
+	else
+	{
+		mFirstFrame = false;
 	}
 }
 
@@ -80,22 +87,19 @@ void VideoComponent::Draw()
 		glEnable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 
-		glBindVertexArray(mQuadVAO);
+		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
 		glUniform4fv(glGetUniformLocation(mUIProgramID, "inputColor"), 1, float4(1.0f, 1.0f, 1.0f, 1.0f).ptr());
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
-		glUniform1i(glGetUniformLocation(mUIProgramID, "Texture"), 0);
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
 		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
+;
 		glBindVertexArray(0);
-		glUseProgram(0);
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
@@ -129,7 +133,8 @@ void VideoComponent::Stop()
 {
 	Pause();
 	RestartVideo();
-	ReadNextFrame();
+	//ReadNextFrame();
+	mFirstFrame = true;
 }
 
 void VideoComponent::Reset()
@@ -149,8 +154,6 @@ void VideoComponent::Init()
 	mTransform2D = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 
 	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
-	InitVBO();
-	InitVAO();
 
 	glGenTextures(1, &mTextureID);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
@@ -159,37 +162,6 @@ void VideoComponent::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-}
-
-void VideoComponent::InitVBO()
-{
-	float vertices[] = {
-		// texture coordinates
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
-		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
-	};
-
-	glGenBuffers(1, &mQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-}
-
-void VideoComponent::InitVAO()
-{
-	glGenVertexArrays(1, &mQuadVAO);
-	glBindVertexArray(mQuadVAO);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-	glBindVertexArray(0);
 }
 
 void VideoComponent::OpenVideo(const char* filePath)
@@ -354,6 +326,7 @@ void VideoComponent::RestartVideo()
 	mFrameTime = 0.0;
 	av_seek_frame(mFormatContext, mVideoStreamIndex, 0, AVSEEK_FLAG_BACKWARD);
 	avcodec_flush_buffers(mCodecContext);
+	mFirstFrame = true;
 }
 
 void VideoComponent::ReadNextFrame()

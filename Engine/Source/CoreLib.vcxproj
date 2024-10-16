@@ -799,6 +799,7 @@
     <ClInclude Include="VideoComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\GBRChannels.comp" />
     <None Include="..\Game\Assets\Shaders\Fog.comp" />
     <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />
@@ -836,9 +837,12 @@
     <None Include="..\Game\Assets\Shaders\trail_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <None Include="..\Game\Assets\Shaders\uiBlurPass.fs" />
     <None Include="..\Game\Assets\Shaders\uiMask.fs" />
     <None Include="..\Game\Assets\Shaders\uiText.fs" />
+    <None Include="..\Game\Assets\Shaders\VolFogPostpo.comp" />
     <None Include="..\Game\Assets\Shaders\Volumetric.comp" />
+    <None Include="..\Game\Assets\Shaders\Volumetric2.comp" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs" />

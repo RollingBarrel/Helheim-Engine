@@ -32,31 +32,53 @@ void EnemyRobotMelee::Start()
 {
     Enemy::Start();
     mDisengageTime = 0.1f;
+    mChargeDuration = 0.4f;
+    mAttackDistance = 1.5f;
     mSwordTrail->SetEnabled(false);
     mDeathAudioPlayed = false;
 }
 
 void EnemyRobotMelee::Charge()
 {
-    Enemy::Charge();
+    mAiAgentComponent->PauseCrowdNavigation();
+    mAiAgentComponent->StartCrowdNavigation();
+    if (!IsPlayerReachable() && mDisengageTimer.Delay(mDisengageTime))
+    {
+
+        mCurrentState = EnemyState::CHASE;
+        mSwordTrail->SetEnabled(false);
+        mFirstAttack = true;
+        return;
+
+    }
+    mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
+    mAnimationComponent->RestartStateAnimation();
+    if (mFirstAttack &&  mFirstAttackTimer.Delay(mFirstAttackTime))
+    {
+        mFirstAttack = false;
+        mCurrentState = EnemyState::ATTACK;
+        mSwordTrail->SetEnabled(true);
+
+    }
+    else if (!mFirstAttack && mChargeDurationTimer.Delay(mChargeDuration))
+	{
+        
+ 		mCurrentState = EnemyState::ATTACK;
+        mSwordTrail->SetEnabled(true);
+
+	}
     mGameObject->LookAt(mPlayer->GetWorldPosition());
 }
 
 void EnemyRobotMelee::Attack()
 {
-    Enemy::Attack();
-    if (mCurrentState == EnemyState::CHARGE) 
+    mAnimationComponent->SetIsPlaying(true);
+    mAttackTime += App->GetDt();
+
+   static bool attack = true ;
+    if ( attack && mAttackTime>=0.2f)
     {
-        mSwordTrail->SetEnabled(true);
-    }    
-    if (mCurrentState == EnemyState::CHASE) 
-    {
-        mSwordTrail->SetEnabled(false);
-    }
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
-    {
-        mAnimationComponent->RestartStateAnimation();
-        PlayMeleeAudio();
+        attack = false;
         float3 playerPosition = mPlayer->GetWorldPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
         float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
@@ -68,10 +90,18 @@ void EnemyRobotMelee::Attack()
             PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (playerScript != nullptr)
             {
+                PlayMeleeAudio();
                 playerScript->TakeDamage(mMeeleDamage);
                 GameManager::GetInstance()->HitStop();
             }
         }
+    }
+    if (!attack && mAttackTime >= 0.5f)
+    {
+        attack = true;
+        mCurrentState = EnemyState::CHARGE;
+        mAttackTime = 0.0f;
+        
     }
 }
 
@@ -82,6 +112,7 @@ void EnemyRobotMelee::Death()
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_DEATH, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
         mDeathAudioPlayed = true;
+        mSwordTrail->SetEnabled(false);
     }
 }
 

@@ -9,6 +9,7 @@
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
 #include "MeshRendererComponent.h"
+#include "AnimationComponent.h"
 #include <algorithm> 
 #include "glew.h"
 
@@ -202,6 +203,7 @@ void ModuleScene::Save(const char* sceneName) const
 	volObject.AddFloat("Anisotropy", App->GetOpenGL()->GetVolAnisotropy());
 	volObject.AddFloat("StepSize", App->GetOpenGL()->GetVolStepSize());
 	volObject.AddInt("MaxSteps", App->GetOpenGL()->GetVolMaxSteps());
+	volObject.AddInt("InvScale", App->GetOpenGL()->GetVolInvScale());
 
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
@@ -319,6 +321,10 @@ void ModuleScene::Load(const char* sceneName)
 			App->GetOpenGL()->SetVolAnisotropy(volObj.GetFloat("Anisotropy"));
 			App->GetOpenGL()->SetVolStepSize(volObj.GetFloat("StepSize"));
 			App->GetOpenGL()->SetVolMaxSteps(volObj.GetInt("MaxSteps"));
+			if(volObj.HasMember("InvScale"))
+				App->GetOpenGL()->SetVolInvScale(volObj.GetInt("InvScale"));
+			else
+				App->GetOpenGL()->SetVolInvScale(2);
 		}
 		else
 		{
@@ -329,6 +335,7 @@ void ModuleScene::Load(const char* sceneName)
 			App->GetOpenGL()->SetVolAnisotropy(0.35f);
 			App->GetOpenGL()->SetVolStepSize(1.0f);
 			App->GetOpenGL()->SetVolMaxSteps(16);
+			App->GetOpenGL()->SetVolInvScale(2);
 		}
 
 		App->GetScriptManager()->AwakeScripts();
@@ -631,13 +638,18 @@ GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
 {
 	std::unordered_map<const GameObject*, GameObject*> originalToNew;
 	std::vector<MeshRendererComponent*>mRenderers;
-	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	std::vector<AnimationComponent*>mAnimations;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers, &mAnimations);
 	for (MeshRendererComponent* mRend : mRenderers)
 	{
 		if (mRend->HasSkinning())
 		{
 			mRend->UpdateSkeletonObjects(originalToNew);
 		}
+	}
+	for (AnimationComponent* mAnim : mAnimations)
+	{
+		mAnim->SetObjects(originalToNew);
 	}
 	AddGameObjectToDuplicate(duplicatedGameObject);
 

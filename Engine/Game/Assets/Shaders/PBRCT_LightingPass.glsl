@@ -59,7 +59,7 @@ layout(binding = 0)uniform sampler2D diffuseTex;
 //layout(binding = 1)uniform sampler2D specularRoughTex;
 layout(binding = 1)uniform sampler2D metalRoughTex;
 layout(binding = 2)uniform sampler2D normalTex;
-layout(binding = 3)uniform sampler2D positionTex;
+layout(binding = 3)uniform sampler2D depthTex;
 layout(binding = 4)uniform sampler2D emissiveTex;
 //Ambient
 layout(binding = 5)uniform samplerCube prefilteredIBL;
@@ -86,6 +86,19 @@ vec3 V;
 vec3 emissiveCol;
 
 out vec4 outColor;
+
+float GetLinearZ(float inputDepth)
+{
+	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
+}
+
+vec3 GetWorldPos(float depth, vec2 uvs)
+{
+	float viewZ = GetLinearZ(depth);
+	float viewX = (-viewZ * (uvs.x * 2.0 - 1.0)) / proj[0][0];
+	float viewY = (-viewZ * (uvs.y * 2.0 - 1.0)) / proj[1][1];
+	return (invView * vec4(vec3(viewX, viewY, viewZ), 1.0)).xyz;
+}
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
@@ -123,15 +136,15 @@ void main()
 	//cSpec = specColorTex.rgb;
 	//rough = max(specColorTex.a * specColorTex.a, 0.001f);
 	N = normalize(texture(normalTex, uv).rgb * 2.0 - 1.0);
-	//depth = texture(depthTex, uv).r;
-	//pos = GetWorldPos(depth, uv);
-	pos = texture(positionTex, uv).rgb;
+	depth = texture(depthTex, uv).r;
+	pos = GetWorldPos(depth, uv);
+	//pos = texture(positionTex, uv).rgb;
 	emissiveCol = texture(emissiveTex, uv).rgb;
 	vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
 	V = normalize(cameraPos - pos);
 
 	vec3 baseColor = texture(diffuseTex, uv).rgb;
-	vec2 specColorTex = texture(metalRoughTex, uv).gb;
+	vec2 specColorTex = texture(metalRoughTex, uv).rg;
 	float metal = specColorTex.y;
 	rough = max(specColorTex.x * specColorTex.x, 0.001f);
 	
@@ -164,39 +177,41 @@ void main()
 	{
 		SpotLight sLight = sLights[idx];
 		//Shadows
-		float shadowValue = 1.0;
+		bool inShadow = false;
 		if (sLight.shadowIndex >= 0)
 		{
-			vec4 lightClipSpace = shadows[sLight.shadowIndex].viewProjMatrix * vec4(pos, 1);
+			Shadow shadow = shadows[sLight.shadowIndex];
+			vec4 lightClipSpace = shadow.viewProjMatrix * vec4(pos, 1);
 			vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
 			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
-			float shadowDepth = texture(shadows[sLight.shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLight.shadowIndex].bias;
-			float fragmentDepth = lightNDC.z;
+			float shadowDepth = texture(shadow.shadowMap, lightNDC.xy).r + shadow.bias;
 
-			if(!(lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
-				lightNDC.y >= 0.0 && lightNDC.y <= 1.0f &&
-				fragmentDepth < shadowDepth))
+			if(!(lightNDC.x >= 0.0f && lightNDC.x <= 1.0f &&
+				lightNDC.y >= 0.0f && lightNDC.y <= 1.0f &&
+				lightNDC.z < shadowDepth))
 				{
-					shadowValue = 0.0;
+					inShadow = true;
 				}
 		}
-
-		vec3 mVector = pos - sLight.pos.xyz;
-		vec3 sDir = normalize(mVector);
-		vec3 aimDir = normalize(sLight.aimD.xyz);
-		float dist = dot(mVector, aimDir);
-		//TODO: Check that the radius of spot light is correct
-		float r = sLight.radius;
-		float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
-		float c = dot(sDir, aimDir);
-		float cInner = sLight.aimD.w;
-		float cOuter = sLight.col.w;
-		//float cAtt = 1;
-		//if(cInner > c && c > cOuter)
-			//cAtt = (c - cOuter) / (cInner - cOuter);
-		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
-		att *= cAtt;
-		pbrCol += GetPBRLightColor(sDir, sLight.col.rgb, sLight.pos.w, att) * shadowValue;
+		if (!inShadow)
+		{
+			vec3 mVector = pos - sLight.pos.xyz;
+			vec3 sDir = normalize(mVector);
+			vec3 aimDir = normalize(sLight.aimD.xyz);
+			float dist = dot(mVector, aimDir);
+			//TODO: Check that the radius of spot light is correct
+			float r = sLight.radius;
+			float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
+			float c = dot(sDir, aimDir);
+			float cInner = sLight.aimD.w;
+			float cOuter = sLight.col.w;
+			//float cAtt = 1;
+			//if(cInner > c && c > cOuter)
+				//cAtt = (c - cOuter) / (cInner - cOuter);
+			float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
+			att *= cAtt;
+			pbrCol += GetPBRLightColor(sDir, sLight.col.rgb, sLight.pos.w, att);
+		}
 		++i;
 	}
 

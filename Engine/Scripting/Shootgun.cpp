@@ -28,7 +28,7 @@ Shootgun::Shootgun()
 
     mBulletSpeed = 30.0f;
     mBulletMaxSpread = 0.5f;
-    mEnergyCost = 15;
+    mEnergyCost = 10;
     mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
     if (mFire)
     {
@@ -43,6 +43,14 @@ void Shootgun::Enter()
 {
     //CONTROLLER VIBRATION
     App->GetInput()->SetGameControllerRumble(50000, 0, 150);
+}
+
+void Shootgun::Exit()
+{
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
 }
 
 void Shootgun::Attack(float time)

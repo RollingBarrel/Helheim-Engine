@@ -86,6 +86,10 @@ void Machinegun::Attack(float time)
 void Machinegun::Exit()
 {
     mFirstShoot = true;
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
 }
 
 void Machinegun::PlayHitSound()

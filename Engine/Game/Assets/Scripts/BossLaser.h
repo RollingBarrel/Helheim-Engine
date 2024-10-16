@@ -26,7 +26,7 @@ public:
     void Start() override;
     void Update() override;
     void Init(float damage, float duration, float distance, float speed);
-
+    void Interrupt();
 private:
     void Charge();
     void Fire();
@@ -38,9 +38,11 @@ private:
     float mLaserDistance = 0.0f;
     float mLaserSpeed = 0.0f;
     float mStateTime = 0.0f;
-    float mChargeTime = 1.0f;
+    float mChargeTime = 2.0f;
     float mLaserDuration = 0.0f;
     float mCooldownDuration = 2.0f;
 
     GameObject* mLaserEyeBall = nullptr;  // Only one laser now
+
+    int mLaserSound = -1;
 };

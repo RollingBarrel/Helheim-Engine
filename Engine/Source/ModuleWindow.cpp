@@ -99,6 +99,17 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+float2 ModuleWindow::GetScreenSize() const
+{
+	float2 size;
+	SDL_DisplayMode displayMode;
+	SDL_GetDesktopDisplayMode(SDL_GetWindowDisplayIndex(mWindow), &displayMode);
+	size.x = displayMode.w;
+	size.y = displayMode.h;
+
+	return size;
+}
+
 void ModuleWindow::SetMousePositionInWindow(float2 position)
 {
 	SDL_WarpMouseInWindow(mWindow, position.x, position.y);

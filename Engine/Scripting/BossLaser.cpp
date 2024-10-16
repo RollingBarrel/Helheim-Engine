@@ -26,7 +26,6 @@ void BossLaser::Start()
     if (mLaserEyeBall)
     {
         mLaserEyeBall->SetEnabled(false);
-        mLaserEyeBall->SetLocalScale(float3::one * 0.5f);
     }
 }
 
@@ -65,7 +64,7 @@ void BossLaser::Update()
 void BossLaser::Init(float damage, float duration, float distance, float speed)
 {
     mDamage = damage;
-    mLaserDuration = duration;
+    mLaserDuration = duration - mChargeTime;
     mLaserDistance = distance;
     mLaserSpeed = speed;
     Charge();
@@ -85,13 +84,15 @@ void BossLaser::Fire()
     if (mLaserEyeBall)
     {
         mLaserEyeBall->SetWorldPosition(mGameObject->GetWorldPosition());
+        mLaserEyeBall->SetLocalPosition(float3(-0.1, 0.5, 0.58));
         mLaserEyeBall->SetEnabled(true);
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(mLaserEyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
             eyeBallScript->Init(mDamage, mLaserDuration, mLaserDistance, mLaserSpeed, -90.0f);
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER, mLaserEyeBall->GetWorldPosition());
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER2, mLaserEyeBall->GetWorldPosition());
+
+            mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::BOSS_LASER);
+            GameManager::GetInstance()->GetAudio()->SetPosition(SFX::BOSS_LASER, mLaserSound, mLaserEyeBall->GetWorldPosition());
         }
     }
 }
@@ -103,6 +104,19 @@ void BossLaser::Cooldown()
 
     if (mLaserEyeBall)
     {
+        if (mLaserSound != -1)
+        {
+            mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+        }
+
         mLaserEyeBall->SetEnabled(false);
+    }
+}
+
+void BossLaser::Interrupt()
+{
+    if (mCurrentState != LaserState::IDLE && mCurrentState != LaserState::COOLDOWN)
+    {
+        Cooldown();
     }
 }

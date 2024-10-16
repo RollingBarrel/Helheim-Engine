@@ -1,0 +1,426 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1983260312,
+                "ParentUID": 1,
+                "Name": "Level3_Cinematic",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 167172625,
+                "ParentUID": 1983260312,
+                "Name": "CinematicManager",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "CinematicCamera",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "PARAMS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mYawAngle",
+                                "MemberType": 1,
+                                "VariableData": 45.0
+                            },
+                            {
+                                "VariableName": "mPitchAngle",
+                                "MemberType": 1,
+                                "VariableData": -45.0
+                            },
+                            {
+                                "VariableName": "mDistanceToEnemy",
+                                "MemberType": 1,
+                                "VariableData": 8.0
+                            },
+                            {
+                                "VariableName": "mSpeedFactor",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mAnimationTime",
+                                "MemberType": 1,
+                                "VariableData": 7.829999923706055
+                            },
+                            {
+                                "VariableName": "CAMERAS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mCinematicCameraGO",
+                                "MemberType": 3,
+                                "VariableData": 478169632
+                            },
+                            {
+                                "VariableName": "CAMERA OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO1",
+                                "MemberType": 3,
+                                "VariableData": 781647571
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "ENEMIES",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "Idle 1 | Chase 2 | Charge 3 | Attack 4 | WakeUp 5",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mEnemyGO1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState1",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mEnemyGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState2",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mEnemyGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState3",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mEnemyGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState4",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "BATTLE AREAS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO1",
+                                "MemberType": 3,
+                                "VariableData": 1090207843
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "FADE SCREEN",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mFadeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mColor",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "VariableName": "mFadeSpeed",
+                                "MemberType": 1,
+                                "VariableData": 0.04500000178813934
+                            },
+                            {
+                                "VariableName": "HUD",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHudGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSkipGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 478169632,
+                "ParentUID": 167172625,
+                "Name": "CinematicCamera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.000006034969374013599,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "IsEnabled": true,
+                        "AspectRatio": 1.936948299407959,
+                        "FieldOfView": 90.0,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 781647571,
+                "ParentUID": 167172625,
+                "Name": "CameraObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    25.0,
+                    1.75,
+                    0.0
+                ],
+                "Rotation": [
+                    0.27059805393218996,
+                    -0.6532815098762512,
+                    0.2705981433391571,
+                    0.6532813906669617
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000003576278687
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1090207843,
+                "ParentUID": 167172625,
+                "Name": "CinematicBattleArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    26.5,
+                    2.0436205863952638,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "BattleArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.699999988079071,
+                            2.5,
+                            2.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BattleArea",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpawnerGO1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mWavesRounds",
+                                "MemberType": 0,
+                                "VariableData": 0
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreaDoorsGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "EXPLOSIVE SPAWNERS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mExplosiveSpawn4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TUTORIAL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mIsTutorialArea",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

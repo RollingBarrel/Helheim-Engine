@@ -45,8 +45,6 @@ protected:
 private:
 
 	void Init();
-	void InitVBO();
-	void InitVAO();
 
 	void CloseVideo();
 	void RestartVideo();
@@ -77,10 +75,9 @@ private:
 
 	bool mIsPlaying = false;
 	bool mLoop = false;
+	bool mFirstFrame = true;
 
 	unsigned int mTextureID = 0;
-	unsigned int mQuadVBO = 0;
-	unsigned int mQuadVAO = 0;
 	unsigned int mUIProgramID = 0;
 };
 

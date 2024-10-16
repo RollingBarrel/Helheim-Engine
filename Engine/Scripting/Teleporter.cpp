@@ -54,11 +54,11 @@ void Teleporter::Update()
     if (mIsTriggered)
     {
         mCurrentTime += App->GetDt();
-        float3 position = LerpPosition(mDuration, mIsAtStart ? mStartPos : mEndPos);
+        float3 position = (mIsAtStart ? mStartPos : mEndPos).Add(mCurrentDirection*(mCurrentTime/mDuration)*mDistance);// LerpPosition(mDuration, mIsAtStart ? mStartPos : mEndPos);
         mPlayer->SetWorldPosition(position);
         mGameObject->SetWorldPosition(position);
 
-
+        float missing_distance = position.Distance(mIsAtStart ? mEndPos : mStartPos);
         if (mCurrentTime > mDuration)
         {
             mIsTriggered = false;
@@ -165,6 +165,16 @@ void Teleporter::Update()
             mCloseAudioPlayed = false;
             GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, true);
             GameManager::GetInstance()->GetAudio()->Release(SFX::ELEVATOR, mElevatorAudio);
+            mIsCooldown = true;
+        }
+    }
+    if (mIsCooldown)
+    {
+        mCooldown += App->GetDt();
+        if (mCooldown > 2.5f)
+        {
+            mIsCooldown = false;
+            mCooldown = 0.0f;
         }
     }
 }
@@ -172,7 +182,7 @@ void Teleporter::Update()
 
 void Teleporter::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (!mGameObject->GetComponent(ComponentType::SCRIPT)->IsEnabled())
+    if (!mGameObject->GetComponent(ComponentType::SCRIPT)->IsEnabled() || mIsCooldown)
     {
         return;
     }
@@ -191,6 +201,7 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         if (mPlayer)
         {
             mPlayerAnimation = reinterpret_cast<AnimationComponent*>(mPlayer->GetComponentInChildren(ComponentType::ANIMATION));
+            mPlayerAnimation->SetIsPlaying(true);
             mPlayerAnimation->SendTrigger("tWalkForward", 0.2f);
             mPlayerAnimation->SendSpineTrigger("tWalkForward", 0.2f);
             mFirstPlayerPos = mPlayer->GetWorldPosition();
@@ -244,7 +255,6 @@ float3 Teleporter::LerpPosition(float duration, float3 startPos)
         float distAcc = 0.5f * (maxVelocity / halfDuration) * (halfDuration * halfDuration);
         lerpFactor = distAcc + maxVelocity * (mCurrentTime - halfDuration);
     }
-
     return startPos + mCurrentDirection * lerpFactor;
 }
 

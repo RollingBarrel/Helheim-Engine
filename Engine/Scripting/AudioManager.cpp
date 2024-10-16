@@ -137,6 +137,13 @@ void AudioManager::Pause(SFX sfx, int id, bool pause)
     return;
 }
 
+void AudioManager::Restart(SFX sfx, int id)
+{
+    const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
+
+    App->GetAudio()->Restart(description, id);
+}
+
 // Stop, kill instance
 int AudioManager::Release(BGM bgm, int id)
 {
@@ -379,9 +386,8 @@ bool AudioManager::IsPlayeble(SFX sfx)
         case SFX::PLAYER_HAMMER:
         case SFX::ENEMY_ROBOT_GUNFIRE:
         case SFX::ELECTRICAL_TRAP:
-        case SFX::BOSS_ERUPTION:
         case SFX::BOSS_LASER:
-        case SFX::BOSS_LASER2:
+        case SFX::BOSS_FIRE:
             return true;
             break;
     }

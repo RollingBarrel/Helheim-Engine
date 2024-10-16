@@ -1,9 +1,12 @@
 #pragma once
 #include "Enemy.h"
 #include "float2.h"
+#include <vector>
+#include <map>
 
 struct CollisionData;
 class BoxColliderComponent;
+class ImageComponent;
 
 enum BulletPattern
 {
@@ -42,8 +45,10 @@ private:
 	void BulletHellPattern5();
 	void BulletHellPattern6();
 	void LaserAttack();
-	void BombAttack();
+	void BombAttack(const char* pattern);
+	void SetupBomb(GameObject* bombGO, const math::float3& position);
 	void Rotate();
+	void InterruptAttacks();
 
 	void  Death() override;
 
@@ -54,6 +59,10 @@ private:
 	float mPhase1Hp = 0.6f;
 	float mPhase2Hp = 0.3f;
 	bool mWakeUp = false;
+	bool mInvulnerable = true;
+
+	GameObject* mShieldGO = nullptr;
+	ImageComponent* mSpritesheet = nullptr;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
@@ -61,6 +70,8 @@ private:
 	TimerScript mPhaseShiftTimer;
 	float mPhaseShiftTime = 5.0f;
 	TimerScript mBulletHellTimer;
+	TimerScript mShieldTimer;
+	float mShieldDelay = 200.0f;
 
 	float mAttackSequenceCooldown = 4.0f;
 
@@ -77,13 +88,16 @@ private:
 	float mLaserDamage = 3.0f;
 	float mLaserSpeed = 2.0f;
 	float mLaserDistance = 15.0f;
+	
+	//Bombs
+	float mBombDamage = 5.0f;
 	float mBombsDelay = 1.f;
 	float mBombsDuration = 2.0f;
 
-	//Bombs
-	float mBombDamage = 5.0f;
-
-	const char* mTemplateNames[6] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb", "BombingTemplate5.prfb" };
+	GameObject* mAreas[3] = { nullptr, nullptr, nullptr};
+	std::vector<float3> mAreaPositions;
+	std::map<float, int> mPlayerAreaDistances;
+	const char* mTemplateNames[4] = { "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplateSingle.prfb"};
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
 };

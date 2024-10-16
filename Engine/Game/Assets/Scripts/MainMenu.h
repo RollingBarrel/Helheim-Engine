@@ -8,6 +8,7 @@ class SliderComponent;
 class Transform2DComponent;
 class ImageComponent;
 class AudioManager;
+class VideoComponent;
 
 enum MENU_TYPE {
     MAIN,
@@ -64,6 +65,7 @@ private:
     void OnQuitButtonClick();
     void OnOptionsButtonClick();
     void OnCreditsButtonClick();
+    void OnBackButtonClick();
     void OnPlayButtonClick();
     void OnSplashButtonClick();
     void OnControllerButtonClick();
@@ -102,8 +104,8 @@ private:
     void OnGeneralVolumeHoverOff();
     void OnMusicVolumeHoverOff();
     void OnEffectsVolumeHoverOff();
-    //void OnVSyncButtonHoverOff();
-    //void OnFullscreenButtonHoverOff();
+    void OnVSyncButtonHoverOff();
+    void OnFullscreenButtonHoverOff();
 
     void OnGeneralUp();
     void OnGeneralDown();
@@ -111,6 +113,8 @@ private:
     void OnMusicDown();
     void OnEffectsUp();
     void OnEffectsDown();
+
+    void ChangeBindings(bool value);
     
     int mMainOption = 0;
     int mOptionsOption = 7;
@@ -120,14 +124,16 @@ private:
     bool mLoadlevel = false;
 
     float mTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
 
     MENU_TYPE mCurrentMenu;
 	AUDIO_SETTING_TYPE mCurrentAudioSetting;
 	VIDEO_SETTING_TYPE mCurrentVideoSetting;
 
-    float mMasterVolumeValue = .75f;
-    float mMusicVolumeValue = .75f;
-    float mEffectsVolumeValue = .75f;
+    float mMasterVolumeValue = .35f;
+    float mMusicVolumeValue = .35f;
+    float mEffectsVolumeValue = .35f;
+	bool mIsAdjustingAudio = false;
 
     TimerScript mTimer;
     TimerScript mStudioTimer;
@@ -172,6 +178,10 @@ private:
     GameObject* mCreditsHover = nullptr;
     GameObject* mCreditsClicked = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
+
+    // Back Button
+    GameObject* mBackGO = nullptr;
+    ButtonComponent* mBackButton = nullptr;
 
     // OPTIONS Button
     GameObject* mQuitGO = nullptr;
@@ -221,6 +231,8 @@ private:
     SliderComponent* mGeneralVolumeSlider = nullptr;
     GameObject* mGeneralVolumeFillGO = nullptr;
     ImageComponent* mGeneralVolumeFill = nullptr;
+    GameObject* mGeneralVolumeBackgroundGO = nullptr;
+    ImageComponent* mGeneralVolumeBackground = nullptr;
     GameObject* mGeneralVolumeUp = nullptr;
     GameObject* mGeneralVolumeDown = nullptr;
 
@@ -229,6 +241,8 @@ private:
     SliderComponent* mMusicVolumeSlider = nullptr;
     GameObject* mMusicVolumeFillGO = nullptr;
     ImageComponent* mMusicVolumeFill = nullptr;
+    GameObject* mMusicVolumeBackgroundGO = nullptr;
+    ImageComponent* mMusicVolumeBackground = nullptr;
     GameObject* mMusicVolumeUp = nullptr;
     GameObject* mMusicVolumeDown = nullptr;
 
@@ -237,10 +251,14 @@ private:
     SliderComponent* mEffectsVolumeSlider = nullptr;
     GameObject* mEffectsVolumeFillGO = nullptr;
     ImageComponent* mEffectsVolumeFill = nullptr;
+    GameObject* mEffectsVolumeBackgroundGO = nullptr;
+    ImageComponent* mEffectsVolumeBackground = nullptr;
     GameObject* mEffectsVolumeUp = nullptr;
     GameObject* mEffectsVolumeDown = nullptr;
 
     // VSync
+	GameObject* mVSyncBackgroundGO = nullptr;
+	ImageComponent* mVSyncBackground = nullptr;
     GameObject* mVSyncButtonOnGO = nullptr;
     GameObject* mVSyncButtonOffGO = nullptr;
     GameObject* mVSyncImageOn_On = nullptr;
@@ -248,6 +266,8 @@ private:
     ButtonComponent* mVSyncOnButton = nullptr;
     ButtonComponent* mVSyncOffButton = nullptr;
 	// Fullscreen
+    GameObject* mFullscreenBackgroundGO = nullptr;
+    ImageComponent* mFullscreenBackground = nullptr;
     GameObject* mFullscreenButtonOnGO = nullptr;
     GameObject* mFullscreenButtonOffGO = nullptr;
     ButtonComponent* mFullscreenOnButton = nullptr;
@@ -261,5 +281,18 @@ private:
 
     bool mIsScrolling = false;
     bool mIsInitial = true;
+
+    // Bindings
+    GameObject* mAcceptKeyboardGO = nullptr;
+    GameObject* mAcceptControllerGO = nullptr;
+    GameObject* mBackKeyboardGO = nullptr;
+    GameObject* mBackControllerGO = nullptr;
+    GameObject* mSkipKeyboardGO = nullptr;
+    GameObject* mSkipControllerGO = nullptr;
+
+    bool mController = false;
+
+    GameObject* mVideoGO = nullptr;
+    VideoComponent* mVideo = nullptr;
 };
 

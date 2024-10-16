@@ -23,10 +23,20 @@ public:
 
 	void OnCollisionEnter(CollisionData* collisionData);
 
-private:
 
+	void SetAttracted(bool attracted) override;
+
+
+private:
 	BoxColliderComponent* mCollider = nullptr;
+	GameObject* mDashAttackVFX = nullptr;
+	GameObject* mDashRightVFX = nullptr;
+	GameObject* mDashLeftVFX = nullptr;
+	GameObject* mDashIndicator = nullptr;
+	GameObject* mDashIndicatorFinal = nullptr;
+
 	bool mHit = false;
-	bool mAudioPlayed = false;
+	bool mAttack = false;
+	bool mAttackAudioPlayed = false;
 };
 

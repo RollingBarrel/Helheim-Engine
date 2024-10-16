@@ -52,6 +52,7 @@ public:
 
 	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
 	void SetLifeTime(float time) { mMaxLifeTime = time; }
+	void SetWidth(float width);
 
 private:
 	float3 CalculateDirection(const float3& position, const float3& norm) const;
@@ -78,6 +79,8 @@ private:
 
 	bool mIsTilled = true;
 	float mTilling = 1.0f;
+
+	bool mWidthUpdated = false;
 
 	unsigned int mVAO = 0;
 	unsigned int mVBO = 0;

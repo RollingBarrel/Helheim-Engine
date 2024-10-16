@@ -3,7 +3,7 @@
 #include "Macros.h"
 #include "TimerScript.h"
 
-class ImageComponent;
+class PointLightComponent;
 
 GENERATE_BODY(HealVFX);
 
@@ -15,12 +15,16 @@ public:
     HealVFX(GameObject* owner);
     ~HealVFX() {}
 
-    void Init();
     void Start() override;
     void Update() override;
 
 private:
     TimerScript mTimer;
-    ImageComponent* mSpriteSheet = nullptr;
+    PointLightComponent* mPointLightTop = nullptr;
+    PointLightComponent* mPointLightBot = nullptr;
+
+    float mIntensity = 1.0f;
+    float mDeactivateTime = 1.0f;
+    float mFadeingTime = 1.0f;
 };
 
