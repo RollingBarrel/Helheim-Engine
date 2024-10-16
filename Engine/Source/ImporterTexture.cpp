@@ -136,7 +136,7 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         image = std::move(cImage);
         pixelsSize = image.GetPixelsSize();
     }
-    else if (strstr(filePath, "_OcclusionRoughnessMetallic"))
+    else if (strstr(filePath, "_OcclusionRoughnessMetallic") || strstr(filePath, "_OcclusionMetallicRoughness"))
     {
         //glActiveTexture(GL_TEXTURE0);
         //unsigned int texId[2];
