@@ -183,7 +183,7 @@ float sampleIGN(vec2 pixelXY, float frameTime)
 bool IntersectPlane(in vec3 pP, in vec3 pN, in vec3 rO, in vec3 rDir, out float t)
 {
 	float denom = dot(pN, rDir);
-	if(denom > 1e-6)
+	if(denom > 1e-6f)
 	{
 		vec3 pPO = pP - rO;
 		t = dot(pPO, pN) / denom;
@@ -302,14 +302,14 @@ bool IntersectLightShapes(in vec3 rO, in vec3 rDir, inout float t0, inout float 
 			}
 			ret = true;
 		}
-		float h = sLight.radius / sLight.col.w;
-		float dRadius2 = h*h - sLight.radius * sLight.radius;
-		if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, lDir, dRadius2, rO, rDir, tt0))
-		{
-			t0 = min(t0, tt0);
-			t1 = max(t1, tt0);
-			ret = true;
-		}
+		//float h = sLight.radius / sLight.col.w;
+		//float dRadius2 = h*h - sLight.radius * sLight.radius;
+		//if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, lDir, dRadius2, rO, rDir, tt0))
+		//{
+		//	t0 = min(t0, tt0);
+		//	t1 = max(t1, tt0);
+		//	ret = true;
+		//}
 		++i;
 	}
 

@@ -77,26 +77,18 @@ ResourceMaterial* Importer::Material::GltfImport(const char* filePath, const tin
 
     const char* name = tinyMaterial.name.c_str();
 
-
-    for (const auto& content : tinyMaterial.additionalValues)
+    int normalTextureIdx = tinyMaterial.normalTexture.index;
+    if (normalTextureIdx >= 0)
     {
-        if (content.first == "normalTexture")
+        if (importedTextures.find(normalTextureIdx) == importedTextures.end())
         {
-            const int indexValue = content.second.TextureIndex();
-    
-            if (indexValue) {
-                int normalIndex = indexValue;
-                if (importedTextures.find(normalIndex) == importedTextures.end())
-                {
-                    std::string textPath = tinyModel.images[tinyModel.textures[normalIndex].source].uri;
-                    normalTex = ImportTexture(filePath, textPath, uid, modifyAssets);
-                    importedTextures[normalIndex] = normalTex;
-                }
-                else
-                {
-                    normalTex = importedTextures[normalIndex];
-                }
-            }
+            std::string textPath = tinyModel.images[tinyModel.textures[normalTextureIdx].source].uri;
+            normalTex = ImportTexture(filePath, textPath, uid, modifyAssets);
+            importedTextures[normalTextureIdx] = normalTex;
+        }
+        else
+        {
+            normalTex = importedTextures[normalTextureIdx];
         }
     }
 
