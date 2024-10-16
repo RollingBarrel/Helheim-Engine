@@ -45,7 +45,15 @@ void LinearMovement::Start()
 
 void LinearMovement::Update()
 {
-	if (!mReachedTarget) Movement(mTargetPosition, mSpeed);
+	if (!mReachedTarget) 
+	{
+		if (mTargetAGO) 
+		{
+			if (mLocalPosition)Movement(mTargetGO->GetLocalPosition(), mSpeed);
+			else Movement(mTargetGO->GetWorldPosition(), mSpeed);
+		}
+		else Movement(mTargetPosition, mSpeed);
+	}
 	else
 	{
 		if (mParticleComponent) mParticleComponent->SetEnable(false);
