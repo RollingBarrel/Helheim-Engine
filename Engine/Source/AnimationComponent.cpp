@@ -246,17 +246,11 @@ std::string AnimationComponent::GetCurrentStateName()
 
 void AnimationComponent::SendTrigger(const std::string& trigger, float transitionTime)
 {
-	if (mDefaultObjects.size() == 0)
-	{
-		LoadGameObjects(mOwner);
-	}
 	std::string currentStateName = GetCurrentStateName();
-	for (size_t i = 0; i < mStateMachine->GetNumTransitions(); i++)
+	std::string nextStateName = mStateMachine->GetNextState(currentStateName, trigger);
+	if (currentStateName.compare(nextStateName))
 	{
-		if (currentStateName == mStateMachine->GetTransitionSource(i) && trigger == mStateMachine->GetTransitionTrigger(i))
-		{
-			ChangeState(mStateMachine->GetTransitionTarget(i), transitionTime);
-		}
+		ChangeState(nextStateName, transitionTime);
 	}
 }
 
@@ -329,21 +323,12 @@ std::string AnimationComponent::GetCurrentSpineStateName()
 
 void AnimationComponent::SendSpineTrigger(const std::string& trigger, float transitionTime)
 {
-	if (mDefaultObjects.size() == 0)
-	{
-		LoadGameObjects(mOwner);
-	}
-	//Changed from !mHasSpine to mHasSpine
 	assert(mHasSpine);
-
 	std::string currentStateName = GetCurrentSpineStateName();
-
-	for (size_t i = 0; i < mSpineStateMachine->GetNumTransitions(); i++)
+	std::string nextStateName = mSpineStateMachine->GetNextState(currentStateName, trigger);
+	if (currentStateName.compare(nextStateName))
 	{
-		if (currentStateName == mSpineStateMachine->GetTransitionSource(i) && trigger == mSpineStateMachine->GetTransitionTrigger(i))
-		{
-			ChangeSpineState(mSpineStateMachine->GetTransitionTarget(i), transitionTime);
-		}
+		ChangeSpineState(nextStateName, transitionTime);
 	}
 }
 
