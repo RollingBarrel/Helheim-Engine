@@ -333,7 +333,7 @@ void ModuleScene::Load(const char* sceneName)
 			App->GetOpenGL()->SetVolNoiseAmount(1.0f);
 			App->GetOpenGL()->SetVolIntensity(1.0f);
 			App->GetOpenGL()->SetVolAnisotropy(0.35f);
-			App->GetOpenGL()->SetVolStepSize(1.0f);
+			App->GetOpenGL()->SetVolStepSize(0.245f);
 			App->GetOpenGL()->SetVolMaxSteps(16);
 			App->GetOpenGL()->SetVolInvScale(2);
 		}
