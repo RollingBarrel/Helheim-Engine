@@ -330,7 +330,7 @@ private:
 	float mNoiseAmount = 1.0f;
 	float mVolIntensity = 1.0f;
 	float mVolAnisotropy = 0.35f;
-	float mVolStepSize = 1.0f;
+	float mVolStepSize = 0.15f;
 	int mVolMaxSteps = 16;
 
 	unsigned int mQuadVBO = 0;

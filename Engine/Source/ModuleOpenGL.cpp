@@ -1599,6 +1599,9 @@ void ModuleOpenGL::Draw()
 		glPopDebugGroup();
 	}
 
+	//Bloom
+	unsigned int blurredTex = BlurTexture(mGEmissive, false, 3);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
@@ -1689,11 +1692,6 @@ void ModuleOpenGL::Draw()
 	//glDepthMask(GL_TRUE);
 	//glPopDebugGroup();
 
-
-	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive, false, 3);
-	//BlurTexture(mVolTexId, true, 1, 1);
-
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Vol&Fog&Postpo");
 	glUseProgram(mVolFogPostpoProgramId);
 	glActiveTexture(GL_TEXTURE0);
@@ -1707,7 +1705,6 @@ void ModuleOpenGL::Draw()
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Particles
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Particles");
 	glActiveTexture(GL_TEXTURE0);

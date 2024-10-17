@@ -255,6 +255,7 @@ uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in float cLength, 
 bool IntersectLightShapes(in vec3 rO, in vec3 rDir, inout float t0, inout float t1)
 {
 	bool ret = false;
+	bool insideLight = false;
 	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy * screenDiv) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//Point Lights
@@ -300,20 +301,24 @@ bool IntersectLightShapes(in vec3 rO, in vec3 rDir, inout float t0, inout float 
 				t0 = min(t0, tt1);
 				t1 = max(t1, tt1);
 			}
-			ret = true;
 		}
-		//float h = sLight.radius / sLight.col.w;
-		//float dRadius2 = h*h - sLight.radius * sLight.radius;
-		//if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, lDir, dRadius2, rO, rDir, tt0))
-		//{
-		//	t0 = min(t0, tt0);
-		//	t1 = max(t1, tt0);
-		//	ret = true;
-		//}
+		float h = sLight.radius / sLight.col.w;
+		float dRadius2 = h*h - sLight.radius * sLight.radius;
+		if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, lDir, dRadius2, rO, rDir, tt0) ||
+		IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, -lDir, dRadius2, rO, rDir, tt0))
+		{
+			t0 = min(t0, tt0);
+			t1 = max(t1, tt0);
+			++cIntersections;
+		}
+		if(cIntersections > 0 && !ret)
+			ret = true;
+		if(cIntersections == 1)
+			insideLight = true;
 		++i;
 	}
 
-	if(t0 == t1)
+	if(insideLight)
 		t0 = 0.0f;
 
 	return ret;
@@ -345,15 +350,15 @@ void main()
 			vec3 marchingStep = rayDir*stepSize;
 			vec3 currPos = cameraPos + rayDir*t0 + marchingStep * sampleIGN(gl_GlobalInvocationID.xy, currTime);
 		
-			float extCoeff = 0.0;
+			//float extCoeff = 0.0;
 			vec3 accInScattering = vec3(0.0);
 			for(int i = 0; i < nSteps; ++i)
 			{
-				extCoeff += CalculateExtinctionCoeff(currPos)*stepSize;
-				accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize)*exp(-extCoeff);
+				//extCoeff += CalculateExtinctionCoeff(currPos)*stepSize;
+				accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize);//*exp(-extCoeff);
 				currPos += marchingStep;
 			}
-			imageStore(outInScattering, ivec2(gl_GlobalInvocationID.xy), vec4(accInScattering * fogIntensity, exp(-extCoeff)*fogIntensity));
+			imageStore(outInScattering, ivec2(gl_GlobalInvocationID.xy), vec4(accInScattering * fogIntensity, 1.0f));//exp(-extCoeff)*fogIntensity));
 		}
 		else
 			imageStore(outInScattering, ivec2(gl_GlobalInvocationID.xy), vec4(0.0f));
