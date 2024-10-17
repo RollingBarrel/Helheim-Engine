@@ -969,13 +969,20 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
-unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes, unsigned int startIdx) const
 {
-	if (passes > mBlurPasses || passes == 0)
-		passes = mBlurPasses;
+	if ((passes + startIdx) > mBlurPasses || passes == 0)
+		passes = mBlurPasses - startIdx;
+
 
 	float w = mSceneWidth;
 	float h = mSceneHeight;
+	int it = startIdx;
+	while (it-- > 0)
+	{
+		w /= 2;
+		h /= 2;
+	}
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
 	glActiveTexture(GL_TEXTURE0);
@@ -987,9 +994,9 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		w /= 2;
 		h /= 2;
 		glViewport(0, 0, w, h);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1 + startIdx], 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1 + startIdx]);
 	}
 	glUseProgram(mUpsampleProgramId);
 	for (int i = passes - 1; i >= 0; --i)
@@ -1000,15 +1007,15 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		if (i == 0 && modifyTex)
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
 		else
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i + startIdx], 0);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i + startIdx]);
 	}
 	glBindVertexArray(0);
 	glViewport(0 , 0, mSceneWidth, mSceneHeight);
 	glPopDebugGroup();
-	return mBlurTex[0];
+	return mBlurTex[startIdx];
 }
 
 void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
@@ -1694,7 +1701,7 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mVolTexId);
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
+	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 
