@@ -132,7 +132,7 @@ void LightningPanel::Draw(int windowFlags)
 		glUniform1f(4, openGl->mVolAnisotropy);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("StepSize", &openGl->mVolStepSize, 0.02f, 0.05f, 20.0f))
+	if (ImGui::DragFloat("StepSize", &openGl->mVolStepSize, 0.01f, 0.005f, 20.0f))
 	{
 		glUseProgram(openGl->mVolLightProgramId);
 		glUniform1f(8, openGl->mVolStepSize);
@@ -149,6 +149,8 @@ void LightningPanel::Draw(int windowFlags)
 		glUseProgram(openGl->mVolLightProgramId);
 		glUniform1ui(10, openGl->mVolInvScale);
 		glUseProgram(0);
+		glBindTexture(GL_TEXTURE_2D, openGl->mVolTexId);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, openGl->mSceneWidth / openGl->mVolInvScale, openGl->mSceneHeight / openGl->mVolInvScale, 0, GL_RGBA, GL_FLOAT, NULL);
 	}
 
 	ImGui::Separator();
