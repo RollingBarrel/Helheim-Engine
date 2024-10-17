@@ -4095,8 +4095,8 @@
                 "UID": 1270333522,
                 "ParentUID": 1119952162,
                 "Name": "SpotLight (13)",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     17.864543914794923,
                     37.51630401611328,
@@ -4120,7 +4120,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             17.864543914794923,
                             37.51630401611328,
@@ -4146,7 +4146,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "FlickeringLight",
                         "ScriptVariables": [
                             {
