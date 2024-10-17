@@ -15,40 +15,32 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"OB_Drone"
+			"name":"HoverFrontLeft_low"
 		}
 	],
 	"materials":[
 		{
 			"doubleSided":true,
-			"emissiveFactor":[
-				1,
-				1,
-				1
-			],
 			"emissiveTexture":{
 				"index":0
 			},
-			"name":"M_Drone",
+			"name":"Drone",
 			"normalTexture":{
 				"index":1
 			},
-			"occlusionTexture":{
-				"index":2
-			},
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":3
+					"index":2
 				},
 				"metallicRoughnessTexture":{
-					"index":2
+					"index":3
 				}
 			}
 		}
 	],
 	"meshes":[
 		{
-			"name":"Plane.017",
+			"name":"Cylinder.009",
 			"primitives":[
 				{
 					"attributes":{
@@ -94,20 +86,20 @@
 		},
 		{
 			"mimeType":"image/png",
-			"name":"Drone_OcclusionRoughnessMetallic",
-			"uri":"Drone_OcclusionRoughnessMetallic.png"
+			"name":"Drone_BaseColor",
+			"uri":"Drone_BaseColor.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"Drone_BaseColor",
-			"uri":"Drone_BaseColor.png"
+			"name":"Drone_OcclusionRoughnessMetallic",
+			"uri":"Drone_OcclusionRoughnessMetallic.png"
 		}
 	],
 	"accessors":[
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":780,
+			"count":468,
 			"max":[
 				3.8268377780914307,
 				0.5806345343589783,
@@ -123,57 +115,57 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":780,
+			"count":468,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":780,
+			"count":468,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5126,
-			"count":780,
+			"count":468,
 			"type":"VEC4"
 		},
 		{
 			"bufferView":4,
 			"componentType":5123,
-			"count":1746,
+			"count":1242,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":9360,
+			"byteLength":5616,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":9360,
-			"byteOffset":9360,
+			"byteLength":5616,
+			"byteOffset":5616,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6240,
-			"byteOffset":18720,
+			"byteLength":3744,
+			"byteOffset":11232,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":12480,
-			"byteOffset":24960,
+			"byteLength":7488,
+			"byteOffset":14976,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":3492,
-			"byteOffset":37440,
+			"byteLength":2484,
+			"byteOffset":22464,
 			"target":34963
 		}
 	],
@@ -185,7 +177,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":40932,
+			"byteLength":24948,
 			"uri":"OB_Drone.bin"
 		}
 	]

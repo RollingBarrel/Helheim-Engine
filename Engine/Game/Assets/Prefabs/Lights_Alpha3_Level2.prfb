@@ -2062,51 +2062,6 @@
                 ]
             },
             {
-                "UID": 1043717167,
-                "ParentUID": 828727519,
-                "Name": "PointLight (13)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    106.87632751464844,
-                    65.6119384765625,
-                    25.486616134643556
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 1,
-                        "IsEnabled": true,
-                        "Position": [
-                            106.87632751464844,
-                            65.6119384765625,
-                            25.486616134643556
-                        ],
-                        "Radius": 6.0,
-                        "Color": [
-                            0.0,
-                            1.0,
-                            0.9759998321533203
-                        ],
-                        "Intensity": 9.0
-                    }
-                ]
-            },
-            {
                 "UID": 1050679267,
                 "ParentUID": 828727519,
                 "Name": "PointLight (14)",
@@ -2390,8 +2345,8 @@
                 "UID": 1092103762,
                 "ParentUID": 828727519,
                 "Name": "Spotlight (14)",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     92.38037872314453,
                     66.7812271118164,
@@ -2415,7 +2370,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             92.38037872314453,
                             66.7812271118164,
@@ -4140,8 +4095,8 @@
                 "UID": 1270333522,
                 "ParentUID": 1119952162,
                 "Name": "SpotLight (13)",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     17.864543914794923,
                     37.51630401611328,
@@ -4165,7 +4120,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             17.864543914794923,
                             37.51630401611328,
@@ -4191,7 +4146,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "FlickeringLight",
                         "ScriptVariables": [
                             {
