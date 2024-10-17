@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 726623773,
+                "UID": 456324929,
                 "ParentUID": 1,
                 "Name": "Moving_Objects_Backround_lvl2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 86781854,
-                "ParentUID": 726623773,
+                "UID": 779992958,
+                "ParentUID": 456324929,
                 "Name": "Moving_MiniEnemy",
                 "Enabled": true,
                 "Active": true,
@@ -58,8 +58,8 @@
                 "Components": []
             },
             {
-                "UID": 471020153,
-                "ParentUID": 86781854,
+                "UID": 1098091307,
+                "ParentUID": 779992958,
                 "Name": "OB_Enemy_Ranged_Mini",
                 "Enabled": true,
                 "Active": true,
@@ -114,6 +114,16 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
                                 "VariableName": "Hovering",
                                 "MemberType": 5
                             },
@@ -137,8 +147,168 @@
                 ]
             },
             {
-                "UID": 788770397,
-                "ParentUID": 471020153,
+                "UID": 170551820,
+                "ParentUID": 1098091307,
+                "Name": "Particles_Robot",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.654973030090332,
+                    2.645599365234375,
+                    0.0
+                ],
+                "Rotation": [
+                    0.09229595959186554,
+                    -0.7010573744773865,
+                    0.09229595959186554,
+                    0.7010573744773865
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2102232598,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.399999976158142
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.100000023841858,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.4000000059604645,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.25
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.009383339434862137,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.495978444814682,
+                                "Color": [
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9865949153900147,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1409227556,
+                "ParentUID": 1098091307,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -165,8 +335,8 @@
                 "Components": []
             },
             {
-                "UID": 1107843440,
-                "ParentUID": 788770397,
+                "UID": 1726003106,
+                "ParentUID": 1409227556,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -203,8 +373,8 @@
                 ]
             },
             {
-                "UID": 2101945377,
-                "ParentUID": 726623773,
+                "UID": 2040898889,
+                "ParentUID": 456324929,
                 "Name": "Moving_MiniEnemy (2)",
                 "Enabled": true,
                 "Active": true,
@@ -231,8 +401,8 @@
                 "Components": []
             },
             {
-                "UID": 118628048,
-                "ParentUID": 2101945377,
+                "UID": 209007235,
+                "ParentUID": 2040898889,
                 "Name": "OB_Enemy_Ranged_Mini",
                 "Enabled": true,
                 "Active": true,
@@ -287,6 +457,16 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
                                 "VariableName": "Hovering",
                                 "MemberType": 5
                             },
@@ -310,8 +490,168 @@
                 ]
             },
             {
-                "UID": 672602345,
-                "ParentUID": 118628048,
+                "UID": 277074719,
+                "ParentUID": 209007235,
+                "Name": "Particles_Robot (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.649999976158142,
+                    2.645599365234375,
+                    0.0
+                ],
+                "Rotation": [
+                    0.09229595959186554,
+                    -0.7010573744773865,
+                    0.09229595959186554,
+                    0.7010573744773865
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2102232598,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.399999976158142
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.100000023841858,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.4000000059604645,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.25
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.009383339434862137,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.495978444814682,
+                                "Color": [
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9865949153900147,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 530238529,
+                "ParentUID": 209007235,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -338,8 +678,8 @@
                 "Components": []
             },
             {
-                "UID": 847002950,
-                "ParentUID": 672602345,
+                "UID": 848754604,
+                "ParentUID": 530238529,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -376,8 +716,8 @@
                 ]
             },
             {
-                "UID": 123777182,
-                "ParentUID": 726623773,
+                "UID": 1168732720,
+                "ParentUID": 456324929,
                 "Name": "Moving_MiniEnemy (1)",
                 "Enabled": true,
                 "Active": true,
@@ -404,8 +744,8 @@
                 "Components": []
             },
             {
-                "UID": 279310496,
-                "ParentUID": 123777182,
+                "UID": 1483767745,
+                "ParentUID": 1168732720,
                 "Name": "OB_Enemy_Ranged_Mini",
                 "Enabled": true,
                 "Active": true,
@@ -460,6 +800,16 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
                                 "VariableName": "Hovering",
                                 "MemberType": 5
                             },
@@ -483,8 +833,168 @@
                 ]
             },
             {
-                "UID": 843519080,
-                "ParentUID": 279310496,
+                "UID": 97396456,
+                "ParentUID": 1483767745,
+                "Name": "Particles_Robot (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.649999976158142,
+                    2.645599365234375,
+                    0.0
+                ],
+                "Rotation": [
+                    0.09229595959186554,
+                    -0.7010573744773865,
+                    0.09229595959186554,
+                    0.7010573744773865
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2102232598,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.399999976158142
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.100000023841858,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.4000000059604645,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.25
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.009383339434862137,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.495978444814682,
+                                "Color": [
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9865949153900147,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1802074957,
+                "ParentUID": 1483767745,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -511,8 +1021,8 @@
                 "Components": []
             },
             {
-                "UID": 1029059045,
-                "ParentUID": 843519080,
+                "UID": 2120869516,
+                "ParentUID": 1802074957,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -549,8 +1059,8 @@
                 ]
             },
             {
-                "UID": 411538256,
-                "ParentUID": 726623773,
+                "UID": 295800720,
+                "ParentUID": 456324929,
                 "Name": "Moving_MiniEnemy (3)",
                 "Enabled": true,
                 "Active": true,
@@ -577,8 +1087,8 @@
                 "Components": []
             },
             {
-                "UID": 567837401,
-                "ParentUID": 411538256,
+                "UID": 617171256,
+                "ParentUID": 295800720,
                 "Name": "OB_Enemy_Ranged_Mini",
                 "Enabled": true,
                 "Active": true,
@@ -633,6 +1143,16 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
                                 "VariableName": "Hovering",
                                 "MemberType": 5
                             },
@@ -656,8 +1176,168 @@
                 ]
             },
             {
-                "UID": 1106495078,
-                "ParentUID": 567837401,
+                "UID": 1482118894,
+                "ParentUID": 617171256,
+                "Name": "Particles_Robot (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.649999976158142,
+                    2.645599365234375,
+                    0.0
+                ],
+                "Rotation": [
+                    0.09229595959186554,
+                    -0.7010573744773865,
+                    0.09229595959186554,
+                    0.7010573744773865
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2102232598,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.399999976158142
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.100000023841858,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.4000000059604645,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.25
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.009383339434862137,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.495978444814682,
+                                "Color": [
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9865949153900147,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 932554386,
+                "ParentUID": 617171256,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -684,8 +1364,8 @@
                 "Components": []
             },
             {
-                "UID": 1260775214,
-                "ParentUID": 1106495078,
+                "UID": 1248564105,
+                "ParentUID": 932554386,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -722,8 +1402,8 @@
                 ]
             },
             {
-                "UID": 2078972979,
-                "ParentUID": 726623773,
+                "UID": 1567567527,
+                "ParentUID": 456324929,
                 "Name": "Moving_MiniEnemy (4)",
                 "Enabled": true,
                 "Active": true,
@@ -750,8 +1430,8 @@
                 "Components": []
             },
             {
-                "UID": 89668244,
-                "ParentUID": 2078972979,
+                "UID": 1883855730,
+                "ParentUID": 1567567527,
                 "Name": "OB_Enemy_Ranged_Mini",
                 "Enabled": true,
                 "Active": true,
@@ -806,6 +1486,16 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
                                 "VariableName": "Hovering",
                                 "MemberType": 5
                             },
@@ -829,8 +1519,168 @@
                 ]
             },
             {
-                "UID": 671769425,
-                "ParentUID": 89668244,
+                "UID": 1053337358,
+                "ParentUID": 1883855730,
+                "Name": "Particles_Robot (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.649999976158142,
+                    2.645599365234375,
+                    0.0
+                ],
+                "Rotation": [
+                    0.09229595959186554,
+                    -0.7010573744773865,
+                    0.09229595959186554,
+                    0.7010573744773865
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2102232598,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.399999976158142
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.100000023841858,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.4000000059604645,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.25
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.009383339434862137,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.495978444814682,
+                                "Color": [
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9865949153900147,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 51059003,
+                "ParentUID": 1883855730,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -857,8 +1707,8 @@
                 "Components": []
             },
             {
-                "UID": 847771313,
-                "ParentUID": 671769425,
+                "UID": 368948489,
+                "ParentUID": 51059003,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -895,8 +1745,8 @@
                 ]
             },
             {
-                "UID": 1779886512,
-                "ParentUID": 726623773,
+                "UID": 687603806,
+                "ParentUID": 456324929,
                 "Name": "Moving_MiniEnemy (5)",
                 "Enabled": true,
                 "Active": true,
@@ -923,8 +1773,8 @@
                 "Components": []
             },
             {
-                "UID": 1944540177,
-                "ParentUID": 1779886512,
+                "UID": 1008278132,
+                "ParentUID": 687603806,
                 "Name": "OB_Enemy_Ranged_Mini",
                 "Enabled": true,
                 "Active": true,
@@ -979,6 +1829,16 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
                                 "VariableName": "Hovering",
                                 "MemberType": 5
                             },
@@ -1002,8 +1862,168 @@
                 ]
             },
             {
-                "UID": 329448317,
-                "ParentUID": 1944540177,
+                "UID": 632197002,
+                "ParentUID": 1008278132,
+                "Name": "Particles_Robot (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.649999976158142,
+                    2.6500000953674318,
+                    0.0
+                ],
+                "Rotation": [
+                    0.09229595959186554,
+                    -0.7010573744773865,
+                    0.09229595959186554,
+                    0.7010573744773865
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2102232598,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.399999976158142
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.100000023841858,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.4000000059604645,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.25
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.009383339434862137,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.495978444814682,
+                                "Color": [
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9865949153900147,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1327281554,
+                "ParentUID": 1008278132,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -1030,8 +2050,8 @@
                 "Components": []
             },
             {
-                "UID": 490969037,
-                "ParentUID": 329448317,
+                "UID": 1644544451,
+                "ParentUID": 1327281554,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -1068,8 +2088,8 @@
                 ]
             },
             {
-                "UID": 167959259,
-                "ParentUID": 726623773,
+                "UID": 1965288398,
+                "ParentUID": 456324929,
                 "Name": "Moving_MiniEnemy (6)",
                 "Enabled": true,
                 "Active": true,
@@ -1096,8 +2116,8 @@
                 "Components": []
             },
             {
-                "UID": 327112865,
-                "ParentUID": 167959259,
+                "UID": 136529689,
+                "ParentUID": 1965288398,
                 "Name": "OB_Enemy_Ranged_Mini",
                 "Enabled": true,
                 "Active": true,
@@ -1152,6 +2172,16 @@
                                 "VariableData": false
                             },
                             {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
                                 "VariableName": "Hovering",
                                 "MemberType": 5
                             },
@@ -1175,8 +2205,168 @@
                 ]
             },
             {
-                "UID": 868625003,
-                "ParentUID": 327112865,
+                "UID": 1489244899,
+                "ParentUID": 136529689,
+                "Name": "Particles_Robot (6)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.6500015258789063,
+                    2.6500000953674318,
+                    0.00000762939453125
+                ],
+                "Rotation": [
+                    0.09229595959186554,
+                    -0.7010573744773865,
+                    0.09229595959186554,
+                    0.7010573744773865
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 2102232598,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.399999976158142
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.100000023841858,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.4000000059604645,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.550000011920929
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.25
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.009383339434862137,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.495978444814682,
+                                "Color": [
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    0.36000001430511477,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9865949153900147,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 456786289,
+                "ParentUID": 136529689,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
@@ -1203,8 +2393,8 @@
                 "Components": []
             },
             {
-                "UID": 1035436919,
-                "ParentUID": 868625003,
+                "UID": 777112510,
+                "ParentUID": 456786289,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
