@@ -64,5 +64,7 @@ private:
 
 	GameObject* mDoorEntrance = nullptr;
 	GameObject* mDoorExit = nullptr;
+	AnimationComponent* mDoorEntranceAnimation = nullptr;
+	AnimationComponent* mDoorExitAnimation = nullptr;
 };
 
