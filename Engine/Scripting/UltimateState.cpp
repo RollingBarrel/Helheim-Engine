@@ -43,14 +43,12 @@ void UltimateState::Enter()
 	mUltimateScript->mInterval = mPlayerController->GetUltimateDamageInterval();
 	mUltimateDuration = mPlayerController->GetUltimateDuration();
 	mPlayerController->EnableUltimate(true);
-	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed()*mPlayerController->GetUltimateSlow());
 
 }
 
 void UltimateState::Exit()
 {
 	mPlayerController->EnableUltimate(false);
-	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed());
 	SetCooldown(mPlayerController->GetUltimateCooldown());
 
 	if (GameManager::GetInstance()->GetHud())
