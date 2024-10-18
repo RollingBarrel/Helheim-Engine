@@ -2670,9 +2670,9 @@
                 ]
             },
             {
-                "UID": 1652348270,
+                "UID": 1499783462,
                 "ParentUID": 2539433,
-                "Name": "Particles",
+                "Name": "Particles (3)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -2698,21 +2698,21 @@
                 "Components": []
             },
             {
-                "UID": 2064504590,
-                "ParentUID": 1652348270,
+                "UID": 1695070367,
+                "ParentUID": 1499783462,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4305267333984377,
-                    -0.38556671142578127,
-                    2.3647613525390627
+                    2.4305260181427,
+                    -0.30000001192092898,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -2730,26 +2730,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -2764,8 +2764,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -2786,7 +2786,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -2796,27 +2796,36 @@
                             {
                                 "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.14399999380111695,
-                                    0.14342398941516877,
-                                    0.14342398941516877,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.10799998044967652,
-                                    0.106703981757164,
-                                    0.106703981757164,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7989273071289063,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
@@ -2861,21 +2870,21 @@
                 ]
             },
             {
-                "UID": 328829158,
-                "ParentUID": 1652348270,
-                "Name": "Particle (5)",
+                "UID": 1961161829,
+                "ParentUID": 1499783462,
+                "Name": "Particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2917251586914064,
-                    -0.40235137939453127,
-                    -2.2242355346679689
+                    2.430447816848755,
+                    -0.29998779296875,
+                    -2.4022216796875
                 ],
                 "Rotation": [
-                    0.5609855651855469,
-                    0.4304593801498413,
-                    -0.5609855651855469,
-                    0.4304593801498413
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -2893,26 +2902,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -2927,8 +2936,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -2949,7 +2958,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -2957,43 +2966,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.0026808232069015505,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.19199997186660767,
-                                    0.19199997186660767,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.13599997758865357,
-                                    0.13491196930408479,
-                                    0.13491196930408479,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.40214481949806216,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    -431602080.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7962467074394226,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -3033,21 +3042,21 @@
                 ]
             },
             {
-                "UID": 741333583,
-                "ParentUID": 1652348270,
-                "Name": "Particle (6)",
+                "UID": 29294419,
+                "ParentUID": 1499783462,
+                "Name": "Particle (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8000717163085938,
-                    -0.39951610565185549,
-                    -2.2242355346679689
+                    -1.735915184020996,
+                    -0.23999999463558198,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -3065,26 +3074,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -3099,8 +3108,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3121,7 +3130,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -3129,34 +3138,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.013404838740825653,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.15200001001358033,
-                                    0.15200001001358033,
-                                    0.15200001001358033,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06434316188097,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.8123325109481812,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -3196,21 +3214,21 @@
                 ]
             },
             {
-                "UID": 1154951944,
-                "ParentUID": 1652348270,
-                "Name": "Particle (7)",
+                "UID": 238018177,
+                "ParentUID": 1499783462,
+                "Name": "Particle (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8183212280273438,
-                    -0.4000000059604645,
-                    2.3647613525390627
+                    -1.7400002479553223,
+                    -0.239715576171875,
+                    -2.4000244140625
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -3228,26 +3246,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -3262,8 +3280,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3284,7 +3302,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -3292,43 +3310,34 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.008042863570153714,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.171999990940094,
-                                    0.171999990940094,
-                                    0.171999990940094,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.050937995314598086,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.11796235293149948,
-                                "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.8016090989112854,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9758716821670532,
+                                "Time": 0.3243967890739441,
+                                "Color": [
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -3337,7 +3346,7 @@
                                 ]
                             },
                             {
-                                "Time": 0.9812331199645996,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -3588,9 +3597,9 @@
                 ]
             },
             {
-                "UID": 1499134266,
+                "UID": 1128897376,
                 "ParentUID": 1993606510,
-                "Name": "Particles",
+                "Name": "Particles (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -3616,21 +3625,21 @@
                 "Components": []
             },
             {
-                "UID": 1912961490,
-                "ParentUID": 1499134266,
+                "UID": 1326760258,
+                "ParentUID": 1128897376,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4305267333984377,
-                    -0.38556671142578127,
-                    2.3647613525390627
+                    2.4305260181427,
+                    -0.30000001192092898,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -3648,26 +3657,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -3682,8 +3691,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3704,7 +3713,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -3714,27 +3723,36 @@
                             {
                                 "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.14399999380111695,
-                                    0.14342398941516877,
-                                    0.14342398941516877,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.10799998044967652,
-                                    0.106703981757164,
-                                    0.106703981757164,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7989273071289063,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
@@ -3779,21 +3797,21 @@
                 ]
             },
             {
-                "UID": 180836729,
-                "ParentUID": 1499134266,
-                "Name": "Particle (5)",
+                "UID": 1573566703,
+                "ParentUID": 1128897376,
+                "Name": "Particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2917251586914064,
-                    -0.40235137939453127,
-                    -2.2242355346679689
+                    2.430447816848755,
+                    -0.29998779296875,
+                    -2.4022216796875
                 ],
                 "Rotation": [
-                    0.5609855651855469,
-                    0.4304593801498413,
-                    -0.5609855651855469,
-                    0.4304593801498413
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -3811,26 +3829,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -3845,8 +3863,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -3867,7 +3885,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -3875,43 +3893,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.0026808232069015505,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.19199997186660767,
-                                    0.19199997186660767,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.13599997758865357,
-                                    0.13491196930408479,
-                                    0.13491196930408479,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.40214481949806216,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    -431602080.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7962467074394226,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -3951,21 +3969,21 @@
                 ]
             },
             {
-                "UID": 595290542,
-                "ParentUID": 1499134266,
-                "Name": "Particle (6)",
+                "UID": 1784587954,
+                "ParentUID": 1128897376,
+                "Name": "Particle (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8000717163085938,
-                    -0.39951610565185549,
-                    -2.2242355346679689
+                    -1.735915184020996,
+                    -0.23999999463558198,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -3983,26 +4001,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -4017,8 +4035,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4039,7 +4057,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -4047,34 +4065,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.013404838740825653,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.15200001001358033,
-                                    0.15200001001358033,
-                                    0.15200001001358033,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06434316188097,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.8123325109481812,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -4114,21 +4141,21 @@
                 ]
             },
             {
-                "UID": 1013155784,
-                "ParentUID": 1499134266,
-                "Name": "Particle (7)",
+                "UID": 2022552532,
+                "ParentUID": 1128897376,
+                "Name": "Particle (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8183212280273438,
-                    -0.4000000059604645,
-                    2.3647613525390627
+                    -1.7400002479553223,
+                    -0.239715576171875,
+                    -2.4000244140625
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -4146,26 +4173,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -4180,8 +4207,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4202,7 +4229,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -4210,43 +4237,34 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.008042863570153714,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.171999990940094,
-                                    0.171999990940094,
-                                    0.171999990940094,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.050937995314598086,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.11796235293149948,
-                                "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.8016090989112854,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9758716821670532,
+                                "Time": 0.3243967890739441,
+                                "Color": [
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -4255,7 +4273,7 @@
                                 ]
                             },
                             {
-                                "Time": 0.9812331199645996,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -4506,9 +4524,9 @@
                 ]
             },
             {
-                "UID": 1358660905,
+                "UID": 1275188018,
                 "ParentUID": 1849791341,
-                "Name": "Particles",
+                "Name": "Particles (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -4534,21 +4552,21 @@
                 "Components": []
             },
             {
-                "UID": 1774855243,
-                "ParentUID": 1358660905,
+                "UID": 1473538247,
+                "ParentUID": 1275188018,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4305267333984377,
-                    -0.38556671142578127,
-                    2.3647613525390627
+                    2.4305260181427,
+                    -0.30000001192092898,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -4566,26 +4584,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -4600,8 +4618,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4622,7 +4640,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -4632,27 +4650,36 @@
                             {
                                 "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.14399999380111695,
-                                    0.14342398941516877,
-                                    0.14342398941516877,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.10799998044967652,
-                                    0.106703981757164,
-                                    0.106703981757164,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7989273071289063,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
@@ -4697,21 +4724,21 @@
                 ]
             },
             {
-                "UID": 44053281,
-                "ParentUID": 1358660905,
-                "Name": "Particle (5)",
+                "UID": 1717072505,
+                "ParentUID": 1275188018,
+                "Name": "Particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2917251586914064,
-                    -0.40235137939453127,
-                    -2.2242355346679689
+                    2.430447816848755,
+                    -0.29998779296875,
+                    -2.4022216796875
                 ],
                 "Rotation": [
-                    0.5609855651855469,
-                    0.4304593801498413,
-                    -0.5609855651855469,
-                    0.4304593801498413
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -4729,26 +4756,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -4763,8 +4790,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4785,7 +4812,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -4793,43 +4820,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.0026808232069015505,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.19199997186660767,
-                                    0.19199997186660767,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.13599997758865357,
-                                    0.13491196930408479,
-                                    0.13491196930408479,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.40214481949806216,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    -431602080.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7962467074394226,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -4869,21 +4896,21 @@
                 ]
             },
             {
-                "UID": 485868147,
-                "ParentUID": 1358660905,
-                "Name": "Particle (6)",
+                "UID": 1930808975,
+                "ParentUID": 1275188018,
+                "Name": "Particle (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8000717163085938,
-                    -0.39951610565185549,
-                    -2.2242355346679689
+                    -1.735915184020996,
+                    -0.23999999463558198,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -4901,26 +4928,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -4935,8 +4962,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -4957,7 +4984,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -4965,34 +4992,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.013404838740825653,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.15200001001358033,
-                                    0.15200001001358033,
-                                    0.15200001001358033,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06434316188097,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.8123325109481812,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -5032,21 +5068,21 @@
                 ]
             },
             {
-                "UID": 902410590,
-                "ParentUID": 1358660905,
-                "Name": "Particle (7)",
+                "UID": 2138766902,
+                "ParentUID": 1275188018,
+                "Name": "Particle (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8183212280273438,
-                    -0.4000000059604645,
-                    2.3647613525390627
+                    -1.7400002479553223,
+                    -0.239715576171875,
+                    -2.4000244140625
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -5064,26 +5100,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -5098,8 +5134,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5120,7 +5156,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -5128,43 +5164,34 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.008042863570153714,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.171999990940094,
-                                    0.171999990940094,
-                                    0.171999990940094,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.050937995314598086,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.11796235293149948,
-                                "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.8016090989112854,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9758716821670532,
+                                "Time": 0.3243967890739441,
+                                "Color": [
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -5173,7 +5200,7 @@
                                 ]
                             },
                             {
-                                "Time": 0.9812331199645996,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -5458,15 +5485,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4305267333984377,
-                    -0.38556671142578127,
-                    2.3647613525390627
+                    2.4305260181427,
+                    -0.30000001192092898,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -5484,26 +5511,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "StretchedRatio": 1.0,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -5518,8 +5545,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5540,7 +5567,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -5550,27 +5577,36 @@
                             {
                                 "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.14399999380111695,
-                                    0.14342398941516877,
-                                    0.14342398941516877,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.10799998044967652,
-                                    0.106703981757164,
-                                    0.106703981757164,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7989273071289063,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
@@ -5615,21 +5651,21 @@
                 ]
             },
             {
-                "UID": 2109545207,
+                "UID": 1848854790,
                 "ParentUID": 1262536121,
-                "Name": "Particle (5)",
+                "Name": "Particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2917251586914064,
-                    -0.40235137939453127,
-                    -2.2242355346679689
+                    2.430447816848755,
+                    -0.29998779296875,
+                    -2.4022216796875
                 ],
                 "Rotation": [
-                    0.5609855651855469,
-                    0.4304593801498413,
-                    -0.5609855651855469,
-                    0.4304593801498413
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -5647,26 +5683,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -5681,8 +5717,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5703,7 +5739,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -5711,43 +5747,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.0026808232069015505,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.19199997186660767,
-                                    0.19199997186660767,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.13599997758865357,
-                                    0.13491196930408479,
-                                    0.13491196930408479,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.40214481949806216,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    -431602080.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7962467074394226,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -5787,21 +5823,21 @@
                 ]
             },
             {
-                "UID": 382502779,
+                "UID": 1654709652,
                 "ParentUID": 1262536121,
-                "Name": "Particle (6)",
+                "Name": "Particle (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8000717163085938,
-                    -0.39951610565185549,
-                    -2.2242355346679689
+                    -1.735915184020996,
+                    -0.23999999463558198,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -5819,26 +5855,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -5853,8 +5889,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -5875,7 +5911,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -5883,34 +5919,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.013404838740825653,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.15200001001358033,
-                                    0.15200001001358033,
-                                    0.15200001001358033,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06434316188097,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.8123325109481812,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -5950,21 +5995,21 @@
                 ]
             },
             {
-                "UID": 800855368,
+                "UID": 1098046033,
                 "ParentUID": 1262536121,
-                "Name": "Particle (7)",
+                "Name": "Particle (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8183212280273438,
-                    -0.4000000059604645,
-                    2.3647613525390627
+                    -1.7400002479553223,
+                    -0.239715576171875,
+                    -2.4000244140625
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -5982,26 +6027,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -6016,8 +6061,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6038,7 +6083,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -6046,43 +6091,34 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.008042863570153714,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.171999990940094,
-                                    0.171999990940094,
-                                    0.171999990940094,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.050937995314598086,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.11796235293149948,
-                                "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.8016090989112854,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9758716821670532,
+                                "Time": 0.3243967890739441,
+                                "Color": [
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -6091,7 +6127,7 @@
                                 ]
                             },
                             {
-                                "Time": 0.9812331199645996,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -6342,9 +6378,9 @@
                 ]
             },
             {
-                "UID": 1153322589,
+                "UID": 947029195,
                 "ParentUID": 1632756697,
-                "Name": "Particles",
+                "Name": "Particles (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -6354,14 +6390,14 @@
                 ],
                 "Rotation": [
                     0.0,
-                    0.0,
+                    -1.0658143577500345e-14,
                     0.0,
                     1.0
                 ],
                 "Scale": [
+                    0.9999998211860657,
                     1.0,
-                    1.0,
-                    1.0
+                    0.9999998211860657
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -6370,21 +6406,21 @@
                 "Components": []
             },
             {
-                "UID": 1577035995,
-                "ParentUID": 1153322589,
+                "UID": 1144404730,
+                "ParentUID": 947029195,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4305267333984377,
-                    -0.38556671142578127,
-                    2.3647613525390627
+                    2.4305260181427,
+                    -0.30000001192092898,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -6402,26 +6438,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -6436,8 +6472,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6458,7 +6494,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -6468,27 +6504,36 @@
                             {
                                 "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.14399999380111695,
-                                    0.14342398941516877,
-                                    0.14342398941516877,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.10799998044967652,
-                                    0.106703981757164,
-                                    0.106703981757164,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7989273071289063,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
@@ -6533,21 +6578,21 @@
                 ]
             },
             {
-                "UID": 1994205027,
-                "ParentUID": 1153322589,
-                "Name": "Particle (5)",
+                "UID": 1429920451,
+                "ParentUID": 947029195,
+                "Name": "Particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2917251586914064,
-                    -0.40235137939453127,
-                    -2.2242355346679689
+                    2.430447816848755,
+                    -0.29998779296875,
+                    -2.4022216796875
                 ],
                 "Rotation": [
-                    0.5609855651855469,
-                    0.4304593801498413,
-                    -0.5609855651855469,
-                    0.4304593801498413
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -6565,26 +6610,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -6599,8 +6644,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6621,7 +6666,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -6629,43 +6674,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.0026808232069015505,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.19199997186660767,
-                                    0.19199997186660767,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.13599997758865357,
-                                    0.13491196930408479,
-                                    0.13491196930408479,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.40214481949806216,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    -431602080.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7962467074394226,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -6705,21 +6750,21 @@
                 ]
             },
             {
-                "UID": 268206914,
-                "ParentUID": 1153322589,
-                "Name": "Particle (6)",
+                "UID": 1702834771,
+                "ParentUID": 947029195,
+                "Name": "Particle (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8000717163085938,
-                    -0.39951610565185549,
-                    -2.2242355346679689
+                    -1.735915184020996,
+                    -0.23999999463558198,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -6737,26 +6782,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -6771,8 +6816,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6793,7 +6838,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -6801,34 +6846,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.013404838740825653,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.15200001001358033,
-                                    0.15200001001358033,
-                                    0.15200001001358033,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06434316188097,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.8123325109481812,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -6868,21 +6922,21 @@
                 ]
             },
             {
-                "UID": 688021544,
-                "ParentUID": 1153322589,
-                "Name": "Particle (7)",
+                "UID": 1912602844,
+                "ParentUID": 947029195,
+                "Name": "Particle (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8183212280273438,
-                    -0.4000000059604645,
-                    2.3647613525390627
+                    -1.7400002479553223,
+                    -0.239715576171875,
+                    -2.4000244140625
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -6900,26 +6954,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -6934,8 +6988,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -6956,7 +7010,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -6964,43 +7018,34 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.008042863570153714,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.171999990940094,
-                                    0.171999990940094,
-                                    0.171999990940094,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.050937995314598086,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.11796235293149948,
-                                "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.8016090989112854,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9758716821670532,
+                                "Time": 0.3243967890739441,
+                                "Color": [
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -7009,7 +7054,7 @@
                                 ]
                             },
                             {
-                                "Time": 0.9812331199645996,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -7260,9 +7305,9 @@
                 ]
             },
             {
-                "UID": 1071748594,
+                "UID": 1250178369,
                 "ParentUID": 1541575004,
-                "Name": "Particles",
+                "Name": "Particles (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -7272,14 +7317,14 @@
                 ],
                 "Rotation": [
                     0.0,
-                    0.0,
+                    -1.0658143577500345e-14,
                     0.0,
                     1.0
                 ],
                 "Scale": [
+                    0.9999998211860657,
                     1.0,
-                    1.0,
-                    1.0
+                    0.9999998211860657
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -7288,21 +7333,21 @@
                 "Components": []
             },
             {
-                "UID": 1491493603,
-                "ParentUID": 1071748594,
+                "UID": 1447136178,
+                "ParentUID": 1250178369,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4305267333984377,
-                    -0.38556671142578127,
-                    2.3647613525390627
+                    2.4305260181427,
+                    -0.30000001192092898,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -7320,26 +7365,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -7354,8 +7399,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7376,7 +7421,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -7386,27 +7431,36 @@
                             {
                                 "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.14399999380111695,
-                                    0.14342398941516877,
-                                    0.14342398941516877,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.10799998044967652,
-                                    0.106703981757164,
-                                    0.106703981757164,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7989273071289063,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
@@ -7451,21 +7505,21 @@
                 ]
             },
             {
-                "UID": 1917574123,
-                "ParentUID": 1071748594,
-                "Name": "Particle (5)",
+                "UID": 1714620060,
+                "ParentUID": 1250178369,
+                "Name": "Particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2917251586914064,
-                    -0.40235137939453127,
-                    -2.2242355346679689
+                    2.430447816848755,
+                    -0.29998779296875,
+                    -2.4022216796875
                 ],
                 "Rotation": [
-                    0.5609855651855469,
-                    0.4304593801498413,
-                    -0.5609855651855469,
-                    0.4304593801498413
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -7483,26 +7537,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -7517,8 +7571,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7539,7 +7593,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -7547,43 +7601,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.0026808232069015505,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.19199997186660767,
-                                    0.19199997186660767,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.13599997758865357,
-                                    0.13491196930408479,
-                                    0.13491196930408479,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.40214481949806216,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    -431602080.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7962467074394226,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -7623,21 +7677,21 @@
                 ]
             },
             {
-                "UID": 190810179,
-                "ParentUID": 1071748594,
-                "Name": "Particle (6)",
+                "UID": 1924457754,
+                "ParentUID": 1250178369,
+                "Name": "Particle (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8000717163085938,
-                    -0.39951610565185549,
-                    -2.2242355346679689
+                    -1.735915184020996,
+                    -0.23999999463558198,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -7655,26 +7709,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -7689,8 +7743,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7711,7 +7765,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -7719,34 +7773,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.013404838740825653,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.15200001001358033,
-                                    0.15200001001358033,
-                                    0.15200001001358033,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06434316188097,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.8123325109481812,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -7786,21 +7849,21 @@
                 ]
             },
             {
-                "UID": 611251398,
-                "ParentUID": 1071748594,
-                "Name": "Particle (7)",
+                "UID": 2129770083,
+                "ParentUID": 1250178369,
+                "Name": "Particle (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8183212280273438,
-                    -0.4000000059604645,
-                    2.3647613525390627
+                    -1.7400002479553223,
+                    -0.239715576171875,
+                    -2.4000244140625
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -7818,26 +7881,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -7852,8 +7915,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -7874,7 +7937,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -7882,43 +7945,34 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.008042863570153714,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.171999990940094,
-                                    0.171999990940094,
-                                    0.171999990940094,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.050937995314598086,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.11796235293149948,
-                                "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.8016090989112854,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9758716821670532,
+                                "Time": 0.3243967890739441,
+                                "Color": [
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -7927,7 +7981,7 @@
                                 ]
                             },
                             {
-                                "Time": 0.9812331199645996,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -8178,9 +8232,9 @@
                 ]
             },
             {
-                "UID": 2035048578,
+                "UID": 962868822,
                 "ParentUID": 713572377,
-                "Name": "Particles",
+                "Name": "Particles (6)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -8190,14 +8244,14 @@
                 ],
                 "Rotation": [
                     0.0,
-                    0.0,
+                    -1.0658143577500345e-14,
                     0.0,
                     1.0
                 ],
                 "Scale": [
+                    0.9999998211860657,
                     1.0,
-                    1.0,
-                    1.0
+                    0.9999998211860657
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -8206,21 +8260,21 @@
                 "Components": []
             },
             {
-                "UID": 110560994,
-                "ParentUID": 2035048578,
+                "UID": 1161010188,
+                "ParentUID": 962868822,
                 "Name": "Particle (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.4305267333984377,
-                    -0.38556671142578127,
-                    2.3647613525390627
+                    2.4305260181427,
+                    -0.30000001192092898,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -8238,26 +8292,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -8272,8 +8326,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8294,7 +8348,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 3.0,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -8304,27 +8358,36 @@
                             {
                                 "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.14399999380111695,
-                                    0.14342398941516877,
-                                    0.14342398941516877,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.10799998044967652,
-                                    0.106703981757164,
-                                    0.106703981757164,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.7989273071289063,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
@@ -8369,21 +8432,21 @@
                 ]
             },
             {
-                "UID": 334253267,
-                "ParentUID": 2035048578,
-                "Name": "Particle (5)",
+                "UID": 1417354710,
+                "ParentUID": 962868822,
+                "Name": "Particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2917251586914064,
-                    -0.40235137939453127,
-                    -2.2242355346679689
+                    2.430447816848755,
+                    -0.29998779296875,
+                    -2.4022216796875
                 ],
                 "Rotation": [
-                    0.5609855651855469,
-                    0.4304593801498413,
-                    -0.5609855651855469,
-                    0.4304593801498413
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -8401,26 +8464,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -8435,8 +8498,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8457,7 +8520,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -8465,43 +8528,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.0026808232069015505,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.19199997186660767,
-                                    0.19199997186660767,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06702412664890289,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.13599997758865357,
-                                    0.13491196930408479,
-                                    0.13491196930408479,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.40214481949806216,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    0.06400001049041748,
-                                    -431602080.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7962467074394226,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -8541,21 +8604,21 @@
                 ]
             },
             {
-                "UID": 544787171,
-                "ParentUID": 2035048578,
-                "Name": "Particle (6)",
+                "UID": 1631508906,
+                "ParentUID": 962868822,
+                "Name": "Particle (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8000717163085938,
-                    -0.39951610565185549,
-                    -2.2242355346679689
+                    -1.735915184020996,
+                    -0.23999999463558198,
+                    2.36474609375
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -8573,26 +8636,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -8607,8 +8670,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8629,7 +8692,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -8637,34 +8700,43 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.013404838740825653,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.15200001001358033,
-                                    0.15200001001358033,
-                                    0.15200001001358033,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "Time": 0.13672912120819093,
+                                "Color": [
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.06434316188097,
+                                "Time": 0.3243967890739441,
                                 "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.8123325109481812,
+                                "Time": 0.5040217638015747,
                                 "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9932973384857178,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -8704,21 +8776,21 @@
                 ]
             },
             {
-                "UID": 753928655,
-                "ParentUID": 2035048578,
-                "Name": "Particle (7)",
+                "UID": 1882492611,
+                "ParentUID": 962868822,
+                "Name": "Particle (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.8183212280273438,
-                    -0.4000000059604645,
-                    2.3647613525390627
+                    -1.7400002479553223,
+                    -0.239715576171875,
+                    -2.4000244140625
                 ],
                 "Rotation": [
-                    0.5609855055809021,
-                    0.43045946955680849,
-                    -0.5609855055809021,
-                    0.43045946955680849
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -8736,26 +8808,26 @@
                         "Image": 970432015,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 30.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 5.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
-                        "Gravity": -0.20000000298023225,
+                        "Gravity": 0.0,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.399999976158142,
-                            "MaxValue": 2.0
+                            "MinValue": 0.30000001192092898,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.949999988079071,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.20000000298023225,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -8770,8 +8842,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.5,
-                                "MaxValue": 4.0
+                                "MinValue": 1.5,
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -8792,7 +8864,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.5,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -8800,43 +8872,34 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.008042863570153714,
+                                "Time": 0.013404443860054016,
                                 "Color": [
-                                    0.171999990940094,
-                                    0.171999990940094,
-                                    0.171999990940094,
+                                    0.002096004318445921,
+                                    0.14822909235954286,
+                                    0.5239999890327454,
                                     0.0
                                 ]
                             },
                             {
-                                "Time": 0.050937995314598086,
+                                "Time": 0.13672912120819093,
                                 "Color": [
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.156000018119812,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.11796235293149948,
-                                "Color": [
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
-                                    0.0
-                                ]
-                            },
-                            {
-                                "Time": 0.8016090989112854,
-                                "Color": [
-                                    0.0117647061124444,
-                                    0.0117647061124444,
-                                    0.0117647061124444,
+                                    0.0,
+                                    0.23977607488632203,
+                                    0.5080000162124634,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.9758716821670532,
+                                "Time": 0.3243967890739441,
+                                "Color": [
+                                    0.16383987665176392,
+                                    0.0,
+                                    0.3199999928474426,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5040217638015747,
                                 "Color": [
                                     0.0,
                                     0.0,
@@ -8845,7 +8908,7 @@
                                 ]
                             },
                             {
-                                "Time": 0.9812331199645996,
+                                "Time": 0.9209114909172058,
                                 "Color": [
                                     0.0,
                                     0.0,
