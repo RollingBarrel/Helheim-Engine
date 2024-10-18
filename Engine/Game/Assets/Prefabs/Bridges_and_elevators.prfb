@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 332055270,
+                "UID": 1399748618,
                 "ParentUID": 1,
                 "Name": "Bridges_and_elevators",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 735514415,
-                "ParentUID": 332055270,
+                "UID": 1438318652,
+                "ParentUID": 1399748618,
                 "Name": "Elevator2",
                 "Enabled": true,
                 "Active": true,
@@ -51,7 +51,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "WinArea",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -85,18 +85,19 @@
                                 "VariableData": 4.0
                             },
                             {
-                                "VariableName": "mCamera",
-                                "MemberType": 3,
-                                "VariableData": 2117687861
+                                "VariableName": "mCameraDif",
+                                "MemberType": 1,
+                                "VariableData": 10.0
                             },
                             {
-                                "VariableName": "mCameraDif",
-                                "MemberType": 4,
-                                "VariableData": [
-                                    5.0,
-                                    10.0,
-                                    0.0
-                                ]
+                                "VariableName": "mDoorEntrance",
+                                "MemberType": 3,
+                                "VariableData": 1497914228
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 1552636334
                             }
                         ]
                     },
@@ -109,7 +110,7 @@
                             0.0
                         ],
                         "Size": [
-                            2.8499999046325685,
+                            7.650000095367432,
                             2.4000000953674318,
                             3.3499999046325685
                         ],
@@ -119,14 +120,42 @@
                 ]
             },
             {
-                "UID": 1058704369,
-                "ParentUID": 735514415,
+                "UID": 1448761802,
+                "ParentUID": 1438318652,
+                "Name": "OB_Mini_Elevator",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.15000000596046449,
+                    1.2699999809265137,
+                    0.30000001192092898
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1474034225,
+                "ParentUID": 1448761802,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    -3.0,
+                    -0.4855532944202423,
                     0.0
                 ],
                 "Rotation": [
@@ -147,36 +176,8 @@
                 "Components": []
             },
             {
-                "UID": 766829235,
-                "ParentUID": 1058704369,
-                "Name": "OB_Mini_Elevator",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 296028131,
-                "ParentUID": 766829235,
+                "UID": 1482110261,
+                "ParentUID": 1474034225,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -204,8 +205,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 516205841,
-                        "MaterialID": 516205846,
+                        "MeshID": 1050802487,
+                        "MaterialID": 1050802492,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -213,8 +214,8 @@
                 ]
             },
             {
-                "UID": 2021723858,
-                "ParentUID": 766829235,
+                "UID": 1490047055,
+                "ParentUID": 1474034225,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -242,8 +243,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 516205847,
-                        "MaterialID": 516205851,
+                        "MeshID": 1050802493,
+                        "MaterialID": 1050802486,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -251,13 +252,567 @@
                 ]
             },
             {
-                "UID": 1111378481,
-                "ParentUID": 332055270,
+                "UID": 1497914228,
+                "ParentUID": 1448761802,
+                "Name": "OB_elevator_door_Entrance",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    4.679999828338623,
+                    -0.10000000149011612,
+                    -0.10000000149011612
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -4.371138828673793e-8
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 2106752062,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1506407990,
+                "ParentUID": 1497914228,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1514344784,
+                "ParentUID": 1506407990,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1522003094,
+                "ParentUID": 1514344784,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 2106752057,
+                        "MaterialID": 2106752061,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1529661404,
+                                "Matrix": [
+                                    -0.000004363056632428197,
+                                    2.5111732482910158,
+                                    99.96847534179688,
+                                    -0.0,
+                                    -7.672515778267553e-8,
+                                    99.96849060058594,
+                                    -2.511173963546753,
+                                    0.0,
+                                    -100.00000762939453,
+                                    -1.0976688002983792e-7,
+                                    -0.000004369760972622316,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1537319714,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.64981180623181e-8,
+                                    7.190255877677354e-13,
+                                    9.029272884930606e-10,
+                                    1.0986038745386395e-7,
+                                    100.00003051757813,
+                                    -0.000011088818610005547,
+                                    -1.1812477111816407,
+                                    1.0025760666110273e-8,
+                                    0.000009971229701477569,
+                                    100.00000762939453,
+                                    -99.18804931640625,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1545047645,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.649813227317282e-8,
+                                    3.636117286171664e-13,
+                                    9.423947039399749e-11,
+                                    -7.649157396372175e-8,
+                                    100.00004577636719,
+                                    -0.000010902555914071855,
+                                    -0.1233246847987175,
+                                    8.884271984754833e-9,
+                                    0.000009784966096049175,
+                                    100.00001525878906,
+                                    99.41258239746094,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1529661404,
+                "ParentUID": 1506407990,
+                "Name": "root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.5062389969825745,
+                    -0.49368220567703249,
+                    0.5062389969825745,
+                    0.4936821460723877
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999997019767761,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1537319714,
+                "ParentUID": 1529661404,
+                "Name": "Left",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    99.18643951416016,
+                    -1.309898018836975,
+                    -0.000004335576704761479
+                ],
+                "Rotation": [
+                    0.008878999389708043,
+                    0.7070510387420654,
+                    -0.008878999389708043,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1545047645,
+                "ParentUID": 1529661404,
+                "Name": "Right",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -99.37812805175781,
+                    2.6196975708007814,
+                    0.000004343955424701562
+                ],
+                "Rotation": [
+                    0.008879000321030617,
+                    0.7070510387420654,
+                    -0.008879001252353192,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999998807907105,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1552636334,
+                "ParentUID": 1448761802,
+                "Name": "OB_elevator_door_Exit",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.289999961853027,
+                    -0.10000000149011612,
+                    -0.10000000149011612
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 2106752062,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1560573128,
+                "ParentUID": 1552636334,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1568301059,
+                "ParentUID": 1560573128,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1575820127,
+                "ParentUID": 1568301059,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 2106752057,
+                        "MaterialID": 2106752061,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1583478437,
+                                "Matrix": [
+                                    -0.000004363056632428197,
+                                    2.5111732482910158,
+                                    99.96847534179688,
+                                    -0.0,
+                                    -7.672515778267553e-8,
+                                    99.96849060058594,
+                                    -2.511173963546753,
+                                    0.0,
+                                    -100.00000762939453,
+                                    -1.0976688002983792e-7,
+                                    -0.000004369760972622316,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1591206368,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.64981180623181e-8,
+                                    7.190255877677354e-13,
+                                    9.029272884930606e-10,
+                                    1.0986038745386395e-7,
+                                    100.00003051757813,
+                                    -0.000011088818610005547,
+                                    -1.1812477111816407,
+                                    1.0025760666110273e-8,
+                                    0.000009971229701477569,
+                                    100.00000762939453,
+                                    -99.18804931640625,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1598934299,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.649813227317282e-8,
+                                    3.636117286171664e-13,
+                                    9.423947039399749e-11,
+                                    -7.649157396372175e-8,
+                                    100.00004577636719,
+                                    -0.000010902555914071855,
+                                    -0.1233246847987175,
+                                    8.884271984754833e-9,
+                                    0.000009784966096049175,
+                                    100.00001525878906,
+                                    99.41258239746094,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1583478437,
+                "ParentUID": 1560573128,
+                "Name": "root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.5062389969825745,
+                    -0.49368220567703249,
+                    0.5062389969825745,
+                    0.4936821460723877
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999997019767761,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1591206368,
+                "ParentUID": 1583478437,
+                "Name": "Left",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    99.18643951416016,
+                    -1.309898018836975,
+                    -0.000004335576704761479
+                ],
+                "Rotation": [
+                    0.008878999389708043,
+                    0.7070510387420654,
+                    -0.008878999389708043,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1598934299,
+                "ParentUID": 1583478437,
+                "Name": "Right",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -99.37812805175781,
+                    2.6196975708007814,
+                    0.000004343955424701562
+                ],
+                "Rotation": [
+                    0.008879000321030617,
+                    0.7070510387420654,
+                    -0.008879001252353192,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999998807907105,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1606731851,
+                "ParentUID": 1399748618,
                 "Name": "Elevator1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -32.3824462890625,
+                    -33.65999984741211,
                     0.6406631469726563,
                     -0.47674083709716799
                 ],
@@ -286,8 +841,8 @@
                                 "VariableName": "mStartPos",
                                 "MemberType": 4,
                                 "VariableData": [
-                                    85.63999938964844,
-                                    65.12000274658203,
+                                    84.41000366210938,
+                                    65.08999633789063,
                                     13.010000228881836
                                 ]
                             },
@@ -295,8 +850,8 @@
                                 "VariableName": "mEndPos",
                                 "MemberType": 4,
                                 "VariableData": [
-                                    69.5,
-                                    36.33000183105469,
+                                    69.80999755859375,
+                                    36.20000076293945,
                                     13.010000228881836
                                 ]
                             },
@@ -306,18 +861,19 @@
                                 "VariableData": 4.0
                             },
                             {
-                                "VariableName": "mCamera",
-                                "MemberType": 3,
-                                "VariableData": 2117687861
+                                "VariableName": "mCameraDif",
+                                "MemberType": 1,
+                                "VariableData": 10.0
                             },
                             {
-                                "VariableName": "mCameraDif",
-                                "MemberType": 4,
-                                "VariableData": [
-                                    5.0,
-                                    10.0,
-                                    0.0
-                                ]
+                                "VariableName": "mDoorEntrance",
+                                "MemberType": 3,
+                                "VariableData": 1645371506
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 1698979676
                             }
                         ]
                     },
@@ -325,14 +881,14 @@
                         "ComponentType": 17,
                         "IsEnabled": true,
                         "Center": [
-                            0.0,
-                            1.850000023841858,
+                            0.20000000298023225,
+                            1.649999976158142,
                             0.0
                         ],
                         "Size": [
-                            1.7999999523162842,
-                            2.4000000953674318,
-                            3.0
+                            4.699999809265137,
+                            2.0999999046325685,
+                            3.299999952316284
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -340,15 +896,15 @@
                 ]
             },
             {
-                "UID": 1958926111,
-                "ParentUID": 1111378481,
+                "UID": 1614390161,
+                "ParentUID": 1606731851,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    -3.0,
-                    0.0
+                    0.6200000047683716,
+                    0.05000000074505806
                 ],
                 "Rotation": [
                     0.0,
@@ -357,9 +913,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929
+                    1.0,
+                    1.0,
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -368,14 +924,14 @@
                 "Components": []
             },
             {
-                "UID": 1718292033,
-                "ParentUID": 1958926111,
+                "UID": 1622187713,
+                "ParentUID": 1614390161,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    0.0,
+                    -0.4855532944202423,
                     0.0
                 ],
                 "Rotation": [
@@ -396,8 +952,8 @@
                 "Components": []
             },
             {
-                "UID": 1296504113,
-                "ParentUID": 1718292033,
+                "UID": 1629915644,
+                "ParentUID": 1622187713,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -425,8 +981,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 516205841,
-                        "MaterialID": 516205846,
+                        "MeshID": 1050802487,
+                        "MaterialID": 1050802492,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -434,8 +990,8 @@
                 ]
             },
             {
-                "UID": 766706766,
-                "ParentUID": 1718292033,
+                "UID": 1637573954,
+                "ParentUID": 1622187713,
                 "Name": "OB_Mini_Elevator",
                 "Enabled": true,
                 "Active": true,
@@ -463,8 +1019,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 516205847,
-                        "MaterialID": 516205851,
+                        "MeshID": 1050802493,
+                        "MaterialID": 1050802486,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -472,8 +1028,562 @@
                 ]
             },
             {
-                "UID": 1837715127,
-                "ParentUID": 332055270,
+                "UID": 1645371506,
+                "ParentUID": 1614390161,
+                "Name": "OB_elevator_door_Entrance",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    4.679999828338623,
+                    -0.10000000149011612,
+                    -0.10000000149011612
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -4.371138828673793e-8
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 2106752062,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1653029816,
+                "ParentUID": 1645371506,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1660688126,
+                "ParentUID": 1653029816,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1668346436,
+                "ParentUID": 1660688126,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 2106752057,
+                        "MaterialID": 2106752061,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1675795883,
+                                "Matrix": [
+                                    -0.000004363056632428197,
+                                    2.5111732482910158,
+                                    99.96847534179688,
+                                    -0.0,
+                                    -7.672515778267553e-8,
+                                    99.96849060058594,
+                                    -2.511173963546753,
+                                    0.0,
+                                    -100.00000762939453,
+                                    -1.0976688002983792e-7,
+                                    -0.000004369760972622316,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1683523814,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.64981180623181e-8,
+                                    7.190255877677354e-13,
+                                    9.029272884930606e-10,
+                                    1.0986038745386395e-7,
+                                    100.00003051757813,
+                                    -0.000011088818610005547,
+                                    -1.1812477111816407,
+                                    1.0025760666110273e-8,
+                                    0.000009971229701477569,
+                                    100.00000762939453,
+                                    -99.18804931640625,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1691182124,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.649813227317282e-8,
+                                    3.636117286171664e-13,
+                                    9.423947039399749e-11,
+                                    -7.649157396372175e-8,
+                                    100.00004577636719,
+                                    -0.000010902555914071855,
+                                    -0.1233246847987175,
+                                    8.884271984754833e-9,
+                                    0.000009784966096049175,
+                                    100.00001525878906,
+                                    99.41258239746094,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1675795883,
+                "ParentUID": 1653029816,
+                "Name": "root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.5062389969825745,
+                    -0.49368220567703249,
+                    0.5062389969825745,
+                    0.4936821460723877
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999997019767761,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1683523814,
+                "ParentUID": 1675795883,
+                "Name": "Left",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    99.18643951416016,
+                    -1.309898018836975,
+                    -0.000004335576704761479
+                ],
+                "Rotation": [
+                    0.008878999389708043,
+                    0.7070510387420654,
+                    -0.008878999389708043,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1691182124,
+                "ParentUID": 1675795883,
+                "Name": "Right",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -99.37812805175781,
+                    2.6196975708007814,
+                    0.000004343955424701562
+                ],
+                "Rotation": [
+                    0.008879000321030617,
+                    0.7070510387420654,
+                    -0.008879001252353192,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999998807907105,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1698979676,
+                "ParentUID": 1614390161,
+                "Name": "OB_elevator_door_Exit",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.289999961853027,
+                    -0.10000000149011612,
+                    -0.10000000149011612
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 2106752062,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1707125333,
+                "ParentUID": 1698979676,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1714714022,
+                "ParentUID": 1707125333,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1722302711,
+                "ParentUID": 1714714022,
+                "Name": "OB_BB_Puerta",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 2106752057,
+                        "MaterialID": 2106752061,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1729961021,
+                                "Matrix": [
+                                    -0.000004363056632428197,
+                                    2.5111732482910158,
+                                    99.96847534179688,
+                                    -0.0,
+                                    -7.672515778267553e-8,
+                                    99.96849060058594,
+                                    -2.511173963546753,
+                                    0.0,
+                                    -100.00000762939453,
+                                    -1.0976688002983792e-7,
+                                    -0.000004369760972622316,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1737828194,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.64981180623181e-8,
+                                    7.190255877677354e-13,
+                                    9.029272884930606e-10,
+                                    1.0986038745386395e-7,
+                                    100.00003051757813,
+                                    -0.000011088818610005547,
+                                    -1.1812477111816407,
+                                    1.0025760666110273e-8,
+                                    0.000009971229701477569,
+                                    100.00000762939453,
+                                    -99.18804931640625,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1745834609,
+                                "Matrix": [
+                                    100.00001525878906,
+                                    -7.649813227317282e-8,
+                                    3.636117286171664e-13,
+                                    9.423947039399749e-11,
+                                    -7.649157396372175e-8,
+                                    100.00004577636719,
+                                    -0.000010902555914071855,
+                                    -0.1233246847987175,
+                                    8.884271984754833e-9,
+                                    0.000009784966096049175,
+                                    100.00001525878906,
+                                    99.41258239746094,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1729961021,
+                "ParentUID": 1707125333,
+                "Name": "root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.5062389969825745,
+                    -0.49368220567703249,
+                    0.5062389969825745,
+                    0.4936821460723877
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999997019767761,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1737828194,
+                "ParentUID": 1729961021,
+                "Name": "Left",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    99.18643951416016,
+                    -1.309898018836975,
+                    -0.000004335576704761479
+                ],
+                "Rotation": [
+                    0.008878999389708043,
+                    0.7070510387420654,
+                    -0.008878999389708043,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1745834609,
+                "ParentUID": 1729961021,
+                "Name": "Right",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -99.37812805175781,
+                    2.6196975708007814,
+                    0.000004343955424701562
+                ],
+                "Rotation": [
+                    0.008879000321030617,
+                    0.7070510387420654,
+                    -0.008879001252353192,
+                    0.7070509791374207
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999998807907105,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1753632161,
+                "ParentUID": 1399748618,
                 "Name": "Bridge_3-4B",
                 "Enabled": true,
                 "Active": true,
@@ -493,7 +1603,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -513,7 +1623,7 @@
                             0.0
                         ],
                         "Size": [
-                            6.0,
+                            3.200000047683716,
                             2.5,
                             2.6500000953674318
                         ],
@@ -523,8 +1633,102 @@
                 ]
             },
             {
-                "UID": 1273413020,
-                "ParentUID": 1837715127,
+                "UID": 1761499334,
+                "ParentUID": 1753632161,
+                "Name": "Cube",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    -0.5,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    5.199999809265137,
+                    1.0,
+                    1.7999999523162842
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1770967790,
+                "ParentUID": 1761499334,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1779391931,
+                "ParentUID": 1770967790,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": false,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1787119862,
+                "ParentUID": 1753632161,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -551,8 +1755,8 @@
                 "Components": []
             },
             {
-                "UID": 698876626,
-                "ParentUID": 1273413020,
+                "UID": 1794987035,
+                "ParentUID": 1787119862,
                 "Name": "OB_Retractable_Bridge",
                 "Enabled": true,
                 "Active": true,
@@ -579,8 +1783,8 @@
                 "Components": []
             },
             {
-                "UID": 1867395490,
-                "ParentUID": 698876626,
+                "UID": 1802854208,
+                "ParentUID": 1794987035,
                 "Name": "OB_Retractable_Bridge",
                 "Enabled": true,
                 "Active": true,
@@ -614,7 +1818,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1175269227,
+                                "GoId": 1810721381,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -635,7 +1839,7 @@
                                 ]
                             },
                             {
-                                "GoId": 242672030,
+                                "GoId": 1818449312,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -656,7 +1860,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1438412705,
+                                "GoId": 1826177243,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -681,8 +1885,8 @@
                 ]
             },
             {
-                "UID": 1175269227,
-                "ParentUID": 1273413020,
+                "UID": 1810721381,
+                "ParentUID": 1787119862,
                 "Name": "root",
                 "Enabled": true,
                 "Active": true,
@@ -709,8 +1913,8 @@
                 "Components": []
             },
             {
-                "UID": 242672030,
-                "ParentUID": 1175269227,
+                "UID": 1818449312,
+                "ParentUID": 1810721381,
                 "Name": "left",
                 "Enabled": true,
                 "Active": true,
@@ -737,8 +1941,8 @@
                 "Components": []
             },
             {
-                "UID": 1438412705,
-                "ParentUID": 1175269227,
+                "UID": 1826177243,
+                "ParentUID": 1810721381,
                 "Name": "right",
                 "Enabled": true,
                 "Active": true,
@@ -765,8 +1969,8 @@
                 "Components": []
             },
             {
-                "UID": 1126453839,
-                "ParentUID": 332055270,
+                "UID": 1833835553,
+                "ParentUID": 1399748618,
                 "Name": "Bridge_3-4A",
                 "Enabled": true,
                 "Active": true,
@@ -786,7 +1990,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -806,7 +2010,7 @@
                             0.0
                         ],
                         "Size": [
-                            6.0,
+                            3.200000047683716,
                             2.5,
                             2.549999952316284
                         ],
@@ -816,8 +2020,102 @@
                 ]
             },
             {
-                "UID": 611721884,
-                "ParentUID": 1126453839,
+                "UID": 1841563484,
+                "ParentUID": 1833835553,
+                "Name": "Cube",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    -0.5,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    5.199999809265137,
+                    1.0,
+                    1.7999999523162842
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1849291415,
+                "ParentUID": 1841563484,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1856880104,
+                "ParentUID": 1849291415,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": false,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1864608035,
+                "ParentUID": 1833835553,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -844,8 +2142,8 @@
                 "Components": []
             },
             {
-                "UID": 1835937548,
-                "ParentUID": 611721884,
+                "UID": 1872335966,
+                "ParentUID": 1864608035,
                 "Name": "OB_Retractable_Bridge",
                 "Enabled": true,
                 "Active": true,
@@ -872,8 +2170,8 @@
                 "Components": []
             },
             {
-                "UID": 873960289,
-                "ParentUID": 1835937548,
+                "UID": 1880133518,
+                "ParentUID": 1872335966,
                 "Name": "OB_Retractable_Bridge",
                 "Enabled": true,
                 "Active": true,
@@ -907,7 +2205,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 210169773,
+                                "GoId": 1887931070,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -928,7 +2226,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1405492722,
+                                "GoId": 1895728622,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -949,7 +2247,7 @@
                                 ]
                             },
                             {
-                                "GoId": 453123161,
+                                "GoId": 1903386932,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -974,8 +2272,8 @@
                 ]
             },
             {
-                "UID": 210169773,
-                "ParentUID": 611721884,
+                "UID": 1887931070,
+                "ParentUID": 1864608035,
                 "Name": "root",
                 "Enabled": true,
                 "Active": true,
@@ -1002,8 +2300,8 @@
                 "Components": []
             },
             {
-                "UID": 1405492722,
-                "ParentUID": 210169773,
+                "UID": 1895728622,
+                "ParentUID": 1887931070,
                 "Name": "left",
                 "Enabled": true,
                 "Active": true,
@@ -1030,8 +2328,8 @@
                 "Components": []
             },
             {
-                "UID": 453123161,
-                "ParentUID": 210169773,
+                "UID": 1903386932,
+                "ParentUID": 1887931070,
                 "Name": "right",
                 "Enabled": true,
                 "Active": true,
@@ -1058,8 +2356,8 @@
                 "Components": []
             },
             {
-                "UID": 2003697596,
-                "ParentUID": 332055270,
+                "UID": 1911114863,
+                "ParentUID": 1399748618,
                 "Name": "Bridge_1-2",
                 "Enabled": true,
                 "Active": true,
@@ -1079,7 +2377,7 @@
                     1.0,
                     1.600000023841858
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1099,7 +2397,7 @@
                             0.0
                         ],
                         "Size": [
-                            4.849999904632568,
+                            2.700000047683716,
                             1.7999999523162842,
                             4.599999904632568
                         ],
@@ -1109,8 +2407,102 @@
                 ]
             },
             {
-                "UID": 1553782792,
-                "ParentUID": 2003697596,
+                "UID": 1918912415,
+                "ParentUID": 1911114863,
+                "Name": "Cube",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    -0.5,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    5.199999809265137,
+                    1.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1926501104,
+                "ParentUID": 1918912415,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1934229035,
+                "ParentUID": 1926501104,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": false,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1944393701,
+                "ParentUID": 1911114863,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -1137,8 +2529,8 @@
                 "Components": []
             },
             {
-                "UID": 1165343331,
-                "ParentUID": 1553782792,
+                "UID": 1952260874,
+                "ParentUID": 1944393701,
                 "Name": "OB_Retractable_Bridge",
                 "Enabled": true,
                 "Active": true,
@@ -1165,8 +2557,8 @@
                 "Components": []
             },
             {
-                "UID": 207404090,
-                "ParentUID": 1165343331,
+                "UID": 1960267289,
+                "ParentUID": 1952260874,
                 "Name": "OB_Retractable_Bridge",
                 "Enabled": true,
                 "Active": true,
@@ -1200,7 +2592,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 13151075,
+                                "GoId": 1968134462,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -1221,7 +2613,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1868341862,
+                                "GoId": 1975932014,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -1242,7 +2634,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1438408285,
+                                "GoId": 1983659945,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -1267,8 +2659,8 @@
                 ]
             },
             {
-                "UID": 13151075,
-                "ParentUID": 1553782792,
+                "UID": 1968134462,
+                "ParentUID": 1944393701,
                 "Name": "root",
                 "Enabled": true,
                 "Active": true,
@@ -1295,8 +2687,8 @@
                 "Components": []
             },
             {
-                "UID": 1868341862,
-                "ParentUID": 13151075,
+                "UID": 1975932014,
+                "ParentUID": 1968134462,
                 "Name": "left",
                 "Enabled": true,
                 "Active": true,
@@ -1323,8 +2715,8 @@
                 "Components": []
             },
             {
-                "UID": 1438408285,
-                "ParentUID": 13151075,
+                "UID": 1983659945,
+                "ParentUID": 1968134462,
                 "Name": "right",
                 "Enabled": true,
                 "Active": true,
