@@ -125,16 +125,19 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
     //}
     if (strstr(filePath, "_Normal") != NULL)
     {
-        hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_BC5_UNORM, DirectX::TEX_COMPRESS_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
-        if (FAILED(hr))
+        if (image.GetMetadata().format != DXGI_FORMAT_BC5_UNORM)
         {
-            LOG("Failed to compress texture");
-            return nullptr;
+            hr = DirectX::Compress(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_BC5_UNORM, DirectX::TEX_COMPRESS_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
+            if (FAILED(hr))
+            {
+                LOG("Failed to compress texture");
+                return nullptr;
+            }
+            compressed = true;
+            image.Release();
+            image = std::move(cImage);
+            pixelsSize = image.GetPixelsSize();
         }
-        compressed = true;
-        image.Release();
-        image = std::move(cImage);
-        pixelsSize = image.GetPixelsSize();
     }
     else if (strstr(filePath, "_OcclusionRoughnessMetallic") || strstr(filePath, "_OcclusionMetallicRoughness"))
     {
@@ -163,39 +166,42 @@ ResourceTexture* Importer::Texture::Import(const char* filePath, unsigned int ui
         //image = std::move(cImage);
         //pixelsSize = image.GetPixelsSize();
         //mipLevels = 1;
-        DXGI_FORMAT formatt;
-        DirectX::TEX_FILTER_FLAGS flags = DirectX::TEX_FILTER_RGB_COPY_GREEN | DirectX::TEX_FILTER_RGB_COPY_BLUE;
-        switch (image.GetMetadata().format)
+        if (image.GetMetadata().format != DXGI_FORMAT_R8G8_UNORM || image.GetMetadata().format != DXGI_FORMAT_R16G16_UNORM)
         {
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-        {
-            formatt = DXGI_FORMAT_R8G8_UNORM;
-            break;
-        }
-        case DXGI_FORMAT_R16G16B16A16_UNORM:
-        {
-            formatt = DXGI_FORMAT_R16G16_UNORM;
-            break;
-        }
-        case DXGI_FORMAT_B8G8R8A8_UNORM:
-        {
-            formatt = DXGI_FORMAT_R8G8_UNORM;
-            //flags = DirectX::TEX_FILTER_DEFAULT;
-            break;
-        }
-        default:
-            assert(false && "No suported format for the occlusion metal rough texture");
-        }
+            DXGI_FORMAT formatt;
+            DirectX::TEX_FILTER_FLAGS flags = DirectX::TEX_FILTER_RGB_COPY_GREEN | DirectX::TEX_FILTER_RGB_COPY_BLUE;
+            switch (image.GetMetadata().format)
+            {
+            case DXGI_FORMAT_R8G8B8A8_UNORM:
+            {
+                formatt = DXGI_FORMAT_R8G8_UNORM;
+                break;
+            }
+            case DXGI_FORMAT_R16G16B16A16_UNORM:
+            {
+                formatt = DXGI_FORMAT_R16G16_UNORM;
+                break;
+            }
+            case DXGI_FORMAT_B8G8R8A8_UNORM:
+            {
+                formatt = DXGI_FORMAT_R8G8_UNORM;
+                //flags = DirectX::TEX_FILTER_DEFAULT;
+                break;
+            }
+            default:
+                assert(false && "No suported format for the occlusion metal rough texture");
+            }
 
-        hr = DirectX::Convert(image.GetImages(), image.GetImageCount(), image.GetMetadata(), formatt, flags, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
-        if (FAILED(hr))
-        {
-            LOG("Failed to convert texture");
-            return nullptr;
+            hr = DirectX::Convert(image.GetImages(), image.GetImageCount(), image.GetMetadata(), formatt, flags, DirectX::TEX_THRESHOLD_DEFAULT, cImage);
+            if (FAILED(hr))
+            {
+                LOG("Failed to convert texture");
+                return nullptr;
+            }
+            image.Release();
+            image = std::move(cImage);
+            pixelsSize = image.GetPixelsSize();
         }
-        image.Release();
-        image = std::move(cImage);
-        pixelsSize = image.GetPixelsSize();
     }
     //else if (strstr(filePath, "_Emissive") != NULL)
     //{
