@@ -61,5 +61,10 @@ private:
 	bool mCloseAudioPlayed = false;
 	float mCooldown = 0.0f;
 	bool mIsCooldown = false;
+
+	GameObject* mDoorEntrance = nullptr;
+	GameObject* mDoorExit = nullptr;
+	AnimationComponent* mDoorEntranceAnimation = nullptr;
+	AnimationComponent* mDoorExitAnimation = nullptr;
 };
 
