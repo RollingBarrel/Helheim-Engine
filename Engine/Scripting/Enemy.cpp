@@ -31,18 +31,14 @@ void Enemy::Start()
 	mHealth = mMaxHealth;
 
     //Hit Effect
-
-	if (mGameObject->GetName() != "FinalBoss") 
+	//Randn step duration to not sound so mess
+	mStepDuration = 0.4f + static_cast<float>(rand()) / RAND_MAX * (0.7f - 0.4f);
+	mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 	{
-		//Randn step duration to not sound so mess
-		mStepDuration = 0.4 + static_cast<float>(rand()) / RAND_MAX * (0.7 - 0.4);
-		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
-		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-		{
-			const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
-			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
-			mOgColors.push_back(material->GetBaseColorFactor());
-		}
+		static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
+		const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
+		mOgColors.push_back(material->GetBaseColorFactor());
 	}
 	
 	mAiAgentComponent = static_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
@@ -51,6 +47,8 @@ void Enemy::Start()
 	if (mAnimationComponent) mAnimationComponent->SetIsPlaying(true);
 	
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+	mHitEffectColor = float4(3.0f, 0.0f, 0.0f, 1.0f);
+
 }
 
 void Enemy::Update()
@@ -79,19 +77,23 @@ void Enemy::CheckHitEffect()
     {
         if (mHitEffectTimer.Delay(mHitEffectTime))
         {
-			ResetEnemyColor();
+			ResetEnemyColor(1.0f);
             mHit = false;
         }
+		else 
+		{
+			ResetEnemyColor(mHitEffectTimer.GetTimePassed() / mHitEffectTime);
+		}
     }
 }
 
-void Enemy::ResetEnemyColor()
+void Enemy::ResetEnemyColor(float factor)
 {
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
 	{
 		MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
-		meshComponent->SetEnableBaseColorTexture(true);
-		meshComponent->SetBaseColorFactor(mOgColors[i]);
+		//meshComponent->SetEnableBaseColorTexture(true);
+		meshComponent->SetBaseColorFactor(mOgColors[i].Mul(factor) + mHitEffectColor.Mul(1.0f - factor));
 	}
 }
 
@@ -295,11 +297,11 @@ void Enemy::ActivateHitEffect()
 {
     if (mHit) return;
    //LOG("HIT EFFECT");
-    for (Component* mesh : mMeshComponents)
-    {
-        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
-        meshComponent->SetEnableBaseColorTexture(false);
-        meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
+	for (size_t i = 0; i < mMeshComponents.size(); i++)
+	{
+		MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+		//meshComponent->SetEnableBaseColorTexture(false);
+        meshComponent->SetBaseColorFactor(mHitEffectColor);
     }
     mHit = true;
 }
@@ -336,7 +338,7 @@ void Enemy::Death()
 		{
 			activeBattleArea->EnemyDestroyed(mGameObject);
 		}
-		ResetEnemyColor();
+		ResetEnemyColor(1.0f);
 		mVanishingTime = 0.0f;
 		mGameObject->SetEnabled(false);
 		DropItem();

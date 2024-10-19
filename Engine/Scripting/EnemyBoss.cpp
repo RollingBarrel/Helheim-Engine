@@ -109,6 +109,7 @@ void EnemyBoss::Start()
     {
         mSpritesheet = static_cast<ImageComponent*>(mShieldGO->GetComponent(ComponentType::IMAGE));
     }
+    mHitEffectColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void EnemyBoss::Update()
@@ -295,7 +296,7 @@ void EnemyBoss::Update()
             break;
         }
     }
-
+    CheckHitEffect();
 }
 
 void EnemyBoss::StartBulletAttack(BulletPattern pattern)
