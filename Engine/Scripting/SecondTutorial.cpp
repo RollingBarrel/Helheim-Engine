@@ -44,10 +44,12 @@ void SecondTutorial::Start()
     if (mTutorialAreaGO)
         mTutorialArea = (BattleArea*)((ScriptComponent*)mTutorialAreaGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
   
+
     if (GameManager::GetInstance()->UsingController())
     {
         if (mSecondaryTutorialCon && mGrenadeTutorialCon && mUltimateTutorialCon && mShootTutorialCon)
         {
+            GameManager::GetInstance()->SetPaused(true, false);
             mShootTutorialCon->SetEnabled(true);
         }
     }
@@ -55,6 +57,7 @@ void SecondTutorial::Start()
     {
         if (mSecondaryTutorial && mGrenadeTutorial && mUltimateTutorial && mShootTutorial)
         {
+            GameManager::GetInstance()->SetPaused(true, false);
             mShootTutorial->SetEnabled(true);
         }
     }
@@ -66,7 +69,8 @@ void SecondTutorial::Update()
     if (!mPart1Completed)
     {
         if (mTutorialArea) mCurrentStep = mTutorialArea->GetCurrentWave();
-        Tutorial(); 
+        Tutorial();
+
         if (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
         {
             mPart1Completed = true;
@@ -107,22 +111,38 @@ void SecondTutorial::Tutorial()
         }
         switch (mCurrentStep)
         {
+        case 4:
+            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+            {
+                GameManager::GetInstance()->SetPaused(false, false);
+            }
+            break;
         case 3:
+            mKills--;
+            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+            {
+                GameManager::GetInstance()->SetPaused(false, false);
+            }
             mShootTutorialCon->SetEnabled(false);
             mShootTutorial->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
             break;
         case 2:
+            mKills--;
             mSecondaryTutorialCon->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(false);
             mGrenadeTutorialCon->SetEnabled(false);
             mGrenadeTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockGrenade(true);
-            if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
+            if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN) 
+            {
                 mGrenadeUsed = true;
+                GameManager::GetInstance()->SetPaused(false, false);
+            }
             break;
         case 1:
+            mKills--;
             if (mGrenadeUsed)
             {
                 mGrenadeTutorialCon->SetEnabled(false);
@@ -178,14 +198,22 @@ void SecondTutorial::Tutorial()
     }
 }
 
+void SecondTutorial::CheckKill()
+{
+    if (mKills > mCurrentStep)
+    {
+
+    }
+}
+
 void SecondTutorial::UltTutorial()
 {
     int ultResource = GameManager::GetInstance()->GetPlayerController()->GetUltimateResource();
     if (GameManager::GetInstance()->UsingController())
     {
-        
         if (!mUltTutorialStarted && ultResource >= 100)
         {
+            GameManager::GetInstance()->SetPaused(true, false);
             if (mSkipTutorialCon)
             {
                 mSkipTutorial->SetEnabled(false);
@@ -197,8 +225,12 @@ void SecondTutorial::UltTutorial()
         }
         else
         {
-            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN || 
-                App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN) mPart2Completed = true;
+            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN ||
+                App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN) 
+            {
+                GameManager::GetInstance()->SetPaused(false, false);
+                mPart2Completed = true;
+            }
         }
     }
     else
