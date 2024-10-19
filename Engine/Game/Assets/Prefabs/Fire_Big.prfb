@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 100885638,
+                "UID": 624587786,
                 "ParentUID": 1407473659,
-                "Name": "Fire",
+                "Name": "Fire_Big",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    14.126816749572754,
-                    1.437288761138916,
-                    21.249473571777345
+                    3.2063348293304445,
+                    -3.897454261779785,
+                    -32.3653678894043
                 ],
                 "Rotation": [
                     0.0,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 163753401,
-                "ParentUID": 100885638,
+                "UID": 669005984,
+                "ParentUID": 624587786,
                 "Name": "Fire_Smoke",
                 "Enabled": true,
                 "Active": true,
@@ -44,7 +44,7 @@
                     -0.7071068286895752,
                     0.0,
                     0.0,
-                    0.7071068286895752
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
@@ -96,7 +96,7 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 6.0,
+                                "MinValue": 12.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -154,7 +154,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.5,
+                                "MinValue": 1.5,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -211,8 +211,8 @@
                 ]
             },
             {
-                "UID": 175310487,
-                "ParentUID": 100885638,
+                "UID": 680911175,
+                "ParentUID": 624587786,
                 "Name": "Fire_Sparks",
                 "Enabled": true,
                 "Active": true,
@@ -264,9 +264,9 @@
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.7853981852531433,
                         "ShapeSize": [
-                            2.0,
-                            2.0,
-                            2.0
+                            6.0,
+                            6.0,
+                            6.0
                         ],
                         "ShapeRandAngle": 72.0,
                         "ShapeIsRandAngle": true,
@@ -277,8 +277,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.20000000298023225,
-                                "MaxValue": 0.4000000059604645
+                                "MinValue": 0.4000000059604645,
+                                "MaxValue": 0.800000011920929
                             },
                             "IsCurve": false,
                             "CurvePoints": []
@@ -286,7 +286,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.800000011920929,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -404,8 +404,8 @@
                 ]
             },
             {
-                "UID": 186728331,
-                "ParentUID": 100885638,
+                "UID": 690379631,
+                "ParentUID": 624587786,
                 "Name": "Fire_Flames",
                 "Enabled": true,
                 "Active": true,
@@ -436,9 +436,9 @@
                         "Image": 1791739080,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 28.5,
-                        "MaxParticles": 100,
-                        "Burst": 3,
+                        "EmissionRate": 30.0,
+                        "MaxParticles": 400,
+                        "Burst": 12,
                         "Looping": true,
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
@@ -452,7 +452,7 @@
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.4000000059604645,
+                        "ShapeRadius": 1.0,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.07000000029802323,
@@ -470,7 +470,7 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 8.0,
+                                "MinValue": 16.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -540,7 +540,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.800000011920929,
+                                "MinValue": 3.200000047683716,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
