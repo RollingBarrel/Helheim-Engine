@@ -50,6 +50,7 @@ private:
 	int mInitHealthLvl = 0;
 	int mInitSpeedLvl = 0;
 	int mInitDamageLvl = 0;
+	int mInitUltimateResource = 0;
 
 	int mHealthLvl = 0;
 	int mSpeedLvl = 0;

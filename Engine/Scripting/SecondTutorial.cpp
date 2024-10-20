@@ -89,7 +89,8 @@ void SecondTutorial::Update()
     else
     {
         DisableFirstPart();
-        if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN)
+        if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN||
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
         {
             GameManager::GetInstance()->SetPaused(false, false, false);
             mCollectibleTutCon->SetEnabled(false);
@@ -256,7 +257,7 @@ void SecondTutorial::UltTutorial()
     int ultResource = GameManager::GetInstance()->GetPlayerController()->GetUltimateResource();
     if (GameManager::GetInstance()->UsingController())
     {
-        if (!mUltTutorialStarted && ultResource >= 100)
+        if (ultResource >= 100 && !mUltTutorialStarted)
         {
             GameManager::GetInstance()->SetPaused(true, false, false);
             if (mSkipTutorialCon)
@@ -270,7 +271,7 @@ void SecondTutorial::UltTutorial()
         }
         else
         {
-            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN) 
+            if (mUltTutorialStarted && App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
             {
                 GameManager::GetInstance()->SetPaused(false, false, false);
                 mPart2Completed = true;
@@ -280,7 +281,7 @@ void SecondTutorial::UltTutorial()
     else
     {
         
-        if (!mUltTutorialStarted && ultResource >= 100)
+        if (ultResource >= 100 && !mUltTutorialStarted)
         {
             GameManager::GetInstance()->SetPaused(true, false, false);
             if (mSkipTutorial)
@@ -295,7 +296,7 @@ void SecondTutorial::UltTutorial()
         }
         else
         {
-            if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN)
+            if (mUltTutorialStarted && App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN)
             {
                 GameManager::GetInstance()->SetPaused(false, false, false);
                 mPart2Completed = true;
