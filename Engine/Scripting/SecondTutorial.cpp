@@ -75,7 +75,8 @@ void SecondTutorial::Update()
         CheckKill();
         Tutorial();
 
-        if (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
+        if (mTutorialTimer.DelayWithoutReset(1.0f) && 
+            (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN))
         {
             mPart1Completed = true;
             DisableFirstPart();
