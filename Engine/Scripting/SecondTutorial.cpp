@@ -41,15 +41,18 @@ SecondTutorial::~SecondTutorial()
 
 void SecondTutorial::Start()
 {
-    if (mTutorialAreaGO)
-        mTutorialArea = (BattleArea*)((ScriptComponent*)mTutorialAreaGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    if (mTutorialAreaGO) {
+        mTutorialArea = (BattleArea*)((ScriptComponent*)mTutorialAreaGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance(); 
+        GameManager::GetInstance()->SetActiveBattleArea(mTutorialArea);
+    }
+        
   
 
     if (GameManager::GetInstance()->UsingController())
     {
         if (mSecondaryTutorialCon && mGrenadeTutorialCon && mUltimateTutorialCon && mShootTutorialCon)
         {
-            GameManager::GetInstance()->SetPaused(true, false);
+            GameManager::GetInstance()->SetPaused(true, false, false);
             mShootTutorialCon->SetEnabled(true);
         }
     }
@@ -57,7 +60,7 @@ void SecondTutorial::Start()
     {
         if (mSecondaryTutorial && mGrenadeTutorial && mUltimateTutorial && mShootTutorial)
         {
-            GameManager::GetInstance()->SetPaused(true, false);
+            GameManager::GetInstance()->SetPaused(true, false, false);
             mShootTutorial->SetEnabled(true);
         }
     }
@@ -69,6 +72,7 @@ void SecondTutorial::Update()
     if (!mPart1Completed)
     {
         if (mTutorialArea) mCurrentStep = mTutorialArea->GetCurrentWave();
+        CheckKill();
         Tutorial();
 
         if (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
@@ -83,8 +87,9 @@ void SecondTutorial::Update()
     else
     {
         DisableFirstPart();
-        if (mTutorialTimer.DelayWithoutReset(5.0f))
+        if (mTutorialTimer.DelayWithoutReset(2.0f))
         {
+            GameManager::GetInstance()->SetPaused(false, false, false);
             mCollectibleTutCon->SetEnabled(false);
             mCollectibleTut->SetEnabled(false);
             GameManager::GetInstance()->UnlockUltimate(true);
@@ -114,14 +119,13 @@ void SecondTutorial::Tutorial()
         case 4:
             if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
             {
-                GameManager::GetInstance()->SetPaused(false, false);
+                GameManager::GetInstance()->SetPaused(false, false, false);
             }
             break;
         case 3:
-            mKills--;
             if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
             {
-                GameManager::GetInstance()->SetPaused(false, false);
+                GameManager::GetInstance()->SetPaused(false, false, false);
             }
             mShootTutorialCon->SetEnabled(false);
             mShootTutorial->SetEnabled(false);
@@ -129,7 +133,6 @@ void SecondTutorial::Tutorial()
             GameManager::GetInstance()->UnlockSecondary();
             break;
         case 2:
-            mKills--;
             mSecondaryTutorialCon->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(false);
             mGrenadeTutorialCon->SetEnabled(false);
@@ -138,11 +141,10 @@ void SecondTutorial::Tutorial()
             if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN) 
             {
                 mGrenadeUsed = true;
-                GameManager::GetInstance()->SetPaused(false, false);
+                GameManager::GetInstance()->SetPaused(false, false, false);
             }
             break;
         case 1:
-            mKills--;
             if (mGrenadeUsed)
             {
                 mGrenadeTutorialCon->SetEnabled(false);
@@ -202,7 +204,8 @@ void SecondTutorial::CheckKill()
 {
     if (mKills > mCurrentStep)
     {
-
+        mKills--;
+        GameManager::GetInstance()->SetPaused(true, false, false);
     }
 }
 
@@ -213,7 +216,7 @@ void SecondTutorial::UltTutorial()
     {
         if (!mUltTutorialStarted && ultResource >= 100)
         {
-            GameManager::GetInstance()->SetPaused(true, false);
+            GameManager::GetInstance()->SetPaused(true, false, false);
             if (mSkipTutorialCon)
             {
                 mSkipTutorial->SetEnabled(false);
@@ -228,7 +231,7 @@ void SecondTutorial::UltTutorial()
             if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN ||
                 App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN) 
             {
-                GameManager::GetInstance()->SetPaused(false, false);
+                GameManager::GetInstance()->SetPaused(false, false, false);
                 mPart2Completed = true;
             }
         }

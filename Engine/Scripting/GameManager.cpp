@@ -146,7 +146,7 @@ void GameManager::Update()
     {
         if (!mPlayingCinematic)
         {
-            if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true);
+            if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true, true);
         }
     }
 
@@ -188,11 +188,14 @@ bool GameManager::UsingController() const
     return App->GetInput()->isGamepadAvailable();
 }
 
-void GameManager::SetPaused(bool value, bool screen)
+void GameManager::SetPaused(bool value, bool screen, bool hud)
 {
     mPaused = value;
     mPauseScreen = screen;
-    mHudController->SetHud(!value);
+    if (hud)
+    {
+        mHudController->SetHud(!value);
+    }
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
 
