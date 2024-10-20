@@ -100,5 +100,9 @@ private:
 	const char* mTemplateNames[4] = { "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplateSingle.prfb"};
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
+	GameObject* mDeathParticlesHead = nullptr;
+	GameObject* mDeathParticlesBody = nullptr;
+	GameObject* mDeathParticlesLegs = nullptr;
+
 };
 
