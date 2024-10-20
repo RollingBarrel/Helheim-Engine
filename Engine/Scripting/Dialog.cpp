@@ -32,6 +32,8 @@ CREATE(Dialog)
     MEMBER(MemberType::GAMEOBJECT, mIntroGO);
     MEMBER(MemberType::GAMEOBJECT, mOutroGO);
 
+    MEMBER(MemberType::GAMEOBJECT, mCompletedGO);
+
     MEMBER(MemberType::GAMEOBJECT, mTopGO);
     MEMBER(MemberType::GAMEOBJECT, mBotGO);
     END_CREATE;
@@ -61,10 +63,19 @@ void Dialog::Start()
     if (mTextGO) mText = static_cast<TextComponent*>(mTextGO->GetComponent(ComponentType::TEXT));
     if (mIntroGO) mIntroImage = static_cast<ImageComponent*>(mIntroGO->GetComponent(ComponentType::IMAGE));
     if (mOutroGO) mOutroImage = static_cast<ImageComponent*>(mOutroGO->GetComponent(ComponentType::IMAGE));
+    if (mCompletedGO) mCompletedImage = static_cast<ImageComponent*>(mCompletedGO->GetComponent(ComponentType::IMAGE));
 
     if (mTopGO) mTopTransform = static_cast<Transform2DComponent*>(mTopGO->GetComponent(ComponentType::TRANSFORM2D));
     if (mBotGO) mBotTransform = static_cast<Transform2DComponent*>(mBotGO->GetComponent(ComponentType::TRANSFORM2D));
 
+
+    // Disable images
+    mTopGO->SetEnabled(false);
+    mBotGO->SetEnabled(false);
+    mIntroGO->SetEnabled(false);
+    static_cast<ImageComponent*>(mGameObject->GetComponent(ComponentType::IMAGE))->SetEnable(false);
+
+    // Initial preparations
     mPlayerStats = App->GetScene()->GetPlayerStats();
     mCurrentDialogSet = mPlayerStats->GetDialogIndex();
     mDialogBGM = GameManager::GetInstance()->GetAudio()->Play(SFX::DIALOG, mDialogBGM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
@@ -73,6 +84,9 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
+    if (mStartTimeout && !mStartTimer.DelayWithoutReset(3.0f)) return;
+    else if (mStartTimeout) EnableDialog();
+
     if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
  
     if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(1.5f)) StartAnimationToMain();
@@ -239,11 +253,32 @@ void Dialog::StartAnimationToEnd()
 
 void Dialog::StartDialog()
 {
+    if (!mFirstTime) mCompletedGO->SetEnabled(true);
+
+    mStartTimeout = true;
+    mStartTimer.Reset();
+
+    mTopGO->SetEnabled(false);
+    mBotGO->SetEnabled(false);
+    mIntroGO->SetEnabled(false);
+    static_cast<ImageComponent*>(mGameObject->GetComponent(ComponentType::IMAGE))->SetEnable(false);
+}
+
+void Dialog::EnableDialog()
+{
     if (!GameManager::GetInstance()->IsDialogueActive()) 
     {
         FinishDialogue();
         return;
     }
+    
+    mCompletedGO->SetEnabled(false);
+    mStartTimeout = false;
+
+    mTopGO->SetEnabled(true);
+    mBotGO->SetEnabled(true);
+    mIntroGO->SetEnabled(true);
+    static_cast<ImageComponent*>(mGameObject->GetComponent(ComponentType::IMAGE))->SetEnable(true);
 
     GameManager::GetInstance()->SetPaused(true, false);
     mCurrentDialog = 0;
@@ -337,7 +372,7 @@ void Dialog::FinishDialogue()
     NextDialogSet();
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);
-    if (firstTime) firstTime = false;
+    if (mFirstTime) mFirstTime = false;
     else GameManager::GetInstance()->GetHud()->SetSanity();
     GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, true);
 }

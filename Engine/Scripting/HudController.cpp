@@ -895,6 +895,8 @@ void HudController::OnVideoBackClick()
     mVideoGO->SetEnabled(false);
     mVideoComponent->Stop();
     mIsVideoPlaying = false;
+
+    GameManager::GetInstance()->SetPaused(false, false);
     SetDialog();
     ReleaseVideoAssociatedAudio();
 

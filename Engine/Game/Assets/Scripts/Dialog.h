@@ -27,6 +27,7 @@ public:
 
 private:
     void UpdateDialog();
+    void EnableDialog();
     void OnNextClick();
     void OnSkipClick();
     void Controls();
@@ -60,6 +61,9 @@ private:
     ImageComponent* mIntroImage = nullptr;
     GameObject* mOutroGO = nullptr;
     ImageComponent* mOutroImage = nullptr;
+
+    GameObject* mCompletedGO = nullptr;
+    ImageComponent* mCompletedImage = nullptr;
 
     GameObject* mTopGO = nullptr;
     Transform2DComponent* mTopTransform = nullptr;
@@ -142,10 +146,13 @@ private:
 
     TimerScript mClickTimout;
     bool mTimeout = false;
+
+    TimerScript mStartTimer;
+    bool mStartTimeout = false;
     
     PlayerStats* mPlayerStats = nullptr;
 
-    bool firstTime = true;
+    bool mFirstTime = true;
 
     // Animations 
     TimerScript mAnimationTimer;
