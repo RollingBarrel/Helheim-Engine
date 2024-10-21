@@ -3,6 +3,7 @@
 #include <vector>
 #include "Macros.h"
 #include "TimerScript.h"
+#include "PlayerController.h"
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -23,11 +24,10 @@ public:
     void SetAwake(bool awake) { mIsAwake = awake; }
 
 private:
-    bool IsInTrap(const GameObject* target);
+
     void ActivateTrap(bool active, bool vfxOnly);
 
     BoxColliderComponent* mCollider = nullptr;
-    std::vector<GameObject*> mInTrap;
 
     float mArea = 1.0f;
     GameObject* mSfx = nullptr;
@@ -39,14 +39,18 @@ private:
     bool mFirstActivation = true;
     float mFirstActivationInterval = 1.0f;
 
-    float mActivationInterval = 4.0f;
-    float mActivationDuration = 2.0f;
-    float mVFXWarningDuration = 0.5f;
+    float mActivationInterval = 2.0f;
+    float mActivationDuration = 3.0f;
+
     TimerScript mActivationIntervalTimer;
     TimerScript mActivationDurationTimer;
-    TimerScript mVFXWarningTimer;
 
     // Damage
     float mDamageAmount = 5.0f;
     float mSpeedReduction = 0.5f;
+
+    float damageTimer = 0.0f;
+    float damageDelay = 0.5f;
+
+    PlayerController* mPlayer = nullptr;
 };

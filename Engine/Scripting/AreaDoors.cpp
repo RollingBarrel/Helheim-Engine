@@ -74,7 +74,6 @@ void AreaDoors::CloseDoors(bool close)
 		if (mBorderRenderExit) mBorderRenderExit->SetEmissiveColor(mClosedColor);
 		if (mTopRenderExit) mTopRenderExit->SetEmissiveColor(mClosedColor);
 		
-
 	}
 	else
 	{
@@ -128,6 +127,16 @@ void AreaDoors::CloseDoors(bool close)
 	if (mElevator)
 	{
 		mElevator->GetComponent(ComponentType::SCRIPT)->SetEnable(!close);
+
+		if (!close)
+		{
+			static_cast<AnimationComponent*>((mElevator->GetChildren()[0])->GetComponentInChildren(ComponentType::ANIMATION))->SetIsPlaying(true);
+		}
+		else
+		{
+			static_cast<AnimationComponent*>((mElevator->GetChildren()[0])->GetComponentInChildren(ComponentType::ANIMATION))->SetIsPlaying(false);
+			static_cast<AnimationComponent*>((mElevator->GetChildren()[0])->GetComponentInChildren(ComponentType::ANIMATION))->ResetAnimationComponent();
+		}
 	}
 }
 void AreaDoors::OnCollisionEnter(CollisionData* collisionData)

@@ -4,7 +4,6 @@
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
-#include "PlayerController.h"
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
@@ -23,7 +22,6 @@ ElectricTrapController::ElectricTrapController(GameObject* owner) : Script(owner
 
 ElectricTrapController::~ElectricTrapController()
 {
-    mInTrap.clear();
 }
 
 void ElectricTrapController::Start()
@@ -40,66 +38,60 @@ void ElectricTrapController::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ElectricTrapController::OnCollisionEnter, this, std::placeholders::_1)));
     }
+
+    mPlayer = GameManager::GetInstance()->GetPlayerController();
+
+    damageTimer = damageDelay;
+
     ActivateTrap(false, false);
 }
 
 void ElectricTrapController::Update()
 {
-    float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
-    if (distance <= 30)
+    if (!GameManager::GetInstance()->IsPaused())
     {
-        if (mIsActive)
+
+        float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
+        if (distance <= 30)
         {
-            if (mActivationDurationTimer.Delay(mActivationDuration) && mIsAwake)
+            if (mIsActive)
             {
-                mIsActive = false;
-                ActivateTrap(false, false);
+                if (mActivationDurationTimer.Delay(mActivationDuration) && mIsAwake)
+                {
+                    mIsActive = false;
+                    ActivateTrap(false, false);
+                }
+            }
+            else
+            {
+                if (mFirstActivation)
+                {
+                
+                    if (mActivationIntervalTimer.Delay(mFirstActivationInterval) && mIsAwake)
+                    {
+                        mIsActive = true;
+                        ActivateTrap(true, false);  // Trap active, VFX off
+                        mFirstActivation = false;
+                    }
+                }
+               
+                if (mActivationIntervalTimer.Delay(mActivationInterval) && mIsAwake)
+                {
+                    mIsActive = true;
+                    ActivateTrap(true, false);  // Trap active, VFX off
+                }
             }
         }
         else
         {
-            if (mFirstActivation)
-            {
-                if (mVFXWarningTimer.Delay(mFirstActivationInterval - mVFXWarningDuration) && !mVFXWarningTimer.Delay(mFirstActivationInterval) && mIsAwake)
-                {
-                    ActivateTrap(false, true);  // VFX only
-                }
-
-                if (mActivationIntervalTimer.Delay(mFirstActivationInterval) && mIsAwake)
-                {
-                    mIsActive = true;
-                    ActivateTrap(true, false);  // Trap active, VFX off
-                    mFirstActivation = false;
-                }
-            }
-            else if (mVFXWarningTimer.Delay(mActivationInterval - mVFXWarningDuration) && !mVFXWarningTimer.Delay(mActivationInterval) && mIsAwake)
-            {
-                ActivateTrap(false, true);  // VFX only
-            }
-            else if (mActivationIntervalTimer.Delay(mActivationInterval) && mIsAwake)
-            {
-                mIsActive = true;
-                ActivateTrap(true, false);  // Trap active, VFX off
-            }
+            mIsAwake = false;
+            ActivateTrap(false, false);
         }
     }
     else
     {
-        mIsAwake = false;
-        ActivateTrap(false, false);
+        mIsActive = false;
     }
-}
-
-bool ElectricTrapController::IsInTrap(const GameObject* target)
-{
-    for (auto captured : mInTrap)
-    {
-        if (captured->GetID() == target->GetID())
-        {
-            return true;
-        }
-    }
-    return false;
 }
 
 void ElectricTrapController::ActivateTrap(bool active, bool vfxOnly)
@@ -112,16 +104,8 @@ void ElectricTrapController::ActivateTrap(bool active, bool vfxOnly)
         }
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
     }
-    else if (vfxOnly)
-    {
-        if (mSfx)
-        {
-            mSfx->SetEnabled(true);  // Only play VFX, no sound or damage
-        }
-    }
     else
     {
-        mInTrap.clear();
         if (mSfx)
         {
             mSfx->SetEnabled(false);
@@ -133,18 +117,27 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
 {
     GameObject* collision = collisionData->collidedWith;
 
-    if (!IsInTrap(collision) && mIsActive)
+    if (mIsActive)
     {
-        mInTrap.push_back(collision);
-
         if (collision->GetTag().compare("Player") == 0)
         {
-            PlayerController* player = GameManager::GetInstance()->GetPlayerController();
-            player->Paralyzed(mSpeedReduction, true);
-            player->TakeDamage(mDamageAmount);
+            if ((damageTimer > 0))
+            {
+                damageTimer -= App->GetDt();
+            }
+            else
+            {
+                damageTimer = damageDelay;
+
+                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
+                mPlayer = GameManager::GetInstance()->GetPlayerController();
+                mPlayer->Paralyzed(mSpeedReduction, true);
+                mPlayer->TakeDamage(mDamageAmount);
+
+            }
         }
 
-        if (collision->GetTag().compare("Enemy") == 0)
+        if (collision->GetTag().compare("Enemy") == 0 && mIsActive)
         {
             const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
             Enemy* enemy = static_cast<Enemy*>(script->GetScriptInstance());
