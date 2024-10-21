@@ -776,6 +776,7 @@ void PlayerController::SetMaxShield(float percentage)
 
 void PlayerController::EnableGrenadeAim(bool value)
 {
+    EnableLaser(!value);
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
