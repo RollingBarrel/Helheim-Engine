@@ -29,8 +29,15 @@ enum class SFX
 	MAINMENU_CANCEL,
 
 	// PLAYER
-	PLAYER_FOOTSTEP_FLOOR,
-	PLAYER_FOOTSTEP_METAL,
+	PLAYER_FOOTSTEP_FLOOR1,
+	PLAYER_FOOTSTEP_FLOOR2,
+	PLAYER_FOOTSTEP_FLOOR3,
+	PLAYER_FOOTSTEP_FLOOR4,
+
+	PLAYER_FOOTSTEP_METAL1,
+	PLAYER_FOOTSTEP_METAL2,
+	PLAYER_FOOTSTEP_METAL3,
+	PLAYER_FOOTSTEP_METAL4,
 
 	PLAYER_PISTOL,
 	PLAYER_MACHINEGUN,
@@ -203,8 +210,12 @@ private:
 		{SFX::MAINMENU_START, "Assets/FMOD/Audios/sfx/gamestart.wav"},
 
 		// PLAYER
-		{SFX::PLAYER_FOOTSTEP_FLOOR, "Assets/FMOD/Audios/sfx/footstep.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_METAL, "Assets/FMOD/Audios/sfx/footstepmetal.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR1, "Assets/FMOD/Audios/sfx/stepf1.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR2, "Assets/FMOD/Audios/sfx/stepf2.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR3, "Assets/FMOD/Audios/sfx/stepf3.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR4, "Assets/FMOD/Audios/sfx/stepf4.wav"}, // [X]
+
+		{SFX::PLAYER_FOOTSTEP_METAL1, "Assets/FMOD/Audios/sfx/footstepmetal.wav"}, // [X]
 
 		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
 		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
