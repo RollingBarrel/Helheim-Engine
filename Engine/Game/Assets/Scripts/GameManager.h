@@ -40,7 +40,7 @@ public:
     GameObject* GetPlayerCameraObject() { return mPlayerCameraGO; }
 
     bool IsPaused() const { return mPaused; }
-    void SetPaused(bool value, bool screen);
+    void SetPaused(bool value, bool screen , bool hud);
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea);
 

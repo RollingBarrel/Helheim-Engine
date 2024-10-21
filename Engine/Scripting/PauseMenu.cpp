@@ -558,7 +558,7 @@ void PauseMenu::Controls()
     {
         if (mCurrentMenu == MENU_TYPE::MAIN && GameManager::GetInstance()->IsPaused())
         {
-            GameManager::GetInstance()->SetPaused(false, true);
+            GameManager::GetInstance()->SetPaused(false, true, true);
             return;
         }
 
@@ -749,7 +749,7 @@ void PauseMenu::OnBackButtonClick()
 
 void PauseMenu::OnPlayButtonClick()
 {
-    GameManager::GetInstance()->SetPaused(false, true);
+    GameManager::GetInstance()->SetPaused(false, true, true);
 }
 
 void PauseMenu::OnControllerButtonClick()

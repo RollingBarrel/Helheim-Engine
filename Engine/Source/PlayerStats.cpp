@@ -10,6 +10,7 @@ void PlayerStats::SetInitLevelStats()
 	mInitHealthLvl = mHealthLvl;
 	mInitSpeedLvl = mSpeedLvl;
 	mInitDamageLvl = mDamageLvl;
+	mInitUltimateResource = mUltimateResource;
 }
 
 void PlayerStats::TryAgainStats() 
@@ -22,6 +23,7 @@ void PlayerStats::TryAgainStats()
 	mHealthLvl = mInitHealthLvl;
 	mSpeedLvl = mInitSpeedLvl;
 	mDamageLvl = mInitDamageLvl;
+	mUltimateResource = mInitUltimateResource;
 }
 
 void PlayerStats::ResetStats() 
@@ -34,6 +36,7 @@ void PlayerStats::ResetStats()
 	mHealthLvl = 0;
 	mSpeedLvl = 0;
 	mDamageLvl = 0;
+	mUltimateResource = 0;
 
 	mGameFinished = false;
 }

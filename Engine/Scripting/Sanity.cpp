@@ -180,7 +180,7 @@ void Sanity::CreateSelection(int arena)
 {
     if (arena < 0 || arena >= mBuffSelection.size()) return;
 
-    GameManager::GetInstance()->SetPaused(true, false);
+    GameManager::GetInstance()->SetPaused(true, false, true);
     
     mTimeout = true;
     CardHover();
@@ -291,7 +291,7 @@ void Sanity::OnCard1Click()
     SetDamageBoxes();
     App->GetScene()->GetPlayerStats()->SetDamageLvl(mDmgLvl);
     mGameObject->SetEnabled(false);
-    GameManager::GetInstance()->SetPaused(false, false);
+    GameManager::GetInstance()->SetPaused(false, false, true);
 }
 
 void Sanity::OnCard1HoverOn()
@@ -329,7 +329,7 @@ void Sanity::OnCard2Click()
     SetSpeedBoxes();
     App->GetScene()->GetPlayerStats()->SetSpeedLvl(mSpeedLvl);
     mGameObject->SetEnabled(false);
-    GameManager::GetInstance()->SetPaused(false, false);
+    GameManager::GetInstance()->SetPaused(false, false, true);
 }
 
 void Sanity::OnCard2HoverOn()
@@ -367,7 +367,7 @@ void Sanity::OnCard3Click()
     SetHealthBoxes();
     App->GetScene()->GetPlayerStats()->SetHealthLvl(mHealthLvl);
     mGameObject->SetEnabled(false);
-    GameManager::GetInstance()->SetPaused(false, false);
+    GameManager::GetInstance()->SetPaused(false, false, true);
 }
 
 void Sanity::OnCard3HoverOn()

@@ -245,7 +245,7 @@ void Dialog::StartDialog()
         return;
     }
 
-    GameManager::GetInstance()->SetPaused(true, false);
+    GameManager::GetInstance()->SetPaused(true, false, true);
     mCurrentDialog = 0;
     mTimeout = true;
     mClickTimout.Reset();
@@ -336,7 +336,7 @@ void Dialog::FinishDialogue()
 {
     NextDialogSet();
     mGameObject->SetEnabled(false);
-    GameManager::GetInstance()->SetPaused(false, false);
+    GameManager::GetInstance()->SetPaused(false, false, true);
     if (firstTime) firstTime = false;
     else GameManager::GetInstance()->GetHud()->SetSanity();
     GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, true);

@@ -19,6 +19,7 @@ public:
 	void Update() override;
 
 	void Tutorial();
+	void CheckKill();
 	void UltTutorial();
 	void DisableFirstPart();
 
@@ -44,8 +45,9 @@ private:
 	BattleArea* mTutorialArea = nullptr;
 
 	int mCurrentStep = 0;
+	int mKills = 4; 
 
-	bool mPart1Completed = false;\
+	bool mPart1Completed = false;
 	bool mPart2Completed = false;
 	bool mActiveCon = false;
 	bool mController = false;
