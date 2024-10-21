@@ -475,7 +475,7 @@ void PlayerController::HandleRotation()
 
         Line aimLine = Line(position, (mAimPosition - position).Normalized());
         LineSegment lineSegment = LineSegment(aimLine, 10.0f);
-        float minimunDistance = 2.0f;
+        float minimunDistance = 1.0f;
 
         GameObject* closestEnemy = nullptr;
         float closestDistance = FLT_MAX;
@@ -488,8 +488,11 @@ void PlayerController::HandleRotation()
 
                 if (distance < minimunDistance && distance < closestDistance)
                 {
-                    closestDistance = distance;
-                    closestEnemy = enemy;
+                    if ((mAimPosition - mGameObject->GetWorldPosition()).AngleBetween(enemy->GetWorldPosition() - mGameObject->GetWorldPosition()) < DegToRad(35.0f))
+                    {
+                        closestDistance = distance;
+                        closestEnemy = enemy;
+                    }
                 }
             } 
         }
