@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 224743922,
+                "UID": 1848765212,
                 "ParentUID": 1,
                 "Name": "Decals_DEFINITIVE_Level1",
                 "Enabled": true,
@@ -30,15 +30,15 @@
                 "Components": []
             },
             {
-                "UID": 265054481,
-                "ParentUID": 224743922,
+                "UID": 1979791934,
+                "ParentUID": 1848765212,
                 "Name": "Decal_CargoBay",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -122.47140502929688,
-                    -0.399998277425766,
-                    -0.042722951620817187
+                    -0.47572869062423708,
+                    -0.04272294044494629
                 ],
                 "Rotation": [
                     -0.5,
@@ -59,7 +59,7 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "EmisiveID": 513895048,
+                        "EmisiveID": 1320335799,
                         "EmisiveName": "Decal-Cargobay.png",
                         "EmisiveColor": [
                             1.0,
@@ -82,8 +82,8 @@
                 ]
             },
             {
-                "UID": 275845736,
-                "ParentUID": 224743922,
+                "UID": 2068837193,
+                "ParentUID": 1848765212,
                 "Name": "Decal_Level01",
                 "Enabled": true,
                 "Active": true,
@@ -134,8 +134,8 @@
                 ]
             },
             {
-                "UID": 305573903,
-                "ParentUID": 224743922,
+                "UID": 2099818538,
+                "ParentUID": 1848765212,
                 "Name": "Decal_Stripes1",
                 "Enabled": true,
                 "Active": true,
@@ -186,140 +186,8 @@
                 ]
             },
             {
-                "UID": 555904744,
-                "ParentUID": 224743922,
-                "Name": "Section3",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -89.64684295654297,
-                    -3.7434139699144e-7,
-                    7.734513282775879
-                ],
-                "Rotation": [
-                    6.181724643283815e-8,
-                    -0.7071068286895752,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 315460085,
-                "ParentUID": 555904744,
-                "Name": "Decal_Section3_Number",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    -0.4000000059604645,
-                    5.405644416809082
-                ],
-                "Rotation": [
-                    -0.5,
-                    -0.5,
-                    -0.5,
-                    0.5
-                ],
-                "Scale": [
-                    5.0,
-                    5.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 19,
-                        "IsEnabled": true,
-                        "EmisiveID": 1971390245,
-                        "EmisiveName": "Alpha_3.png",
-                        "EmisiveColor": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "IsSpriteSheet": false,
-                        "SpriteSheetSize": [
-                            1,
-                            1
-                        ],
-                        "DefaultPosition": [
-                            0,
-                            0
-                        ],
-                        "Speed": 30,
-                        "Fade": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 365656826,
-                "ParentUID": 555904744,
-                "Name": "Decal_Section3",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    -0.4000000059604645,
-                    -1.5907268524169922
-                ],
-                "Rotation": [
-                    -0.5,
-                    -0.5,
-                    -0.5,
-                    0.5
-                ],
-                "Scale": [
-                    10.0,
-                    10.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 19,
-                        "IsEnabled": true,
-                        "EmisiveID": 587914962,
-                        "EmisiveName": "Alpha_Section.png",
-                        "EmisiveColor": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "IsSpriteSheet": false,
-                        "SpriteSheetSize": [
-                            1,
-                            1
-                        ],
-                        "DefaultPosition": [
-                            0,
-                            0
-                        ],
-                        "Speed": 30,
-                        "Fade": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 476279889,
-                "ParentUID": 224743922,
+                "UID": 59063884,
+                "ParentUID": 1848765212,
                 "Name": "Logo ITB",
                 "Enabled": true,
                 "Active": true,
@@ -370,8 +238,8 @@
                 ]
             },
             {
-                "UID": 155666331,
-                "ParentUID": 224743922,
+                "UID": 85728727,
+                "ParentUID": 1848765212,
                 "Name": "Logo ITB security",
                 "Enabled": true,
                 "Active": true,
@@ -422,8 +290,8 @@
                 ]
             },
             {
-                "UID": 1415117397,
-                "ParentUID": 224743922,
+                "UID": 113437885,
+                "ParentUID": 1848765212,
                 "Name": "Line hall",
                 "Enabled": true,
                 "Active": true,
@@ -474,8 +342,8 @@
                 ]
             },
             {
-                "UID": 1883578423,
-                "ParentUID": 224743922,
+                "UID": 140102728,
+                "ParentUID": 1848765212,
                 "Name": "Menu",
                 "Enabled": true,
                 "Active": true,
@@ -526,8 +394,8 @@
                 ]
             },
             {
-                "UID": 1246337770,
-                "ParentUID": 224743922,
+                "UID": 166558708,
+                "ParentUID": 1848765212,
                 "Name": "IceCream",
                 "Enabled": true,
                 "Active": true,
@@ -578,8 +446,8 @@
                 ]
             },
             {
-                "UID": 184716442,
-                "ParentUID": 224743922,
+                "UID": 192666583,
+                "ParentUID": 1848765212,
                 "Name": "IceCream Logo",
                 "Enabled": true,
                 "Active": true,
@@ -630,8 +498,8 @@
                 ]
             },
             {
-                "UID": 143284093,
-                "ParentUID": 224743922,
+                "UID": 219609910,
+                "ParentUID": 1848765212,
                 "Name": "Smokers",
                 "Enabled": true,
                 "Active": true,
@@ -682,8 +550,8 @@
                 ]
             },
             {
-                "UID": 533680650,
-                "ParentUID": 224743922,
+                "UID": 245648164,
+                "ParentUID": 1848765212,
                 "Name": "Smokers (1)",
                 "Enabled": true,
                 "Active": true,
@@ -734,8 +602,8 @@
                 ]
             },
             {
-                "UID": 1575011887,
-                "ParentUID": 224743922,
+                "UID": 271825660,
+                "ParentUID": 1848765212,
                 "Name": "Menu (1)",
                 "Enabled": true,
                 "Active": true,
@@ -786,8 +654,8 @@
                 ]
             },
             {
-                "UID": 68169375,
-                "ParentUID": 224743922,
+                "UID": 299882923,
+                "ParentUID": 1848765212,
                 "Name": "foodhere",
                 "Enabled": true,
                 "Active": true,
@@ -815,7 +683,7 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "EmisiveID": 779645559,
+                        "EmisiveID": 458638021,
                         "EmisiveName": "Decal-FoodHere.png",
                         "EmisiveColor": [
                             1.0,
@@ -838,8 +706,8 @@
                 ]
             },
             {
-                "UID": 165277757,
-                "ParentUID": 224743922,
+                "UID": 326895871,
+                "ParentUID": 1848765212,
                 "Name": "curry",
                 "Enabled": true,
                 "Active": true,
@@ -890,8 +758,8 @@
                 ]
             },
             {
-                "UID": 1781697132,
-                "ParentUID": 224743922,
+                "UID": 353421472,
+                "ParentUID": 1848765212,
                 "Name": "burger",
                 "Enabled": true,
                 "Active": true,
@@ -942,8 +810,8 @@
                 ]
             },
             {
-                "UID": 833844003,
-                "ParentUID": 224743922,
+                "UID": 379738210,
+                "ParentUID": 1848765212,
                 "Name": "IceCream (1)",
                 "Enabled": true,
                 "Active": true,
@@ -994,8 +862,8 @@
                 ]
             },
             {
-                "UID": 918083611,
-                "ParentUID": 224743922,
+                "UID": 406124569,
+                "ParentUID": 1848765212,
                 "Name": "Packed Energy",
                 "Enabled": true,
                 "Active": true,
@@ -1023,7 +891,7 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "EmisiveID": 1324021735,
+                        "EmisiveID": 494747389,
                         "EmisiveName": "Decal-PackedEnergy.png",
                         "EmisiveColor": [
                             1.0,
@@ -1046,8 +914,8 @@
                 ]
             },
             {
-                "UID": 340420983,
-                "ParentUID": 224743922,
+                "UID": 432371686,
+                "ParentUID": 1848765212,
                 "Name": "space juice",
                 "Enabled": true,
                 "Active": true,
@@ -1075,8 +943,164 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "EmisiveID": 100582324,
+                        "EmisiveID": 1388461776,
                         "EmisiveName": "Decal-SpaceJuice.png",
+                        "EmisiveColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 32816767,
+                "ParentUID": 1848765212,
+                "Name": "Decal_Section3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -99.17674255371094,
+                    -0.40000346302986147,
+                    -19.97331428527832
+                ],
+                "Rotation": [
+                    -0.5000000596046448,
+                    0.5,
+                    0.4999999701976776,
+                    0.5
+                ],
+                "Scale": [
+                    10.000000953674317,
+                    10.000000953674317,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 1312973876,
+                        "EmisiveName": "Decal-Section3.png",
+                        "EmisiveColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1277840389,
+                "ParentUID": 1848765212,
+                "Name": "Decal_Section2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -84.07308959960938,
+                    -0.3999950885772705,
+                    7.118210792541504
+                ],
+                "Rotation": [
+                    -0.500001072883606,
+                    0.4999990165233612,
+                    0.49999895691871645,
+                    0.5000010132789612
+                ],
+                "Scale": [
+                    10.000000953674317,
+                    10.000000953674317,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 550551947,
+                        "EmisiveName": "Decal-Section2.png",
+                        "EmisiveColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1876831141,
+                "ParentUID": 1848765212,
+                "Name": "Decal_Section1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -66.49898529052735,
+                    -0.39999857544898989,
+                    -13.487483024597168
+                ],
+                "Rotation": [
+                    -0.500001072883606,
+                    0.4999990165233612,
+                    0.49999895691871645,
+                    0.5000010132789612
+                ],
+                "Scale": [
+                    10.000000953674317,
+                    10.000000953674317,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 863158304,
+                        "EmisiveName": "Decal-Section1.png",
                         "EmisiveColor": [
                             1.0,
                             1.0,
