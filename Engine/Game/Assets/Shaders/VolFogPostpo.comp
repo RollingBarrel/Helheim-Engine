@@ -57,9 +57,6 @@ void main()
 		vec2 uv = vec2(gl_GlobalInvocationID.xy) / vec2(imgSize);
 		vec4 screenColor = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
 		
-		//volumetric
-		screenColor.rgb += texture(volumetricTex, uv).rgb;
-		
 		//fog
 		vec3 worldPos = GetWorldPos(texture(depthTex, uv).r, uv);
 		vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
@@ -69,6 +66,9 @@ void main()
 		float fogAmount = min(ApplyFog(distance, cameraPos, rayDir / distance), maxFog);
 		screenColor.rgb = (fogAmount * fogColor) + (screenColor.rgb * (1 - fogAmount));
 
+		//volumetric
+		screenColor.rgb += texture(volumetricTex, uv).rgb;
+		
 		//bloom
 		screenColor.rgb += texture(bluredEmissive, uv).rgb * bloomIntensity;
 

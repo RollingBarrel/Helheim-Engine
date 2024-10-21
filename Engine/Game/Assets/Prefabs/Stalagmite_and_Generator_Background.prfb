@@ -1,0 +1,2060 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1105001402,
+                "ParentUID": 1,
+                "Name": "Stalagmite_and_Generator_Background",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 323899506,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.011",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    10.237885475158692,
+                    -74.46328735351563,
+                    -7.563058853149414
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.08905187249183655,
+                    0.08905187994241715,
+                    0.08905187994241715
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 326196999,
+                "ParentUID": 323899506,
+                "Name": "OB_Stalagmite_B.011",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 317285511,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.010",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    10.237885475158692,
+                    -74.46328735351563,
+                    -16.304697036743165
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.13950712978839875,
+                    0.13950714468955995,
+                    0.13950714468955995
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 319931109,
+                "ParentUID": 317285511,
+                "Name": "OB_Stalagmite_B.010",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 306076530,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.009",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    40.81644058227539,
+                    -74.46328735351563,
+                    -12.433143615722657
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.12399620562791825,
+                    0.12399622052907944,
+                    0.12399622052907944
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 311855073,
+                "ParentUID": 306076530,
+                "Name": "OB_Stalagmite_B.009",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 120236264,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.008",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -101.15153503417969,
+                    -74.46328735351563,
+                    103.45354461669922
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.12399620562791825,
+                    0.12399622052907944,
+                    0.12399622052907944
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 121976789,
+                "ParentUID": 120236264,
+                "Name": "OB_Stalagmite_B.008",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 115571657,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.007",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -91.2732162475586,
+                    -82.13907623291016,
+                    83.50875854492188
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.1711355298757553,
+                    0.1711355447769165,
+                    0.1711355447769165
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 117242561,
+                "ParentUID": 115571657,
+                "Name": "OB_Stalagmite_B.007",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 110698187,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.012",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -70.14802551269531,
+                    -75.3541488647461,
+                    107.59729766845703
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.26347988843917849,
+                    0.26347991824150088,
+                    0.26347991824150088
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 112229849,
+                "ParentUID": 110698187,
+                "Name": "OB_Stalagmite_A.012",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 106242443,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    85.25504302978516,
+                    -82.13907623291016,
+                    51.09537887573242
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.1711355298757553,
+                    0.1711355447769165,
+                    0.1711355447769165
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 107843726,
+                "ParentUID": 106242443,
+                "Name": "OB_Stalagmite_B.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 101577836,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    68.1806869506836,
+                    -82.13907623291016,
+                    42.19747543334961
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.12399620562791825,
+                    0.12399622052907944,
+                    0.12399622052907944
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 103387982,
+                "ParentUID": 101577836,
+                "Name": "OB_Stalagmite_B.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 97191713,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.011",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    92.29124450683594,
+                    -75.3541488647461,
+                    -25.385459899902345
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.15220120549201966,
+                    0.15220122039318086,
+                    0.15220122039318086
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 98723375,
+                "ParentUID": 97191713,
+                "Name": "OB_Stalagmite_A.011",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 92805590,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.010",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -85.55653381347656,
+                    -75.3541488647461,
+                    -87.49633026123047
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    0.12051926553249359,
+                    0.12051926553249359,
+                    0.12051926553249359
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 94406873,
+                "ParentUID": 92805590,
+                "Name": "OB_Stalagmite_A.010",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 87932120,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -165.2810821533203,
+                    -74.46328735351563,
+                    -27.90968894958496
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.12399620562791825,
+                    0.12399622052907944,
+                    0.12399622052907944
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 89811887,
+                "ParentUID": 87932120,
+                "Name": "OB_Stalagmite_B.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 80064947,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.009",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -153.27679443359376,
+                    -75.3541488647461,
+                    -10.715940475463868
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.15220120549201966,
+                    0.15220122039318086,
+                    0.15220122039318086
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 81805472,
+                "ParentUID": 80064947,
+                "Name": "OB_Stalagmite_A.009",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 75330719,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.008",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -186.224853515625,
+                    -75.3541488647461,
+                    2.966012954711914
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    0.24186262488365174,
+                    0.24186262488365174,
+                    0.24186262488365174
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 77140865,
+                "ParentUID": 75330719,
+                "Name": "OB_Stalagmite_A.008",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 70735733,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.007",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -76.65863037109375,
+                    -75.3541488647461,
+                    -109.86133575439453
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.15220120549201966,
+                    0.15220122039318086,
+                    0.15220122039318086
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 72406637,
+                "ParentUID": 70735733,
+                "Name": "OB_Stalagmite_A.007",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 66071126,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -51.45768356323242,
+                    -75.3541488647461,
+                    -87.85863494873047
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    0.24186262488365174,
+                    0.24186262488365174,
+                    0.24186262488365174
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 67672409,
+                "ParentUID": 66071126,
+                "Name": "OB_Stalagmite_A.006",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 60849551,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    175.48080444335938,
+                    -75.3541488647461,
+                    50.02891540527344
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.07623995095491409,
+                    0.07623995840549469,
+                    0.07623995840549469
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 62520455,
+                "ParentUID": 60849551,
+                "Name": "OB_Stalagmite_A.005",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 55767218,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    179.2323455810547,
+                    -75.3541488647461,
+                    35.599884033203128
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    0.10637485235929489,
+                    0.10637485235929489,
+                    0.10637485235929489
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 57507743,
+                "ParentUID": 55767218,
+                "Name": "OB_Stalagmite_A.004",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 50336780,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    202.7228240966797,
+                    -75.3541488647461,
+                    59.7252197265625
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.26347988843917849,
+                    0.26347991824150088,
+                    0.26347991824150088
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 52425410,
+                "ParentUID": 50336780,
+                "Name": "OB_Stalagmite_A.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 45393689,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    175.76937866210938,
+                    -75.3541488647461,
+                    -2.781343460083008
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.09159467369318009,
+                    0.09159468114376068,
+                    0.09159468114376068
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 47273456,
+                "ParentUID": 45393689,
+                "Name": "OB_Stalagmite_A.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 39893630,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    195.50830078125,
+                    -75.3541488647461,
+                    -3.47393798828125
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.18064658343791963,
+                    0.1806465983390808,
+                    0.1806465983390808
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 41982260,
+                "ParentUID": 39893630,
+                "Name": "OB_Stalagmite_A.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 33558119,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -5.407386779785156,
+                    -74.46328735351563,
+                    3.720052719116211
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.12399620562791825,
+                    0.12399622052907944,
+                    0.12399622052907944
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 35855612,
+                "ParentUID": 33558119,
+                "Name": "OB_Stalagmite_B.003",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 27361850,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    75.39520263671875,
+                    -74.46328735351563,
+                    -14.556724548339844
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.12399620562791825,
+                    0.12399622052907944,
+                    0.12399622052907944
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 30216311,
+                "ParentUID": 27361850,
+                "Name": "OB_Stalagmite_B.002",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 12950303,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    141.5218505859375,
+                    -74.46328735351563,
+                    -72.02085876464844
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.12399620562791825,
+                    0.12399622052907944,
+                    0.12399622052907944
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 22140275,
+                "ParentUID": 12950303,
+                "Name": "OB_Stalagmite_B.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1742847192,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_A",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    122.09337615966797,
+                    -75.3541488647461,
+                    73.75025177001953
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.18064658343791963,
+                    0.1806465983390808,
+                    0.1806465983390808
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1766030985,
+                "ParentUID": 1742847192,
+                "Name": "OB_Stalagmite_A",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771949,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 634099558,
+                "ParentUID": 1105001402,
+                "Name": "OB_Stalagmite_B",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    157.97787475585938,
+                    -74.46328735351563,
+                    -95.4582290649414
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    0.2189055234193802,
+                    0.2189055234193802,
+                    0.2189055234193802
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 636048946,
+                "ParentUID": 634099558,
+                "Name": "OB_Stalagmite_B",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 551771944,
+                        "MaterialID": 551771948,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1734306846,
+                "ParentUID": 1105001402,
+                "Name": "OB_Grouped_Stalagmites (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    39.868682861328128,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1748091804,
+                "ParentUID": 1734306846,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1755958977,
+                "ParentUID": 1748091804,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    7533.8916015625,
+                    13541.4716796875,
+                    8268.087890625
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.9843500256538391,
+                    -0.1762249618768692
+                ],
+                "Scale": [
+                    80.0,
+                    80.0,
+                    80.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1874957756,
+                        "MaterialID": 1874957760,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 432602424,
+                "ParentUID": 1105001402,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    94.58369445800781,
+                    -38.42228317260742,
+                    -180.4500274658203
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 444925341,
+                "ParentUID": 432602424,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 453070998,
+                "ParentUID": 444925341,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    7533.8916015625,
+                    13541.4716796875,
+                    8268.087890625
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.9843500256538391,
+                    -0.1762249618768692
+                ],
+                "Scale": [
+                    80.0,
+                    80.0,
+                    80.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1874957756,
+                        "MaterialID": 1874957760,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1707483057,
+                "ParentUID": 1105001402,
+                "Name": "OB_Grouped_Stalagmites (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    94.58369445800781,
+                    -38.42228317260742,
+                    -180.4500274658203
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1726837695,
+                "ParentUID": 1707483057,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1740901137,
+                "ParentUID": 1726837695,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -28882.529296875,
+                    29788.08203125,
+                    10697.6474609375
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.3214394450187683,
+                    0.9469301104545593
+                ],
+                "Scale": [
+                    80.0,
+                    80.0,
+                    80.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1874957756,
+                        "MaterialID": 1874957760,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1933512680,
+                "ParentUID": 1105001402,
+                "Name": "OB_Grouped_Stalagmites (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    94.58369445800781,
+                    -38.42228317260742,
+                    -180.4500274658203
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1947784985,
+                "ParentUID": 1933512680,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1955443295,
+                "ParentUID": 1947784985,
+                "Name": "OB_Grouped_Stalagmites",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -9667.263671875,
+                    33983.90625,
+                    10697.6455078125
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.3214394450187683,
+                    0.9469301104545593
+                ],
+                "Scale": [
+                    80.0,
+                    80.0,
+                    80.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1874957756,
+                        "MaterialID": 1874957760,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}
