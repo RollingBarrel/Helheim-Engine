@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 834981304,
+                "UID": 1231916102,
                 "ParentUID": 1,
                 "Name": "Security_Cameras_lvl1",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1899973741,
-                "ParentUID": 834981304,
+                "UID": 1334537456,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_3",
                 "Enabled": false,
                 "Active": false,
@@ -75,8 +75,8 @@
                 ]
             },
             {
-                "UID": 796248126,
-                "ParentUID": 1899973741,
+                "UID": 1367189705,
+                "ParentUID": 1334537456,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": false,
@@ -103,8 +103,8 @@
                 "Components": []
             },
             {
-                "UID": 1826778168,
-                "ParentUID": 796248126,
+                "UID": 1394481137,
+                "ParentUID": 1367189705,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": false,
@@ -141,8 +141,8 @@
                 ]
             },
             {
-                "UID": 715255001,
-                "ParentUID": 1899973741,
+                "UID": 1428873911,
+                "ParentUID": 1334537456,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": false,
@@ -202,8 +202,8 @@
                 ]
             },
             {
-                "UID": 1750936997,
-                "ParentUID": 715255001,
+                "UID": 1454076713,
+                "ParentUID": 1428873911,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": false,
@@ -230,8 +230,8 @@
                 "Components": []
             },
             {
-                "UID": 629597269,
-                "ParentUID": 1750936997,
+                "UID": 1478304821,
+                "ParentUID": 1454076713,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": false,
@@ -268,8 +268,8 @@
                 ]
             },
             {
-                "UID": 1661102005,
-                "ParentUID": 1750936997,
+                "UID": 1502184824,
+                "ParentUID": 1454076713,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": false,
@@ -323,8 +323,8 @@
                 ]
             },
             {
-                "UID": 548813007,
-                "ParentUID": 834981304,
+                "UID": 1525786343,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_2",
                 "Enabled": true,
                 "Active": true,
@@ -368,8 +368,8 @@
                 ]
             },
             {
-                "UID": 1585260834,
-                "ParentUID": 548813007,
+                "UID": 1550432177,
+                "ParentUID": 1525786343,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -396,8 +396,8 @@
                 "Components": []
             },
             {
-                "UID": 463085654,
-                "ParentUID": 1585260834,
+                "UID": 1573546349,
+                "ParentUID": 1550432177,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -434,8 +434,8 @@
                 ]
             },
             {
-                "UID": 1494242285,
-                "ParentUID": 548813007,
+                "UID": 1597287110,
+                "ParentUID": 1525786343,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -495,8 +495,8 @@
                 ]
             },
             {
-                "UID": 382371013,
-                "ParentUID": 1494242285,
+                "UID": 1627781108,
+                "ParentUID": 1597287110,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -523,8 +523,8 @@
                 "Components": []
             },
             {
-                "UID": 1417287178,
-                "ParentUID": 382371013,
+                "UID": 1658553590,
+                "ParentUID": 1627781108,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -561,8 +561,8 @@
                 ]
             },
             {
-                "UID": 305137422,
-                "ParentUID": 382371013,
+                "UID": 1686680474,
+                "ParentUID": 1627781108,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -603,8 +603,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -616,8 +616,8 @@
                 ]
             },
             {
-                "UID": 1343256153,
-                "ParentUID": 834981304,
+                "UID": 1710003509,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera",
                 "Enabled": false,
                 "Active": false,
@@ -661,8 +661,8 @@
                 ]
             },
             {
-                "UID": 241340684,
-                "ParentUID": 1343256153,
+                "UID": 1733187302,
+                "ParentUID": 1710003509,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": false,
@@ -689,8 +689,8 @@
                 "Components": []
             },
             {
-                "UID": 1283079707,
-                "ParentUID": 241340684,
+                "UID": 1756371095,
+                "ParentUID": 1733187302,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": false,
@@ -727,8 +727,8 @@
                 ]
             },
             {
-                "UID": 167100796,
-                "ParentUID": 1343256153,
+                "UID": 1779554888,
+                "ParentUID": 1710003509,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": false,
@@ -788,8 +788,8 @@
                 ]
             },
             {
-                "UID": 1206194221,
-                "ParentUID": 167100796,
+                "UID": 1802390576,
+                "ParentUID": 1779554888,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": false,
@@ -816,8 +816,8 @@
                 "Components": []
             },
             {
-                "UID": 96481200,
-                "ParentUID": 1206194221,
+                "UID": 1825365506,
+                "ParentUID": 1802390576,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": false,
@@ -854,8 +854,8 @@
                 ]
             },
             {
-                "UID": 1137524013,
-                "ParentUID": 1206194221,
+                "UID": 1848270815,
+                "ParentUID": 1802390576,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": false,
@@ -909,8 +909,8 @@
                 ]
             },
             {
-                "UID": 23076764,
-                "ParentUID": 834981304,
+                "UID": 1871176124,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_4",
                 "Enabled": true,
                 "Active": true,
@@ -954,8 +954,8 @@
                 ]
             },
             {
-                "UID": 1071638645,
-                "ParentUID": 23076764,
+                "UID": 1894151054,
+                "ParentUID": 1871176124,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -982,8 +982,8 @@
                 "Components": []
             },
             {
-                "UID": 2106137084,
-                "ParentUID": 1071638645,
+                "UID": 1917125984,
+                "ParentUID": 1894151054,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -1020,8 +1020,8 @@
                 ]
             },
             {
-                "UID": 991898698,
-                "ParentUID": 23076764,
+                "UID": 1939961672,
+                "ParentUID": 1871176124,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -1081,8 +1081,8 @@
                 ]
             },
             {
-                "UID": 2027093347,
-                "ParentUID": 991898698,
+                "UID": 1962727739,
+                "ParentUID": 1939961672,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -1109,8 +1109,8 @@
                 "Components": []
             },
             {
-                "UID": 913968897,
-                "ParentUID": 2027093347,
+                "UID": 1985563427,
+                "ParentUID": 1962727739,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -1147,8 +1147,8 @@
                 ]
             },
             {
-                "UID": 1960511769,
-                "ParentUID": 2027093347,
+                "UID": 2008329494,
+                "ParentUID": 1962727739,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -1189,8 +1189,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -1202,8 +1202,8 @@
                 ]
             },
             {
-                "UID": 848988602,
-                "ParentUID": 834981304,
+                "UID": 2031095561,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_2 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -1247,8 +1247,8 @@
                 ]
             },
             {
-                "UID": 1890727625,
-                "ParentUID": 848988602,
+                "UID": 2053931249,
+                "ParentUID": 2031095561,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -1275,8 +1275,8 @@
                 "Components": []
             },
             {
-                "UID": 767020783,
-                "ParentUID": 1890727625,
+                "UID": 2076697316,
+                "ParentUID": 2053931249,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -1313,8 +1313,8 @@
                 ]
             },
             {
-                "UID": 1816626979,
-                "ParentUID": 848988602,
+                "UID": 2099672246,
+                "ParentUID": 2031095561,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -1374,8 +1374,8 @@
                 ]
             },
             {
-                "UID": 705800022,
-                "ParentUID": 1816626979,
+                "UID": 2138242280,
+                "ParentUID": 2099672246,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -1402,8 +1402,8 @@
                 "Components": []
             },
             {
-                "UID": 1806020685,
-                "ParentUID": 705800022,
+                "UID": 14012047,
+                "ParentUID": 2138242280,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -1440,8 +1440,8 @@
                 ]
             },
             {
-                "UID": 693453203,
-                "ParentUID": 705800022,
+                "UID": 36847735,
+                "ParentUID": 2138242280,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -1482,8 +1482,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -1495,8 +1495,8 @@
                 ]
             },
             {
-                "UID": 1731084587,
-                "ParentUID": 834981304,
+                "UID": 59753044,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera (1)",
                 "Enabled": true,
                 "Active": true,
@@ -1540,8 +1540,8 @@
                 ]
             },
             {
-                "UID": 623112091,
-                "ParentUID": 1731084587,
+                "UID": 82449490,
+                "ParentUID": 59753044,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -1568,8 +1568,8 @@
                 "Components": []
             },
             {
-                "UID": 1669654963,
-                "ParentUID": 623112091,
+                "UID": 105563662,
+                "ParentUID": 82449490,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -1606,8 +1606,8 @@
                 ]
             },
             {
-                "UID": 556530513,
-                "ParentUID": 1731084587,
+                "UID": 128329729,
+                "ParentUID": 59753044,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -1667,8 +1667,8 @@
                 ]
             },
             {
-                "UID": 1610313969,
-                "ParentUID": 556530513,
+                "UID": 150956554,
+                "ParentUID": 128329729,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -1695,8 +1695,8 @@
                 "Components": []
             },
             {
-                "UID": 496911035,
-                "ParentUID": 1610313969,
+                "UID": 173653000,
+                "ParentUID": 150956554,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -1733,8 +1733,8 @@
                 ]
             },
             {
-                "UID": 1545681779,
-                "ParentUID": 1610313969,
+                "UID": 196279825,
+                "ParentUID": 150956554,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -1775,8 +1775,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -1788,8 +1788,8 @@
                 ]
             },
             {
-                "UID": 448222054,
-                "ParentUID": 834981304,
+                "UID": 219185134,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_3 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -1833,8 +1833,8 @@
                 ]
             },
             {
-                "UID": 1513284112,
-                "ParentUID": 448222054,
+                "UID": 242090443,
+                "ParentUID": 219185134,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -1861,8 +1861,8 @@
                 "Components": []
             },
             {
-                "UID": 406912899,
-                "ParentUID": 1513284112,
+                "UID": 264786889,
+                "ParentUID": 242090443,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -1899,8 +1899,8 @@
                 ]
             },
             {
-                "UID": 1446981018,
-                "ParentUID": 448222054,
+                "UID": 287483335,
+                "ParentUID": 219185134,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -1960,8 +1960,8 @@
                 ]
             },
             {
-                "UID": 335666714,
-                "ParentUID": 1446981018,
+                "UID": 310040539,
+                "ParentUID": 287483335,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -1988,8 +1988,8 @@
                 "Components": []
             },
             {
-                "UID": 1381791860,
-                "ParentUID": 335666714,
+                "UID": 332736985,
+                "ParentUID": 310040539,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -2026,8 +2026,8 @@
                 ]
             },
             {
-                "UID": 275281405,
-                "ParentUID": 335666714,
+                "UID": 355642294,
+                "ParentUID": 310040539,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -2068,8 +2068,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2081,8 +2081,8 @@
                 ]
             },
             {
-                "UID": 1317716638,
-                "ParentUID": 834981304,
+                "UID": 378269119,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_3 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -2126,8 +2126,8 @@
                 ]
             },
             {
-                "UID": 204522567,
-                "ParentUID": 1317716638,
+                "UID": 401035186,
+                "ParentUID": 378269119,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -2154,8 +2154,8 @@
                 "Components": []
             },
             {
-                "UID": 1244521065,
-                "ParentUID": 204522567,
+                "UID": 423940495,
+                "ParentUID": 401035186,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -2192,8 +2192,8 @@
                 ]
             },
             {
-                "UID": 141909386,
-                "ParentUID": 1317716638,
+                "UID": 446706562,
+                "ParentUID": 378269119,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -2253,8 +2253,8 @@
                 ]
             },
             {
-                "UID": 1184971208,
-                "ParentUID": 141909386,
+                "UID": 469333387,
+                "ParentUID": 446706562,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -2281,8 +2281,8 @@
                 "Components": []
             },
             {
-                "UID": 87789967,
-                "ParentUID": 1184971208,
+                "UID": 492099454,
+                "ParentUID": 469333387,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -2319,8 +2319,8 @@
                 ]
             },
             {
-                "UID": 1121452954,
-                "ParentUID": 1184971208,
+                "UID": 514795900,
+                "ParentUID": 469333387,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -2361,8 +2361,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2374,8 +2374,8 @@
                 ]
             },
             {
-                "UID": 7562673,
-                "ParentUID": 834981304,
+                "UID": 537422725,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_4 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -2419,8 +2419,8 @@
                 ]
             },
             {
-                "UID": 1048535865,
-                "ParentUID": 7562673,
+                "UID": 560049550,
+                "ParentUID": 537422725,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -2447,8 +2447,8 @@
                 "Components": []
             },
             {
-                "UID": 2090344509,
-                "ParentUID": 1048535865,
+                "UID": 582815617,
+                "ParentUID": 560049550,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -2485,8 +2485,8 @@
                 ]
             },
             {
-                "UID": 986966999,
-                "ParentUID": 7562673,
+                "UID": 605512063,
+                "ParentUID": 537422725,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -2546,8 +2546,8 @@
                 ]
             },
             {
-                "UID": 2038661825,
-                "ParentUID": 986966999,
+                "UID": 628138888,
+                "ParentUID": 605512063,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -2574,8 +2574,8 @@
                 "Components": []
             },
             {
-                "UID": 935075452,
-                "ParentUID": 2038661825,
+                "UID": 650904955,
+                "ParentUID": 628138888,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -2612,8 +2612,8 @@
                 ]
             },
             {
-                "UID": 1982871502,
-                "ParentUID": 2038661825,
+                "UID": 680981227,
+                "ParentUID": 628138888,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -2654,8 +2654,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2667,8 +2667,8 @@
                 ]
             },
             {
-                "UID": 893278950,
-                "ParentUID": 834981304,
+                "UID": 704304262,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_3 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -2712,8 +2712,8 @@
                 ]
             },
             {
-                "UID": 1952632086,
-                "ParentUID": 893278950,
+                "UID": 730203274,
+                "ParentUID": 704304262,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -2740,8 +2740,8 @@
                 "Components": []
             },
             {
-                "UID": 844729211,
-                "ParentUID": 1952632086,
+                "UID": 753526309,
+                "ParentUID": 730203274,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -2778,8 +2778,8 @@
                 ]
             },
             {
-                "UID": 1890367010,
-                "ParentUID": 893278950,
+                "UID": 776640481,
+                "ParentUID": 704304262,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -2839,8 +2839,8 @@
                 ]
             },
             {
-                "UID": 796179472,
-                "ParentUID": 1890367010,
+                "UID": 799685032,
+                "ParentUID": 776640481,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -2867,8 +2867,8 @@
                 "Components": []
             },
             {
-                "UID": 1845228700,
-                "ParentUID": 796179472,
+                "UID": 822520720,
+                "ParentUID": 799685032,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -2905,8 +2905,8 @@
                 ]
             },
             {
-                "UID": 738996729,
-                "ParentUID": 796179472,
+                "UID": 845495650,
+                "ParentUID": 799685032,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -2947,8 +2947,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2960,8 +2960,8 @@
                 ]
             },
             {
-                "UID": 1787488989,
-                "ParentUID": 834981304,
+                "UID": 868261717,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_2 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -3005,8 +3005,8 @@
                 ]
             },
             {
-                "UID": 692883725,
-                "ParentUID": 1787488989,
+                "UID": 891097405,
+                "ParentUID": 868261717,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3033,8 +3033,8 @@
                 "Components": []
             },
             {
-                "UID": 1731977150,
-                "ParentUID": 692883725,
+                "UID": 914072335,
+                "ParentUID": 891097405,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3071,8 +3071,8 @@
                 ]
             },
             {
-                "UID": 634517425,
-                "ParentUID": 1787488989,
+                "UID": 936977644,
+                "ParentUID": 868261717,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -3132,8 +3132,8 @@
                 ]
             },
             {
-                "UID": 1686003388,
-                "ParentUID": 634517425,
+                "UID": 959743711,
+                "ParentUID": 936977644,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -3160,8 +3160,8 @@
                 "Components": []
             },
             {
-                "UID": 587777832,
-                "ParentUID": 1686003388,
+                "UID": 982649020,
+                "ParentUID": 959743711,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -3198,8 +3198,8 @@
                 ]
             },
             {
-                "UID": 1636200471,
-                "ParentUID": 1686003388,
+                "UID": 1005484708,
+                "ParentUID": 959743711,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -3240,8 +3240,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -3253,8 +3253,8 @@
                 ]
             },
             {
-                "UID": 549671243,
-                "ParentUID": 834981304,
+                "UID": 1028181154,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_2 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -3298,8 +3298,8 @@
                 ]
             },
             {
-                "UID": 1589600120,
-                "ParentUID": 549671243,
+                "UID": 1051086463,
+                "ParentUID": 1028181154,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3326,8 +3326,8 @@
                 "Components": []
             },
             {
-                "UID": 486501094,
-                "ParentUID": 1589600120,
+                "UID": 1074061393,
+                "ParentUID": 1051086463,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3364,8 +3364,8 @@
                 ]
             },
             {
-                "UID": 1528379359,
-                "ParentUID": 549671243,
+                "UID": 1097245186,
+                "ParentUID": 1028181154,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -3425,8 +3425,8 @@
                 ]
             },
             {
-                "UID": 427438584,
-                "ParentUID": 1528379359,
+                "UID": 1120289737,
+                "ParentUID": 1097245186,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -3453,8 +3453,8 @@
                 "Components": []
             },
             {
-                "UID": 1475791602,
-                "ParentUID": 427438584,
+                "UID": 1143612772,
+                "ParentUID": 1120289737,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -3491,8 +3491,8 @@
                 ]
             },
             {
-                "UID": 377078699,
-                "ParentUID": 427438584,
+                "UID": 1166935807,
+                "ParentUID": 1120289737,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -3533,8 +3533,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -3546,8 +3546,8 @@
                 ]
             },
             {
-                "UID": 1433507753,
-                "ParentUID": 834981304,
+                "UID": 1189980358,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_2 (4)",
                 "Enabled": true,
                 "Active": true,
@@ -3591,8 +3591,8 @@
                 ]
             },
             {
-                "UID": 333193567,
-                "ParentUID": 1433507753,
+                "UID": 1213164151,
+                "ParentUID": 1189980358,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3619,8 +3619,8 @@
                 "Components": []
             },
             {
-                "UID": 1380641512,
-                "ParentUID": 333193567,
+                "UID": 1236139081,
+                "ParentUID": 1213164151,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3657,8 +3657,8 @@
                 ]
             },
             {
-                "UID": 293276832,
-                "ParentUID": 1433507753,
+                "UID": 1259114011,
+                "ParentUID": 1189980358,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -3718,8 +3718,8 @@
                 ]
             },
             {
-                "UID": 1339958946,
-                "ParentUID": 293276832,
+                "UID": 1282019320,
+                "ParentUID": 1259114011,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -3746,8 +3746,8 @@
                 "Components": []
             },
             {
-                "UID": 238809308,
-                "ParentUID": 1339958946,
+                "UID": 1304994250,
+                "ParentUID": 1282019320,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -3784,8 +3784,8 @@
                 ]
             },
             {
-                "UID": 1291687691,
-                "ParentUID": 1339958946,
+                "UID": 1328178043,
+                "ParentUID": 1282019320,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -3826,8 +3826,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -3839,8 +3839,8 @@
                 ]
             },
             {
-                "UID": 194645692,
-                "ParentUID": 834981304,
+                "UID": 1350944110,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera (2)",
                 "Enabled": true,
                 "Active": true,
@@ -3884,8 +3884,8 @@
                 ]
             },
             {
-                "UID": 1241049322,
-                "ParentUID": 194645692,
+                "UID": 1379001373,
+                "ParentUID": 1350944110,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3912,8 +3912,8 @@
                 "Components": []
             },
             {
-                "UID": 155007441,
-                "ParentUID": 1241049322,
+                "UID": 1402463650,
+                "ParentUID": 1379001373,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -3950,8 +3950,8 @@
                 ]
             },
             {
-                "UID": 1222993581,
-                "ParentUID": 194645692,
+                "UID": 1426134790,
+                "ParentUID": 1350944110,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -4011,8 +4011,8 @@
                 ]
             },
             {
-                "UID": 116135021,
-                "ParentUID": 1222993581,
+                "UID": 1449527446,
+                "ParentUID": 1426134790,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4039,8 +4039,8 @@
                 "Components": []
             },
             {
-                "UID": 1163931071,
-                "ParentUID": 116135021,
+                "UID": 1472711239,
+                "ParentUID": 1449527446,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4077,8 +4077,8 @@
                 ]
             },
             {
-                "UID": 81022135,
-                "ParentUID": 116135021,
+                "UID": 1495755790,
+                "ParentUID": 1449527446,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -4119,8 +4119,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -4132,8 +4132,8 @@
                 ]
             },
             {
-                "UID": 1127147281,
-                "ParentUID": 834981304,
+                "UID": 1518591478,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_4 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -4177,8 +4177,8 @@
                 ]
             },
             {
-                "UID": 23282424,
-                "ParentUID": 1127147281,
+                "UID": 1541844892,
+                "ParentUID": 1518591478,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -4205,8 +4205,8 @@
                 "Components": []
             },
             {
-                "UID": 1077135501,
-                "ParentUID": 23282424,
+                "UID": 1565098306,
+                "ParentUID": 1541844892,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -4243,8 +4243,8 @@
                 ]
             },
             {
-                "UID": 2123678373,
-                "ParentUID": 1127147281,
+                "UID": 1588212478,
+                "ParentUID": 1518591478,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -4304,8 +4304,8 @@
                 ]
             },
             {
-                "UID": 1029630077,
-                "ParentUID": 2123678373,
+                "UID": 1611326650,
+                "ParentUID": 1588212478,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4332,8 +4332,8 @@
                 "Components": []
             },
             {
-                "UID": 2073318488,
-                "ParentUID": 1029630077,
+                "UID": 1634301580,
+                "ParentUID": 1611326650,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4370,8 +4370,8 @@
                 ]
             },
             {
-                "UID": 964997887,
-                "ParentUID": 1029630077,
+                "UID": 1657485373,
+                "ParentUID": 1611326650,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -4412,8 +4412,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -4425,8 +4425,8 @@
                 ]
             },
             {
-                "UID": 2017110439,
-                "ParentUID": 834981304,
+                "UID": 1680251440,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_2 (5)",
                 "Enabled": true,
                 "Active": true,
@@ -4470,8 +4470,8 @@
                 ]
             },
             {
-                "UID": 927378645,
-                "ParentUID": 2017110439,
+                "UID": 1703087128,
+                "ParentUID": 1680251440,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -4498,8 +4498,8 @@
                 "Components": []
             },
             {
-                "UID": 1987427991,
-                "ParentUID": 927378645,
+                "UID": 1725992437,
+                "ParentUID": 1703087128,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -4536,8 +4536,8 @@
                 ]
             },
             {
-                "UID": 894424010,
-                "ParentUID": 2017110439,
+                "UID": 1748967367,
+                "ParentUID": 1680251440,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -4597,8 +4597,8 @@
                 ]
             },
             {
-                "UID": 1955308808,
-                "ParentUID": 894424010,
+                "UID": 1771872676,
+                "ParentUID": 1748967367,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4625,8 +4625,8 @@
                 "Components": []
             },
             {
-                "UID": 853602202,
-                "ParentUID": 1955308808,
+                "UID": 1794917227,
+                "ParentUID": 1771872676,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4663,8 +4663,8 @@
                 ]
             },
             {
-                "UID": 1907316037,
-                "ParentUID": 1955308808,
+                "UID": 1817892157,
+                "ParentUID": 1771872676,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -4705,8 +4705,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -4718,8 +4718,8 @@
                 ]
             },
             {
-                "UID": 806166399,
-                "ParentUID": 834981304,
+                "UID": 1840658224,
+                "ParentUID": 1231916102,
                 "Name": "Security_Camera_2 (6)",
                 "Enabled": true,
                 "Active": true,
@@ -4763,8 +4763,8 @@
                 ]
             },
             {
-                "UID": 1844633235,
-                "ParentUID": 806166399,
+                "UID": 1863563533,
+                "ParentUID": 1840658224,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -4791,8 +4791,8 @@
                 "Components": []
             },
             {
-                "UID": 753509021,
-                "ParentUID": 1844633235,
+                "UID": 1886468842,
+                "ParentUID": 1863563533,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -4829,8 +4829,8 @@
                 ]
             },
             {
-                "UID": 1816830554,
-                "ParentUID": 806166399,
+                "UID": 1909443772,
+                "ParentUID": 1840658224,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -4890,8 +4890,8 @@
                 ]
             },
             {
-                "UID": 727794970,
-                "ParentUID": 1816830554,
+                "UID": 1932418702,
+                "ParentUID": 1909443772,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4918,8 +4918,8 @@
                 "Components": []
             },
             {
-                "UID": 1810680004,
-                "ParentUID": 727794970,
+                "UID": 1955672116,
+                "ParentUID": 1932418702,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -4956,8 +4956,8 @@
                 ]
             },
             {
-                "UID": 723872292,
-                "ParentUID": 727794970,
+                "UID": 1978716667,
+                "ParentUID": 1932418702,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -4998,8 +4998,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            1.0,
                             0.0,
-                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
