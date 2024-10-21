@@ -299,7 +299,8 @@ void PlayerController::Start()
 
     //LASER
     GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
-    if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * mLaserLenght);
+    if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() - mGameObject->GetRight() * mLaserLenght);
+    
 }
 
 void PlayerController::Update()
