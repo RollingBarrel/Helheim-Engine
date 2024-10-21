@@ -22,7 +22,7 @@ RangeWeapon::RangeWeapon() : Weapon()
 	mType = WeaponType::RANGE;
 }
 
-void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGradient& trailGradient)
+void RangeWeapon::Shoot(const float3& position, float maxSpread, const PoolType bulletType)
 {
 	GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(mCameraShakeDuration, mCameraShakeStrengh);
 	
@@ -43,7 +43,7 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 
 	if (GameManager::GetInstance()->GetPoolManager())
 	{
-		GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+		GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(bulletType);
 		//This line is causing the game to slow down because for some reason it makes the bullets
 		// constantly collide with an enemy activating every frame the enemy hitstop and the hitsound 
 		//bullet->SetWorldRotation(GameManager::GetInstance()->GetPlayer()->GetWorldRotation());
@@ -52,11 +52,11 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 
 		if (hit.IsValid())
 		{
-			bulletScript->Init(ray.pos, hit, mDamage, mBulletSpeed, mBulletSize, &trailGradient);
+			bulletScript->Init(ray.pos, hit, mDamage, mBulletSpeed, mBulletSize);
 		}
 		else
 		{
-			bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mDamage, mBulletSpeed, mBulletSize, &trailGradient);
+			bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mDamage, mBulletSpeed, mBulletSize);
 		}
 	}
 }

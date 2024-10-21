@@ -27,7 +27,7 @@ Shootgun::Shootgun()
     mAttackCooldown = 0.5f;
 
     mBulletSpeed = 30.0f;
-    mBulletMaxSpread = 0.5f;
+    mBulletMaxSpread = 1.0f;
     mEnergyCost = 10;
     mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
     if (mFire)
@@ -63,16 +63,12 @@ void Shootgun::Attack(float time)
         PlayHitSound();
     }
 
-    ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
-    gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
-
     //Shoot Logic
     int numBullets = 10;
     GameManager::GetInstance()->GetPlayerController()->UseEnergy(mEnergyCost);
     for (int i = 0; i < numBullets; ++i)
     {
-        Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
+        Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, PoolType::RED_BULLET);
     }
     
     //Fire Particles

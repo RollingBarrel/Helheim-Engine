@@ -2,9 +2,9 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1574854569,
+                "UID": 509043444,
                 "ParentUID": 1,
-                "Name": "Bullet",
+                "Name": "RedBullet",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -53,8 +53,8 @@
                 ]
             },
             {
-                "UID": 1762065438,
-                "ParentUID": 1574854569,
+                "UID": 717070992,
+                "ParentUID": 509043444,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
@@ -82,7 +82,7 @@
                     {
                         "ComponentType": 18,
                         "IsEnabled": true,
-                        "Image": 1148076284,
+                        "Image": 2147436002,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
                         "MaxLifeTime": 0.10000000149011612,
@@ -97,7 +97,7 @@
                         "Width": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.20000000298023225,
+                                "MinValue": 3.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -110,14 +110,14 @@
                                 },
                                 {
                                     "Point": [
-                                        0.5224999785423279,
-                                        0.9049999713897705
+                                        0.25999999046325686,
+                                        0.36000001430511477
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.8149999976158142,
-                                        0.5950000286102295
+                                        0.875,
+                                        0.24000000953674317
                                     ]
                                 },
                                 {
@@ -145,8 +145,8 @@
                 ]
             },
             {
-                "UID": 1933263477,
-                "ParentUID": 1574854569,
+                "UID": 897946350,
+                "ParentUID": 509043444,
                 "Name": "HitParticles",
                 "Enabled": true,
                 "Active": true,
@@ -183,8 +183,8 @@
                         "Looping": false,
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
-                        "StretchedBillboard": true,
-                        "StretchedRatio": 1.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
                         "Gravity": 0.20000000298023225,
                         "ShapeFollowZAxis": false,
                         "Lifetime": {
@@ -342,8 +342,8 @@
                 ]
             },
             {
-                "UID": 2102233644,
-                "ParentUID": 1933263477,
+                "UID": 1076106489,
+                "ParentUID": 897946350,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -490,8 +490,8 @@
                 ]
             },
             {
-                "UID": 116061854,
-                "ParentUID": 1574854569,
+                "UID": 1254266628,
+                "ParentUID": 509043444,
                 "Name": "Collider",
                 "Enabled": true,
                 "Active": true,
@@ -535,8 +535,8 @@
                 ]
             },
             {
-                "UID": 283500359,
-                "ParentUID": 1574854569,
+                "UID": 1428249507,
+                "ParentUID": 509043444,
                 "Name": "BulletHole",
                 "Enabled": true,
                 "Active": true,
@@ -595,8 +595,8 @@
                 ]
             },
             {
-                "UID": 446274257,
-                "ParentUID": 283500359,
+                "UID": 1608010929,
+                "ParentUID": 1428249507,
                 "Name": "SparkParticles",
                 "Enabled": true,
                 "Active": true,

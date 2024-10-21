@@ -8,7 +8,6 @@
 class ParticleSystemComponent;
 class TrailComponent;
 class DecalComponent;
-class ColorGradient;
 struct CollisionData;
 class BoxColliderComponent;
 
@@ -23,8 +22,8 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Init(const float3& startposition, Hit& hit, float damage, float speed, float size, const ColorGradient* gradient = nullptr);
-	void Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, const ColorGradient* gradient = nullptr);
+	void Init(const float3& startposition, Hit& hit, float damage, float speed, float size);
+	void Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size);
 
 private:
 

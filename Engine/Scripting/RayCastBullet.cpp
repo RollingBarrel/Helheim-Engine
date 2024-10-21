@@ -123,13 +123,13 @@ void RayCastBullet::Update()
 	}
 }
 
-void RayCastBullet::Init(const float3& startposition, Hit& hit, float damage, float speed, float size, const ColorGradient* gradient)
+void RayCastBullet::Init(const float3& startposition, Hit& hit, float damage, float speed, float size)
 {
 	mHit = hit;
-	Init(startposition, hit.mHitPoint, damage, speed, size, gradient);
+	Init(startposition, hit.mHitPoint, damage, speed, size);
 }
 
-void RayCastBullet::Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, const ColorGradient* gradient)
+void RayCastBullet::Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size)
 {
 	mFirstFrame = true;
 	mHitPoint = endPosition;
@@ -147,10 +147,6 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 	{
 		mBulletTrail->GetOwner()->SetWorldPosition(startposition);
 		mBulletTrail->SetEnable(true);
-		if (gradient)
-		{
-			mBulletTrail->GetTrail()->SetColorGradient(*gradient);
-		}
 	}
 	if (mHitParticles)
 	{

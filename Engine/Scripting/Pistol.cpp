@@ -65,9 +65,7 @@ void Pistol::Attack(float time)
 	mCurrentAmmo--;
 	GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 	
-	ColorGradient gradient;
-	gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
-	Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
+	Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, PoolType::BULLET);
 	
 	//Fire Particles
 	if (mFire)

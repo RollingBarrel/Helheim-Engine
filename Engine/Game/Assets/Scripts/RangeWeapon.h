@@ -3,8 +3,7 @@
 #include "Math/float3.h"
 
 class GameObject;
-class ColorGradient;
-
+enum class PoolType;
 
 class RangeWeapon : public Weapon
 {
@@ -18,7 +17,7 @@ public:
 	int GetMaxAmmo() { return mMaxAmmo; }
 
 protected:
-	void Shoot(const float3& position, float maxSpread, const ColorGradient& trailGradient);
+	void Shoot(const float3& position, float maxSpread, const PoolType bulletType);
 	float3 Spread(const float3& front, const float3& up, const float3& right, float maxSpread);
 	
 	float mBulletSpeed = 10.0f;

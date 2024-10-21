@@ -27,6 +27,8 @@ void PoolManager::Start()
 	GameObject* Bullet = new GameObject("Bullet_Pool", mGameObject);
 	GameObject* EnemyBullet = new GameObject("EnemyBullet_Pool", mGameObject);
 	GameObject* BossBullet = new GameObject("BossBullet_Pool", mGameObject);
+	GameObject* RedBullet = new GameObject("RedBullet_Pool", mGameObject);
+	GameObject* BlueBullet = new GameObject("BlueBullet_Pool", mGameObject);
 
 	//Enemies
 	GameObject* EnemyRobotMelee = new GameObject("EnemyRobotMelee_Pool", mGameObject);
@@ -39,6 +41,8 @@ void PoolManager::Start()
 	mPoolMap.insert({ PoolType::BLUE_ENERGY, ObjectPool("Item_Blue_Battery.prfb", numItems, BlueEnergy) });
 	mPoolMap.insert({ PoolType::RED_ENERGY, ObjectPool("Item_Red_Battery.prfb", numItems, RedEnergy) });
 	mPoolMap.insert({ PoolType::BULLET, ObjectPool("Bullet.prfb", numPlayerBullets, Bullet) });
+	mPoolMap.insert({ PoolType::RED_BULLET, ObjectPool("RedBullet.prfb", numPlayerBullets, RedBullet) });
+	mPoolMap.insert({ PoolType::BLUE_BULLET, ObjectPool("BlueBullet.prfb", numPlayerBullets, BlueBullet) });
 
 
 	if (App->GetScene()->GetName().compare("Level1Scene") == 0)
@@ -81,7 +85,6 @@ void PoolManager::Start()
 	//	{ PoolType::ROBOT_EXPLOSIVE, ObjectPool("Enemy_Explosive.prfb", numEnemies, EnemyExplosive) }
 	//
 	//};
-
 }
 
 GameObject* PoolManager::Spawn(PoolType type)

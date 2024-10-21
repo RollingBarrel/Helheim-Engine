@@ -68,10 +68,7 @@ void Machinegun::Attack(float time)
             PlayHitSound();
         }
 
-        ColorGradient gradient;
-        gradient.AddColorGradientMark(0.1f, float4(0.686f, 0.0f, 1.0f, 1.0f));
-        gradient.AddColorGradientMark(0.6f, float4(0.0f, 0.0f, 1.0f, 1.0f));
-        Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
+        Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, PoolType::BLUE_BULLET);
 
 
         //Fire Particles
