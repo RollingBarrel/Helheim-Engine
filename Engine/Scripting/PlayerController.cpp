@@ -1006,7 +1006,7 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
         case EnergyType::NONE:
             break;
         case EnergyType::BLUE:
-            emisiveColor = float3(0.0f, 0.0f, 1.0f);
+            emisiveColor = float3(0.0f, 0.73f, 1.0f);
             if (mBlueBaterryParticles)
             {
                 mBlueBaterryParticles->SetEnabled(false);
