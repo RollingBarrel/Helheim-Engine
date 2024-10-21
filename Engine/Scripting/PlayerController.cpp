@@ -359,6 +359,15 @@ bool PlayerController::IsPlayerDashing() const
     return mLowerState->GetType() == StateType::DASH;
 }
 
+void PlayerController::SetPlayerEmisive(const float3& emisiveColor)
+{
+    for (Component* mesh : mMeshComponents)
+    {
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
+        meshComponent->SetEmissiveColor(emisiveColor);
+    }
+}
+
 void PlayerController::CheckInput()
 {
     // Lowerbody state machine
@@ -960,59 +969,52 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
 
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType, true);
 
+    float3 emisiveColor = float3::one;
+
     switch (mEnergyType)
     {
         case EnergyType::NONE:
             break;
         case EnergyType::BLUE:
+            emisiveColor = float3(0.0f, 0.0f, 1.0f);
+            if (mBlueBaterryParticles)
+            {
+                mBlueBaterryParticles->SetEnabled(false);
+                mBlueBaterryParticles->SetEnabled(true);
+            }
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
-                if (mBlueBaterryParticles) 
-                {
-                    mBlueBaterryParticles->SetEnabled(false);
-                    mBlueBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mMachinegun;
-
-                if(mEquippedSpecialGO)
-                    mEquippedSpecialGO->SetEnabled(true);
+                if(mEquippedSpecialGO) mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
-                if (mBlueBaterryParticles) 
-                {
-                    mBlueBaterryParticles->SetEnabled(false);
-                    mBlueBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mKatana;
             }
             break;
         case EnergyType::RED:
+            emisiveColor = float3(1.0f, 0.15f, 0.0f);
+            if (mRedBaterryParticles)
+            {
+                mRedBaterryParticles->SetEnabled(false);
+                mRedBaterryParticles->SetEnabled(true);
+            }
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
-                if (mRedBaterryParticles) 
-                {
-                    mRedBaterryParticles->SetEnabled(false);
-                    mRedBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mShootgun;
-
-                if(mEquippedSpecialGO)
-                    mEquippedSpecialGO->SetEnabled(true);
+                if(mEquippedSpecialGO) mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
-                if (mRedBaterryParticles) 
-                {
-                    mRedBaterryParticles->SetEnabled(false);
-                    mRedBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mHammer;
             }
             break;
-        default:
-            break;
     }
+
+    SetPlayerEmisive(emisiveColor);
+
+
+
 
     mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
 }
@@ -1025,6 +1027,7 @@ void PlayerController::UseEnergy(int energy)
     {
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
+        SetPlayerEmisive(float3::one);
         mSpecialWeapon = nullptr;
 
         if(mEquippedSpecialGO)
