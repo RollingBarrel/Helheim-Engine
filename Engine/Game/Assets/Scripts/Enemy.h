@@ -61,8 +61,8 @@ protected:
 	void DropItem();
 	void ActivateEnemy();
 	void ActivateHitEffect();
-	void CheckHitEffect();
-	void ResetEnemyColor();
+	virtual void CheckHitEffect();
+	void ResetEnemyColor(float factor);
 	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
 
 	//Stats
@@ -125,6 +125,8 @@ protected:
 	std::vector<Component*> mMeshComponents;
 	std::vector <float4> mOgColors;
 	GameObject* mUltHitEffectGO = nullptr;
+	float4 mHitEffectColor;
+
 	// DEBUFF
 	bool mBeAttracted = false;
 

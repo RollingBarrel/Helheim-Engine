@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1321073460,
+                "UID": 1280437108,
                 "ParentUID": 1,
                 "Name": "FlickeringLights_lvl2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 612998790,
-                "ParentUID": 1321073460,
+                "UID": 1742999032,
+                "ParentUID": 1280437108,
                 "Name": "OB_Terminal_lvl2.004",
                 "Enabled": true,
                 "Active": true,
@@ -230,8 +230,8 @@
                 ]
             },
             {
-                "UID": 614043105,
-                "ParentUID": 612998790,
+                "UID": 2141996983,
+                "ParentUID": 1742999032,
                 "Name": "OB_Terminal_lvl2.004",
                 "Enabled": true,
                 "Active": true,
@@ -268,8 +268,8 @@
                 ]
             },
             {
-                "UID": 1826694621,
-                "ParentUID": 612998790,
+                "UID": 391283415,
+                "ParentUID": 1742999032,
                 "Name": "SpotLight_Terminal (1)",
                 "Enabled": true,
                 "Active": true,
@@ -323,8 +323,8 @@
                 ]
             },
             {
-                "UID": 1768666869,
-                "ParentUID": 1321073460,
+                "UID": 789654777,
+                "ParentUID": 1280437108,
                 "Name": "OB_Terminal.011",
                 "Enabled": true,
                 "Active": true,
@@ -523,8 +523,8 @@
                 ]
             },
             {
-                "UID": 23105255,
-                "ParentUID": 1768666869,
+                "UID": 1203203517,
+                "ParentUID": 789654777,
                 "Name": "Spotlight (14)",
                 "Enabled": true,
                 "Active": true,
@@ -578,8 +578,8 @@
                 ]
             },
             {
-                "UID": 427812128,
-                "ParentUID": 1768666869,
+                "UID": 1602340710,
+                "ParentUID": 789654777,
                 "Name": "OB_Terminal.011",
                 "Enabled": true,
                 "Active": true,
@@ -616,13 +616,13 @@
                 ]
             },
             {
-                "UID": 847974863,
-                "ParentUID": 1321073460,
+                "UID": 2003218428,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    160.2715606689453,
+                    160.27561950683595,
                     68.6507797241211,
                     20.3124942779541
                 ],
@@ -644,15 +644,15 @@
                 "Components": []
             },
             {
-                "UID": 1257903311,
-                "ParentUID": 847974863,
+                "UID": 270188594,
+                "ParentUID": 2003218428,
                 "Name": "Spotlight",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    33.255859375,
-                    0.838134765625,
-                    -54.025390625
+                    -0.0498046875,
+                    -5.108154296875,
+                    -41.720703125
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -674,9 +674,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            160.68948364257813,
-                            68.90803527832031,
-                            20.306011199951173,
+                            160.59835815429688,
+                            68.65039825439453,
+                            20.352008819580079,
                             5.0
                         ],
                         "Direction": [
@@ -699,8 +699,8 @@
                 ]
             },
             {
-                "UID": 1666021613,
-                "ParentUID": 847974863,
+                "UID": 676705613,
+                "ParentUID": 2003218428,
                 "Name": "OB_Ind_Light_B",
                 "Enabled": true,
                 "Active": true,
@@ -737,8 +737,8 @@
                 ]
             },
             {
-                "UID": 2073582947,
-                "ParentUID": 1321073460,
+                "UID": 1078906130,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B.001",
                 "Enabled": true,
                 "Active": true,
@@ -937,15 +937,15 @@
                 ]
             },
             {
-                "UID": 333034045,
-                "ParentUID": 2073582947,
+                "UID": 1482290204,
+                "ParentUID": 1078906130,
                 "Name": "Spotlight (2)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    33.255859375,
-                    0.83837890625,
-                    -32.142578125
+                    3.6982421875,
+                    -16.3212890625,
+                    -41.359375
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -967,9 +967,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            165.03353881835938,
-                            68.90803527832031,
-                            20.30600929260254,
+                            165.10484313964845,
+                            68.67938995361328,
+                            20.438751220703126,
                             5.0
                         ],
                         "Direction": [
@@ -992,8 +992,8 @@
                 ]
             },
             {
-                "UID": 744146050,
-                "ParentUID": 2073582947,
+                "UID": 1884699584,
+                "ParentUID": 1078906130,
                 "Name": "OB_Ind_Light_B.001",
                 "Enabled": true,
                 "Active": true,
@@ -1030,8 +1030,8 @@
                 ]
             },
             {
-                "UID": 1158530242,
-                "ParentUID": 1321073460,
+                "UID": 138302518,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B.002",
                 "Enabled": true,
                 "Active": true,
@@ -1230,15 +1230,15 @@
                 ]
             },
             {
-                "UID": 1569015658,
-                "ParentUID": 1158530242,
+                "UID": 541547350,
+                "ParentUID": 138302518,
                 "Name": "Spotlight (5)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     3.5,
-                    -4.308837890625,
-                    -34.1162109375
+                    -4.306884765625,
+                    -41.3056640625
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -1260,9 +1260,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            124.57280731201172,
+                            124.62841796875,
                             68.6778564453125,
-                            28.37874412536621,
+                            28.37873077392578,
                             5.0
                         ],
                         "Direction": [
@@ -1285,8 +1285,8 @@
                 ]
             },
             {
-                "UID": 1980615010,
-                "ParentUID": 1158530242,
+                "UID": 946323844,
+                "ParentUID": 138302518,
                 "Name": "OB_Ind_Light_B.002",
                 "Enabled": true,
                 "Active": true,
@@ -1323,8 +1323,8 @@
                 ]
             },
             {
-                "UID": 246680103,
-                "ParentUID": 1321073460,
+                "UID": 1350891475,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B.003",
                 "Enabled": true,
                 "Active": true,
@@ -1351,15 +1351,15 @@
                 "Components": []
             },
             {
-                "UID": 662108610,
-                "ParentUID": 246680103,
+                "UID": 1752883129,
+                "ParentUID": 1350891475,
                 "Name": "Spotlight (4)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     3.5,
-                    -4.308837890625,
-                    -34.69140625
+                    -4.306640625,
+                    -42.84375
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -1381,9 +1381,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            129.06301879882813,
+                            129.12608337402345,
                             68.6778564453125,
-                            28.37874412536621,
+                            28.37872886657715,
                             5.0
                         ],
                         "Direction": [
@@ -1406,8 +1406,8 @@
                 ]
             },
             {
-                "UID": 1073568720,
-                "ParentUID": 246680103,
+                "UID": 11289912,
+                "ParentUID": 1350891475,
                 "Name": "OB_Ind_Light_B.003",
                 "Enabled": true,
                 "Active": true,
@@ -1444,8 +1444,8 @@
                 ]
             },
             {
-                "UID": 1487952912,
-                "ParentUID": 1321073460,
+                "UID": 417737310,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B.004",
                 "Enabled": true,
                 "Active": true,
@@ -1472,15 +1472,15 @@
                 "Components": []
             },
             {
-                "UID": 1900387716,
-                "ParentUID": 1487952912,
+                "UID": 823210014,
+                "ParentUID": 417737310,
                 "Name": "Spotlight (6)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     3.5,
-                    -4.308837890625,
-                    -32.822265625
+                    -4.306884765625,
+                    -43.1865234375
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -1502,9 +1502,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            119.9858169555664,
+                            120.06598663330078,
                             68.6778564453125,
-                            28.37874412536621,
+                            28.37873077392578,
                             5.0
                         ],
                         "Direction": [
@@ -1527,8 +1527,8 @@
                 ]
             },
             {
-                "UID": 166104704,
-                "ParentUID": 1487952912,
+                "UID": 1228961202,
+                "ParentUID": 417737310,
                 "Name": "OB_Ind_Light_B.004",
                 "Enabled": true,
                 "Active": true,
@@ -1565,8 +1565,8 @@
                 ]
             },
             {
-                "UID": 582020558,
-                "ParentUID": 1321073460,
+                "UID": 1635756705,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B.005",
                 "Enabled": true,
                 "Active": true,
@@ -1593,15 +1593,15 @@
                 "Components": []
             },
             {
-                "UID": 996404750,
-                "ParentUID": 582020558,
+                "UID": 2043666144,
+                "ParentUID": 1635756705,
                 "Name": "Spotlight (7)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     3.5,
-                    -4.308837890625,
-                    -32.296875
+                    -4.306884765625,
+                    -44.1171875
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -1623,9 +1623,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            115.53951263427735,
+                            115.63095092773438,
                             68.6778564453125,
-                            28.37874412536621,
+                            28.37873077392578,
                             5.0
                         ],
                         "Direction": [
@@ -1648,8 +1648,8 @@
                 ]
             },
             {
-                "UID": 1411694015,
-                "ParentUID": 582020558,
+                "UID": 304440041,
+                "ParentUID": 1635756705,
                 "Name": "OB_Ind_Light_B.005",
                 "Enabled": true,
                 "Active": true,
@@ -1686,8 +1686,8 @@
                 ]
             },
             {
-                "UID": 1832692202,
-                "ParentUID": 1321073460,
+                "UID": 721121726,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B.006",
                 "Enabled": true,
                 "Active": true,
@@ -1886,15 +1886,15 @@
                 ]
             },
             {
-                "UID": 101959861,
-                "ParentUID": 1832692202,
+                "UID": 1131119795,
+                "ParentUID": 721121726,
                 "Name": "Spotlight (8)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     3.5,
-                    -4.308837890625,
-                    -44.509765625
+                    -4.306884765625,
+                    -43.720703125
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -1916,9 +1916,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            111.01787567138672,
+                            111.01177215576172,
                             68.6778564453125,
-                            28.37874412536621,
+                            28.37873077392578,
                             5.0
                         ],
                         "Direction": [
@@ -1941,8 +1941,8 @@
                 ]
             },
             {
-                "UID": 517736473,
-                "ParentUID": 1832692202,
+                "UID": 1539516581,
+                "ParentUID": 721121726,
                 "Name": "OB_Ind_Light_B.006",
                 "Enabled": true,
                 "Active": true,
@@ -1979,8 +1979,8 @@
                 ]
             },
             {
-                "UID": 949525915,
-                "ParentUID": 1321073460,
+                "UID": 1948957682,
+                "ParentUID": 1280437108,
                 "Name": "OB_Ind_Light_B.007",
                 "Enabled": true,
                 "Active": true,
@@ -2007,15 +2007,15 @@
                 "Components": []
             },
             {
-                "UID": 1369619029,
-                "ParentUID": 949525915,
+                "UID": 210984757,
+                "ParentUID": 1948957682,
                 "Name": "Spotlight (9)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     3.5,
-                    -4.308837890625,
-                    -49.11328125
+                    -4.306884765625,
+                    -42.6474609375
                 ],
                 "Rotation": [
                     -0.3140466511249542,
@@ -2037,9 +2037,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            106.50695037841797,
+                            106.4569320678711,
                             68.6778564453125,
-                            28.37874412536621,
+                            28.37873077392578,
                             5.0
                         ],
                         "Direction": [
@@ -2062,8 +2062,8 @@
                 ]
             },
             {
-                "UID": 1788528586,
-                "ParentUID": 949525915,
+                "UID": 620495479,
+                "ParentUID": 1948957682,
                 "Name": "OB_Ind_Light_B.007",
                 "Enabled": true,
                 "Active": true,
@@ -2100,8 +2100,8 @@
                 ]
             },
             {
-                "UID": 61207674,
-                "ParentUID": 1321073460,
+                "UID": 1045601305,
+                "ParentUID": 1280437108,
                 "Name": "OB_Serial_Cryotube.014 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -2300,8 +2300,8 @@
                 ]
             },
             {
-                "UID": 481579272,
-                "ParentUID": 61207674,
+                "UID": 1457896867,
+                "ParentUID": 1045601305,
                 "Name": "OB_Serial_Cryotube.014",
                 "Enabled": true,
                 "Active": true,
@@ -2338,8 +2338,8 @@
                 ]
             },
             {
-                "UID": 899096409,
-                "ParentUID": 61207674,
+                "UID": 1868103799,
+                "ParentUID": 1045601305,
                 "Name": "PointLight (10)",
                 "Enabled": true,
                 "Active": true,
