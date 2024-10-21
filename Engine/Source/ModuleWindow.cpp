@@ -195,5 +195,11 @@ void ModuleWindow::SetCursor(unsigned int resourceID, unsigned int cursorWidth, 
 	pixel_data = nullptr;
 }
 
+void ModuleWindow::ShowCursor(bool show)
+{
+	int showId = show ? SDL_ENABLE : SDL_DISABLE;
+	SDL_ShowCursor(showId);
+}
+
 
 
