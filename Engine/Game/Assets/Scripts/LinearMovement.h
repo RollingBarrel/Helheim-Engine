@@ -7,6 +7,7 @@ GENERATE_BODY(LinearMovement)
 
 class AnimationComponent;
 class ParticleSystemComponent;
+class GameObject;
 
 class LinearMovement : public Script
 {
@@ -38,6 +39,9 @@ private:
     bool mStarted = false;
     bool mLocalPosition = false;
     bool mLookAt = false;
+    bool mTargetAGO = false;
+
+    GameObject* mTargetGO = nullptr;
 
     //Hovering up'n'down movement
     bool mHoveringMovement = true;
