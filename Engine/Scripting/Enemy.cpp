@@ -47,7 +47,7 @@ void Enemy::Start()
 	if (mAnimationComponent) mAnimationComponent->SetIsPlaying(true);
 	
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-	mHitEffectColor = float4(3.0f, 0.0f, 0.0f, 1.0f);
+	mHitEffectColor = float4(255.0f, 0.0f, 0.0f, 1.0f);
 
 }
 
@@ -82,7 +82,7 @@ void Enemy::CheckHitEffect()
         }
 		else 
 		{
-			ResetEnemyColor(mHitEffectTimer.GetTimePassed() / mHitEffectTime);
+			ResetEnemyColor(0.0f);
 		}
     }
 }

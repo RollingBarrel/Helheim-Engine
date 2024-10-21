@@ -61,7 +61,7 @@ protected:
 	void DropItem();
 	void ActivateEnemy();
 	void ActivateHitEffect();
-	void CheckHitEffect();
+	virtual void CheckHitEffect();
 	void ResetEnemyColor(float factor);
 	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
 

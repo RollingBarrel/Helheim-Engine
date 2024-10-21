@@ -50,6 +50,7 @@ private:
 	void Rotate();
 	void InterruptAttacks();
 
+	void CheckHitEffect() override;
 	void  Death() override;
 
 	int mLastAttack = -1;

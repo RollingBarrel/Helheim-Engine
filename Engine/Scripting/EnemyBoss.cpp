@@ -405,6 +405,22 @@ void EnemyBoss::SetupBomb(GameObject* bombGO, const math::float3& position)
     }
 }
 
+void EnemyBoss::CheckHitEffect()
+{
+    if (mHit)
+    {
+        if (mHitEffectTimer.Delay(mHitEffectTime))
+        {
+            ResetEnemyColor(1.0f);
+            mHit = false;
+        }
+        else
+        {
+            ResetEnemyColor(mHitEffectTimer.GetTimePassed() / mHitEffectTime);
+        }
+    }
+}
+
 void EnemyBoss::Death()
 {
     float factor = mDeathTimer.GetTimePassed() / DEATH_ANIMATION;
