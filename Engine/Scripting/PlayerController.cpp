@@ -24,6 +24,8 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
+#include "Geometry/Line.h"
+#include "Geometry/LineSegment.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -470,6 +472,33 @@ void PlayerController::HandleRotation()
         position.y = mGameObject->GetWorldPosition().y;
         float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
         mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
+
+        Line aimLine = Line(position, (mAimPosition - position).Normalized());
+        LineSegment lineSegment = LineSegment(aimLine, 10.0f);
+        float minimunDistance = 2.0f;
+
+        GameObject* closestEnemy = nullptr;
+        float closestDistance = FLT_MAX;
+        const std::vector<GameObject*>& allEnemies = App->GetScene()->FindGameObjectsWithTag("Enemy");
+        for (GameObject* enemy : allEnemies)
+        {
+            if (enemy->IsEnabled() && enemy->GetName().compare("OB_explosive_Barrell") != 0)
+            {
+                float distance = enemy->GetWorldPosition().Distance(lineSegment);
+
+                if (distance < minimunDistance && distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = enemy;
+                }
+            } 
+        }
+
+        if (closestEnemy)
+        {
+            mAimPosition = closestEnemy->GetWorldPosition();
+            mAimPosition.y = position.y;
+        }
     }
     else
     {
