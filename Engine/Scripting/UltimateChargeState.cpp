@@ -35,7 +35,8 @@ void UltimateChargeState::Enter()
 	mPlayerController->SetSpeed(1.0f);
 
 	mPlayerController->EnableLaser(false);
-	mPlayerController->SetSpineAnimation("tSpecial", 0.3f);
+	mPlayerController->SetAnimationSpeed(2.5f);
+	mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
 	mPlayerController->SetLowerAnimationSpeed(0.6f);
 	
 
@@ -45,6 +46,7 @@ void UltimateChargeState::Exit()
 {
 	mPlayerController->EnableChargeUltimate(false);
 	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed());
+	mPlayerController->SetAnimationSpeed(1.0f);
 }
 
 StateType UltimateChargeState::GetType()
