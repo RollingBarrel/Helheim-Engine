@@ -2,11 +2,11 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1497964683,
+                "UID": 1645584503,
                 "ParentUID": 1,
                 "Name": "Grenade",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     1.0,
@@ -30,7 +30,7 @@
                 "Components": [
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "Grenade",
                         "ScriptVariables": [
                             {
@@ -61,30 +61,30 @@
                             {
                                 "VariableName": "mTrail",
                                 "MemberType": 3,
-                                "VariableData": 1571902185
+                                "VariableData": 1665217625
                             },
                             {
                                 "VariableName": "mExplosionSFX",
                                 "MemberType": 3,
-                                "VariableData": 1781252532
+                                "VariableData": 1685407715
                             },
                             {
                                 "VariableName": "mBlackHoleSFX",
                                 "MemberType": 3,
-                                "VariableData": 1617991287
+                                "VariableData": 1671553136
                             },
                             {
                                 "VariableName": "mSphere",
                                 "MemberType": 3,
-                                "VariableData": 1595016357
+                                "VariableData": 1669882232
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1546908246,
-                "ParentUID": 1497964683,
+                "UID": 1661040365,
+                "ParentUID": 1645584503,
                 "Name": "ExplosionPreviewDecals",
                 "Enabled": false,
                 "Active": false,
@@ -135,11 +135,11 @@
                 ]
             },
             {
-                "UID": 1571902185,
-                "ParentUID": 1497964683,
+                "UID": 1665217625,
+                "ParentUID": 1645584503,
                 "Name": "GrenadeTrail",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     11.05271053314209,
                     8.812175750732422,
@@ -163,7 +163,7 @@
                 "Components": [
                     {
                         "ComponentType": 18,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 1019033152,
                         "MaxPoints": 1000,
                         "MinDistance": 0.05000000074505806,
@@ -224,10 +224,10 @@
                 ]
             },
             {
-                "UID": 1595016357,
-                "ParentUID": 1497964683,
+                "UID": 1669882232,
+                "ParentUID": 1645584503,
                 "Name": "Sphere",
-                "Enabled": false,
+                "Enabled": true,
                 "Active": false,
                 "Translation": [
                     0.0,
@@ -258,7 +258,7 @@
                             {
                                 "VariableName": "mSpeed",
                                 "MemberType": 1,
-                                "VariableData": 10.0
+                                "VariableData": 6.0
                             },
                             {
                                 "VariableName": "mDirection",
@@ -274,8 +274,8 @@
                 ]
             },
             {
-                "UID": 1617991287,
-                "ParentUID": 1595016357,
+                "UID": 1671553136,
+                "ParentUID": 1669882232,
                 "Name": "Implosion",
                 "Enabled": true,
                 "Active": false,
@@ -302,9 +302,9 @@
                 "Components": []
             },
             {
-                "UID": 1641105459,
-                "ParentUID": 1617991287,
-                "Name": "Laser_impact",
+                "UID": 1674755702,
+                "ParentUID": 1671553136,
+                "Name": "Particles",
                 "Enabled": true,
                 "Active": false,
                 "Translation": [
@@ -313,14 +313,14 @@
                     0.0
                 ],
                 "Rotation": [
-                    -0.5368052124977112,
-                    0.4722623825073242,
-                    -0.46328359842300417,
-                    -0.5266088247299194
+                    5.882019177283482e-11,
+                    2.2978147162788788e-14,
+                    -1.3515790547423162e-24,
+                    1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
+                    0.9997289180755615,
+                    0.9997289180755615,
                     1.0
                 ],
                 "Tag": "Untagged",
@@ -331,21 +331,22 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": false,
-                        "Image": 815916890,
+                        "Image": 1171284849,
                         "Delay": 0.0,
-                        "Duration": 3.0,
-                        "EmissionRate": 80.0,
-                        "MaxParticles": 100,
+                        "Duration": 2.0,
+                        "EmissionRate": 40.0,
+                        "MaxParticles": 250,
                         "Burst": 0,
                         "Looping": false,
-                        "FollowEmitter": true,
-                        "SpinSpeed": 2.0,
-                        "StretchedBillboard": false,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 1.0,
+                        "StretchedBillboard": true,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 0.4000000059604645,
+                            "MinValue": 0.6000000238418579,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 3,
@@ -358,28 +359,53 @@
                             0.5,
                             0.5
                         ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": true,
-                        "SpeedCenterShape": true,
+                        "ShapeRandAngle": 7.0,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
                         "SpeedCenterFactor": 0.10000000149011612,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.20000000298023225,
+                                "MinValue": 4.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
-                            "CurvePoints": []
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.10249999910593033,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.009999990463256836
+                                    ]
+                                }
+                            ]
                         },
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 5.0,
+                                "MinValue": 0.009999999776482582,
                                 "MaxValue": 1.0
                             },
-                            "IsCurve": true,
+                            "IsCurve": false,
                             "CurvePoints": [
                                 {
                                     "Point": [
@@ -409,207 +435,52 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5040214657783508,
+                                "Time": 0.014037883840501309,
                                 "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
+                                    1.0,
+                                    1.0,
+                                    1.0,
                                     1.0
                                 ]
-                            }
-                        ],
-                        "HasTrails": true,
-                        "Trail": {
-                            "Image": 899620755,
-                            "MaxPoints": 1000,
-                            "MinDistance": 0.009999999776482582,
-                            "MaxLifeTime": 0.20000000298023225,
-                            "UVScroll": 1.0,
-                            "IsFixedDirection": false,
-                            "IsUVScrolling": true,
-                            "Direction": [
-                                0.0,
-                                1.0,
-                                0.0
-                            ],
-                            "Width": {
-                                "Value": {
-                                    "IsValueRandom": false,
-                                    "MinValue": 0.30000001192092898,
-                                    "MaxValue": 1.0
-                                },
-                                "IsCurve": false,
-                                "CurvePoints": []
                             },
-                            "Gradient": {
-                                "Color Gradient": [
-                                    {
-                                        "Time": 0.20911531150341035,
-                                        "Color": [
-                                            0.5359997749328613,
-                                            0.0,
-                                            1.0,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.9329757690429688,
-                                        "Color": [
-                                            0.0,
-                                            0.0,
-                                            0.0,
-                                            1.0
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                ]
-            },
-            {
-                "UID": 1664358873,
-                "ParentUID": 1641105459,
-                "Name": "Laser_impact (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    5.157371404940214e-11,
-                    -2.8365572043997923e-11,
-                    0.48183098435401919,
-                    0.875986635684967
-                ],
-                "Scale": [
-                    0.9999998807907105,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 15,
-                        "IsEnabled": false,
-                        "Image": 2089141253,
-                        "Delay": 0.0,
-                        "Duration": 3.0,
-                        "EmissionRate": 60.0,
-                        "MaxParticles": 250,
-                        "Burst": 0,
-                        "Looping": false,
-                        "FollowEmitter": true,
-                        "SpinSpeed": 1.0,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
-                        "Gravity": 0.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 0.5,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 3,
-                        "ShapeRadius": 0.6000000238418579,
-                        "ShapeTubeRadius": 1.0,
-                        "ShapeHeight": 1.0,
-                        "ShapeAngle": 1.600000023841858,
-                        "ShapeSize": [
-                            0.5,
-                            0.5,
-                            0.5
-                        ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": true,
-                        "SpeedCenterShape": true,
-                        "SpeedCenterFactor": 0.05000000074505806,
-                        "BlendMode": 1,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 0.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        0.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.07500000298023224,
-                                        0.8650000095367432
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.2824999988079071,
-                                        1.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        1.0
-                                    ]
-                                }
-                            ]
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 9.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": true,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        1.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.32499998807907107,
-                                        0.7950000166893005
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.7074999809265137,
-                                        0.42000001668930056
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        0.0
-                                    ]
-                                }
-                            ]
-                        },
-                        "Color Gradient": [
                             {
-                                "Time": 0.5040214657783508,
+                                "Time": 0.2821097671985626,
                                 "Color": [
-                                    0.526614248752594,
-                                    0.3548159897327423,
-                                    0.527999997138977,
+                                    0.026554375886917115,
+                                    0.026554375886917115,
+                                    0.026554375886917115,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5221917629241943,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5502114295959473,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.7866659164428711,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             }
                         ],
-                        "HasTrails": true,
+                        "HasTrails": false,
                         "Trail": {
                             "Image": 899620755,
                             "MaxPoints": 1000,
@@ -720,8 +591,175 @@
                 ]
             },
             {
-                "UID": 1687612287,
-                "ParentUID": 1595016357,
+                "UID": 1673084798,
+                "ParentUID": 1671553136,
+                "Name": "Spin Particles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.40947192907333376,
+                    -0.586097240447998,
+                    0.5749999284744263,
+                    -0.4017203152179718
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 80.0,
+                        "MaxParticles": 100,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 2.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 1.399999976158142,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 1.600000023841858,
+                        "ShapeSize": [
+                            0.5,
+                            0.5,
+                            0.5
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": true,
+                        "SpeedCenterFactor": 0.07000000029802323,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 3.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.32499998807907107,
+                                        0.7950000166893005
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7074999809265137,
+                                        0.42000001668930056
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.45844516158103945,
+                                "Color": [
+                                    0.5149759650230408,
+                                    0.0,
+                                    0.5320000052452087,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 899620755,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.20000000298023225,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.30000001192092898,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.20911531150341035,
+                                        "Color": [
+                                            0.5359997749328613,
+                                            0.0,
+                                            1.0,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.9329757690429688,
+                                        "Color": [
+                                            0.0,
+                                            0.0,
+                                            0.0,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1677053195,
+                "ParentUID": 1669882232,
                 "Name": "Aura",
                 "Enabled": true,
                 "Active": false,
@@ -760,9 +798,9 @@
                         "IsEnabled": false,
                         "ImageID": 320590447,
                         "Color": [
+                            0.33333316445350649,
                             0.0,
-                            0.0,
-                            0.0
+                            0.3333333134651184
                         ],
                         "Alpha": 1.0,
                         "ShouldDraw": true,
@@ -777,8 +815,8 @@
                 ]
             },
             {
-                "UID": 1711004943,
-                "ParentUID": 1595016357,
+                "UID": 1678863341,
+                "ParentUID": 1669882232,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": false,
@@ -805,8 +843,8 @@
                 "Components": []
             },
             {
-                "UID": 1734676083,
-                "ParentUID": 1711004943,
+                "UID": 1682414012,
+                "ParentUID": 1678863341,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": false,
@@ -833,8 +871,8 @@
                 "Components": []
             },
             {
-                "UID": 1758068739,
-                "ParentUID": 1734676083,
+                "UID": 1684015295,
+                "ParentUID": 1682414012,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": false,
@@ -871,8 +909,8 @@
                 ]
             },
             {
-                "UID": 1781252532,
-                "ParentUID": 1497964683,
+                "UID": 1685407715,
+                "ParentUID": 1645584503,
                 "Name": "Explosion",
                 "Enabled": false,
                 "Active": false,
@@ -899,8 +937,8 @@
                 "Components": []
             },
             {
-                "UID": 1808659705,
-                "ParentUID": 1781252532,
+                "UID": 1687078619,
+                "ParentUID": 1685407715,
                 "Name": "Explosion Halo",
                 "Enabled": true,
                 "Active": false,
@@ -940,6 +978,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -1049,8 +1088,8 @@
                 ]
             },
             {
-                "UID": 1804575567,
-                "ParentUID": 1781252532,
+                "UID": 1688610281,
+                "ParentUID": 1685407715,
                 "Name": "Electric Explosion",
                 "Enabled": true,
                 "Active": false,
@@ -1090,6 +1129,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.4000000059604645,
@@ -1215,8 +1255,8 @@
                 ]
             },
             {
-                "UID": 787664978,
-                "ParentUID": 1781252532,
+                "UID": 1690490048,
+                "ParentUID": 1685407715,
                 "Name": "Electric Cloud",
                 "Enabled": true,
                 "Active": false,
@@ -1256,6 +1296,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.30000001192092898,
@@ -1381,8 +1422,8 @@
                 ]
             },
             {
-                "UID": 1828037844,
-                "ParentUID": 1781252532,
+                "UID": 1691812847,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke",
                 "Enabled": true,
                 "Active": false,
@@ -1422,6 +1463,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -1578,8 +1620,8 @@
                 ]
             },
             {
-                "UID": 629886100,
-                "ParentUID": 1781252532,
+                "UID": 1693553372,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (1)",
                 "Enabled": true,
                 "Active": false,
@@ -1619,6 +1661,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -1775,8 +1818,8 @@
                 ]
             },
             {
-                "UID": 970509321,
-                "ParentUID": 1781252532,
+                "UID": 1695433139,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (2)",
                 "Enabled": true,
                 "Active": false,
@@ -1816,6 +1859,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -1972,8 +2016,8 @@
                 ]
             },
             {
-                "UID": 1312052361,
-                "ParentUID": 1781252532,
+                "UID": 1697521769,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (3)",
                 "Enabled": true,
                 "Active": false,
@@ -2013,6 +2057,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -2169,8 +2214,8 @@
                 ]
             },
             {
-                "UID": 423754578,
-                "ParentUID": 1781252532,
+                "UID": 1699401536,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (4)",
                 "Enabled": true,
                 "Active": false,
@@ -2210,6 +2255,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -2366,8 +2412,8 @@
                 ]
             },
             {
-                "UID": 535375867,
-                "ParentUID": 1781252532,
+                "UID": 1700654714,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (5)",
                 "Enabled": true,
                 "Active": false,
@@ -2407,6 +2453,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -2563,8 +2610,8 @@
                 ]
             },
             {
-                "UID": 202563646,
-                "ParentUID": 1781252532,
+                "UID": 1702116755,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (6)",
                 "Enabled": true,
                 "Active": false,
@@ -2604,6 +2651,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -2760,8 +2808,8 @@
                 ]
             },
             {
-                "UID": 572023564,
-                "ParentUID": 1781252532,
+                "UID": 1704692732,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (7)",
                 "Enabled": true,
                 "Active": false,
@@ -2801,6 +2849,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -2957,8 +3006,8 @@
                 ]
             },
             {
-                "UID": 497788421,
-                "ParentUID": 1781252532,
+                "UID": 1706015531,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (8)",
                 "Enabled": true,
                 "Active": false,
@@ -2998,6 +3047,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -3154,8 +3204,8 @@
                 ]
             },
             {
-                "UID": 1301097911,
-                "ParentUID": 1781252532,
+                "UID": 1707338330,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (9)",
                 "Enabled": true,
                 "Active": false,
@@ -3195,6 +3245,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -3351,8 +3402,8 @@
                 ]
             },
             {
-                "UID": 715028092,
-                "ParentUID": 1781252532,
+                "UID": 1708591508,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (10)",
                 "Enabled": true,
                 "Active": false,
@@ -3392,6 +3443,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -3548,8 +3600,8 @@
                 ]
             },
             {
-                "UID": 3738227,
-                "ParentUID": 1781252532,
+                "UID": 1710471275,
+                "ParentUID": 1685407715,
                 "Name": "Energy smoke (11)",
                 "Enabled": true,
                 "Active": false,
@@ -3589,6 +3641,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
