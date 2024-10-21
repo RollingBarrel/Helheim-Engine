@@ -197,17 +197,17 @@
                             {
                                 "VariableName": "mDeathParticlesHead",
                                 "MemberType": 3,
-                                "VariableData": 816237663
+                                "VariableData": 1977403906
                             },
                             {
                                 "VariableName": "mDeathParticlesBody",
                                 "MemberType": 3,
-                                "VariableData": 610783767
+                                "VariableData": 335499226
                             },
                             {
                                 "VariableName": "mDeathParticlesLegs",
                                 "MemberType": 3,
-                                "VariableData": 1405990502
+                                "VariableData": 1644790809
                             }
                         ]
                     }
@@ -2070,10 +2070,10 @@
                     -0.000002438341198285343
                 ],
                 "Rotation": [
-                    1.7867823326732934e-15,
-                    0.0025508967228233816,
-                    -4.557911586135604e-18,
-                    0.9999968409538269
+                    1.788980594929655e-15,
+                    0.002550896257162094,
+                    8.662704419149848e-16,
+                    0.9999967813491821
                 ],
                 "Scale": [
                     1.0,
@@ -2098,10 +2098,10 @@
                     -0.07333049178123474
                 ],
                 "Rotation": [
-                    0.0007066428661346436,
-                    0.7148871421813965,
-                    -0.6958237886428833,
-                    0.06902992725372315
+                    -0.0906376987695694,
+                    0.7008021473884583,
+                    -0.7012737393379211,
+                    0.0942143127322197
                 ],
                 "Scale": [
                     1.0,
@@ -2339,7 +2339,7 @@
                 "Components": []
             },
             {
-                "UID": 816237663,
+                "UID": 1977403906,
                 "ParentUID": 1676357324,
                 "Name": "DeintegrationParticles_Head",
                 "Enabled": true,
@@ -4124,7 +4124,7 @@
                 "Components": []
             },
             {
-                "UID": 610783767,
+                "UID": 335499226,
                 "ParentUID": 1484203364,
                 "Name": "DeintegrationParticles_Body",
                 "Enabled": true,
@@ -4519,8 +4519,8 @@
                 ]
             },
             {
-                "UID": 1405990502,
-                "ParentUID": 1281397391,
+                "UID": 1644790809,
+                "ParentUID": 991913273,
                 "Name": "DeintegrationParticles_Legs",
                 "Enabled": true,
                 "Active": true,
