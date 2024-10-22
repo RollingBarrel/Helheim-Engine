@@ -348,11 +348,33 @@ void GameManager::PlayPlayerFootStepSound()
 
             break;
         }
-        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR1, mPlayerController->GetPlayerPosition());
     }
     else if (sceneName == "Level3Scene")
     {
-        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL1, mPlayerController->GetPlayerPosition());
+        int randomValue = std::rand() % 4;
+        switch (randomValue)
+        {
+        case 0:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL1, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 1:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL2, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 2:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL3, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 3:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL4, mPlayerController->GetPlayerPosition());
+
+            break;
+        default:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL1, mPlayerController->GetPlayerPosition());
+
+            break;
+        }
     }
 }
 

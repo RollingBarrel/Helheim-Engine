@@ -106,11 +106,30 @@ void ElectricTrapController::ActivateTrap(bool active, bool vfxOnly)
 {
     if (active)
     {
+        int randomValue = std::rand() % 3;
+        switch (randomValue)
+        {
+        case 0:
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
+
+            break;
+        case 1:
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP2, mGameObject->GetWorldPosition());
+
+            break;
+        case 2:
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP3, mGameObject->GetWorldPosition());
+
+            break;
+        default:
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
+
+            break;
+        }
         if (mSfx)
         {
             mSfx->SetEnabled(true);
         }
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
     }
     else if (vfxOnly)
     {
