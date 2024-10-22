@@ -121,13 +121,13 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
     {
         if (collision->GetTag().compare("Player") == 0)
         {
-            if ((damageTimer < damageDelay))
+            if ((damageTimer > 0))
             {
-                damageTimer += App->GetDt();
+                damageTimer -= App->GetDt();
             }
             else
             {
-                damageTimer = 0;
+                damageTimer = damageDelay;
 
                 GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
                 mPlayer = GameManager::GetInstance()->GetPlayerController();
