@@ -56,6 +56,7 @@
 #include "Grenade.h"
 #include <LineComponent.h>
 #include "UltimateAttack.h"
+#include "PlayerCamera.h"
 
 CREATE(PlayerController)
 {
@@ -1099,9 +1100,10 @@ void PlayerController::EnableUltimate(bool enable)
     UltimateAttack* ultimateScript = (UltimateAttack*)((ScriptComponent*)mUltimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
     ultimateScript->ResetTimer();
     if (mUltimateGO)
-    {   
+    {
         mInUlt = enable;
-        if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
+        if(enable) GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(4.0f, 0.1f);
+        else GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
         mUltimateGO->SetEnabled(enable);
     }
 }

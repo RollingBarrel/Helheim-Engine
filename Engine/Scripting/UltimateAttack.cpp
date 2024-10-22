@@ -42,15 +42,15 @@ void UltimateAttack::Start()
 
 void UltimateAttack::Update()
 {
-    if (!mExpansionTimer.DelayWithoutReset(3.8f)) 
+    if (!mExpansionTimer.DelayWithoutReset(3.9f)) 
     {
         SetLength(100.0f, 25.0f);
         SetFinalPoint();
     }
     else
     {
-        SetLength(10.0f,15.0f);/*
-        if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();*/
+        //mLinesGO->SetLocalScale(float3(1.0f,1.0f,0.01f));/*
+       // if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();*/
     }
     
 }
@@ -89,20 +89,28 @@ void UltimateAttack::SetFinalPoint()
 
         float3 forwardDirection = ray.dir;
 
-        float distanceForward = 30.0f; 
+        float distanceForward = 30.0f;
 
         float3 areaCenter = hit.mHitPoint + forwardDirection * (distanceForward / 2);
 
         float3 halfExtents(distanceForward / 2, distanceForward / 2, distanceForward / 2);
 
-        float3 minPoint = areaCenter - halfExtents; 
-        float3 maxPoint = areaCenter + halfExtents; 
+        float3 minPoint = areaCenter - halfExtents;
+        float3 maxPoint = areaCenter + halfExtents;
 
 
         AABB exclusionArea(minPoint, maxPoint);
 
         mNoDamageArea = exclusionArea;
+    } 
+    else
+    {
+        mNoDamageArea = AABB(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
+        mFinalPoint1->SetLocalPosition(float3(0.0f, 0.0f, 35.f));
+        mFinalPoint2->SetLocalPosition(float3(0.0f, 0.0f, 35.f));
+        mFinalPoint3->SetLocalPosition(float3(0.0f, 0.0f, 35.f));
     }
+ 
 }
 
 void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
