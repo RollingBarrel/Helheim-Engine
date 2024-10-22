@@ -133,9 +133,9 @@ void AreaDoors::CloseDoors(bool close)
 			static_cast<AnimationComponent*>((mElevator->GetChildren()[0])->GetComponentInChildren(ComponentType::ANIMATION))->SetIsPlaying(true);
 		}
 		else
-		{
-			static_cast<AnimationComponent*>((mElevator->GetChildren()[0])->GetComponentInChildren(ComponentType::ANIMATION))->SetIsPlaying(false);
+		{		
 			static_cast<AnimationComponent*>((mElevator->GetChildren()[0])->GetComponentInChildren(ComponentType::ANIMATION))->ResetAnimationComponent();
+			static_cast<AnimationComponent*>((mElevator->GetChildren()[0])->GetComponentInChildren(ComponentType::ANIMATION))->SetIsPlaying(false);
 		}
 	}
 }
