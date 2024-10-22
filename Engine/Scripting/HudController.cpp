@@ -48,6 +48,8 @@ CREATE(HudController)
     SEPARATOR("Boss health");
     MEMBER(MemberType::GAMEOBJECT, mBossHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mBossHealthGradualGO);
+    MEMBER(MemberType::GAMEOBJECT, mBossHealthBaseGO);
+    MEMBER(MemberType::GAMEOBJECT, mBossHealthInvincibleGO);
     SEPARATOR("Pause Screen");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mFadeoutScreen);
@@ -1000,11 +1002,15 @@ void HudController::SetBossInvulnerable(bool value)
     LOG("Change color: " + value)
     if (value)
     {
-        mBossHealthImage->SetColor(float3(150.0f / 255.f, 5.0f / 255.f, 150.0f / 255.f));
+        mBossHealthImage->SetColor(float3(185.0f / 255.f, 23.0f / 255.f, 194.0f / 255.f));
+        mBossHealthBaseGO->SetEnabled(false);
+        mBossHealthInvincibleGO->SetEnabled(true);
     }
     else 
     {
-        mBossHealthImage->SetColor(float3(252.0f / 255.f, 15.0f / 255.f, 62.0f / 255.f));
+        mBossHealthImage->SetColor(float3(252.0f / 255.f, 42.0f / 255.f, 42.0f / 255.f));
+        mBossHealthBaseGO->SetEnabled(true);
+        mBossHealthInvincibleGO->SetEnabled(false);
     }
 }
 

@@ -166,6 +166,8 @@ private:
     SliderComponent* mBossHealthSlider = nullptr;
     ImageComponent* mBossHealthImage = nullptr;
     SliderComponent* mBossHealthGradualSlider = nullptr;
+    GameObject* mBossHealthBaseGO = nullptr;
+    GameObject* mBossHealthInvincibleGO = nullptr;
 
     //Ammo
     GameObject* mAmmoBaseGO = nullptr;
