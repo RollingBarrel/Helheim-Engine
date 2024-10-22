@@ -165,6 +165,7 @@ void GameManager::Update()
     {
         mController = App->GetInput()->isGamepadAvailable();
         mHudController->ChangeBindings(mController);
+        App->GetWindow()->ShowCursor(!mController);
     }
 }
 

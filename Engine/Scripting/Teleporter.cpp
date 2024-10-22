@@ -49,7 +49,7 @@ void Teleporter::Start()
     mElevatorAudio = GameManager::GetInstance()->GetAudio()->Play(SFX::ELEVATOR, mElevatorAudio);
     GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, true);
 
-    if(mDoorEntrance)
+    if (mDoorEntrance)
         mDoorEntranceAnimation = static_cast<AnimationComponent*>(mDoorEntrance->GetComponent(ComponentType::ANIMATION));
 
     if(mDoorExit)
@@ -58,7 +58,6 @@ void Teleporter::Start()
 
 void Teleporter::Update()
 {
-    
     if (mIsTriggered)
     {
         mCurrentTime += App->GetDt();
@@ -81,24 +80,18 @@ void Teleporter::Update()
 
             if (mIsAtStart)
             {
-
                 float3 destination = App->GetNavigation()->FindNearestPoint(mEndPos + float3(mCurrentDirection.x, 0.0f, mCurrentDirection.z) * 10, float3(10.0f));
                 mDistance = mPlayer->GetWorldPosition().Distance(destination);
                 mCurrentDirection = destination.Sub(mPlayer->GetWorldPosition()).Normalized();
                 mPlayer->LookAt(destination);
-
-
             }
             else
             {
-
                 float3 destination = App->GetNavigation()->FindNearestPoint(mStartPos + float3(mCurrentDirection.x, 0.0f, mCurrentDirection.z) * 10, float3(10.0f));
                 mDistance = mPlayer->GetWorldPosition().Distance(destination);
                 mCurrentDirection = destination.Sub(mPlayer->GetWorldPosition()).Normalized();
                 mPlayer->LookAt(destination);
-
             }
-
         }
     }
     else if (mIsEntering)
@@ -108,10 +101,7 @@ void Teleporter::Update()
         mPlayer->SetWorldPosition(positon);
 
         float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (mCurrentTime / mEnterDuration);
-        mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
-        
-        if (mDoorEntranceAnimation)
-            mDoorEntranceAnimation->SetIsPlaying(true);
+        mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);      
 
         if (mCurrentTime > mEnterDuration)
         {
@@ -119,12 +109,10 @@ void Teleporter::Update()
             mIsEntering = false;
             mCurrentTime = 0.0f;
 
-
             if (mPlayerAnimation)
             {
                 mPlayerAnimation->SendTrigger("tIdle", 0.2f);
                 mPlayerAnimation->SendSpineTrigger("tIdle", 0.2f);
-
             }
 
             if (mIsAtStart)
@@ -136,7 +124,6 @@ void Teleporter::Update()
             {
                 mDistance = mStartPos.Distance(mEndPos);
                 mCurrentDirection = mStartPos.Sub(mEndPos).Normalized();
-
             }
 
             if (mDoorEntranceAnimation)
@@ -155,6 +142,7 @@ void Teleporter::Update()
             GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELEVATOR_OPEN_CLOSE);
             mCloseAudioPlayed = true;
         }
+
         mCurrentTime += App->GetDt();
         float3 positon = LerpPosition(mEnterDuration, mIsAtStart ? mEndPos : mStartPos);
         mPlayer->SetWorldPosition(positon);
@@ -162,11 +150,9 @@ void Teleporter::Update()
         float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (1-(mCurrentTime / mEnterDuration));
         mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
 
-
         if (mDoorExitAnimation)
             mDoorExitAnimation->SetIsPlaying(true);
-        
-        
+             
         if (mCurrentTime > mEnterDuration)
         {
             if (mPlayerAnimation)
@@ -190,7 +176,6 @@ void Teleporter::Update()
                 mDoorExitAnimation->SetAnimSpeed(-1.0f);
                 mDoorExitAnimation->SetIsPlaying(true);
             }
-
         }
     }
     if (mIsCooldown)
