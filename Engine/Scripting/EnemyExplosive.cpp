@@ -8,9 +8,9 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 
-#include "AudioManager.h"
 #include "GameManager.h"
-
+#include "AudioManager.h"
+#include "PlayerCamera.h"
 
 CREATE(EnemyExplosive)
 {
@@ -88,6 +88,7 @@ void EnemyExplosive::Charge()
 
 void EnemyExplosive::Attack()
 {
+    GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(0.5f, 0.2f);
     if (!mExplosionPlaying)
     {
         mChargePlaying = false;

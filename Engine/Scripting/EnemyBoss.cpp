@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "AIAGentComponent.h"
 #include "AnimationComponent.h"
+#include "MeshRendererComponent.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -17,6 +18,7 @@
 #include "BossBattleArea.h"
 #include "ImageComponent.h"
 #include <algorithm>
+
 
 #define LASER_WIND_UP 2.625f
 #define BULLETS_ANIMATION 146.0f / 24.0f
@@ -62,7 +64,10 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mLaserDamage);
     MEMBER(MemberType::FLOAT, mLaserSpeed);
     MEMBER(MemberType::FLOAT, mLaserDuration);
-
+    SEPARATOR("LASER");
+    MEMBER(MemberType::GAMEOBJECT, mDeathParticlesHead);
+    MEMBER(MemberType::GAMEOBJECT, mDeathParticlesBody);
+    MEMBER(MemberType::GAMEOBJECT, mDeathParticlesLegs);
     END_CREATE;
 }
 
@@ -109,6 +114,10 @@ void EnemyBoss::Start()
     {
         mSpritesheet = static_cast<ImageComponent*>(mShieldGO->GetComponent(ComponentType::IMAGE));
     }
+    mHitEffectColor = float4(1.0f, 0.0f, 0.0f, 1.0f);
+    mDeathParticlesHead->SetEnabled(false);
+    mDeathParticlesBody->SetEnabled(false);
+    mDeathParticlesLegs->SetEnabled(false);
 }
 
 void EnemyBoss::Update()
@@ -288,7 +297,7 @@ void EnemyBoss::Update()
             break;
         }
     }
-
+    CheckHitEffect();
 }
 
 void EnemyBoss::StartBulletAttack(BulletPattern pattern)
@@ -389,12 +398,35 @@ void EnemyBoss::SetupBomb(GameObject* bombGO, const math::float3& position)
     }
 }
 
+void EnemyBoss::CheckHitEffect()
+{
+    if (mHit)
+    {
+        if (mHitEffectTimer.Delay(mHitEffectTime))
+        {
+            ResetEnemyColor(1.0f);
+            mHit = false;
+        }
+        else
+        {
+            ResetEnemyColor(mHitEffectTimer.GetTimePassed() / mHitEffectTime);
+        }
+    }
+}
+
 void EnemyBoss::Death()
 {
+    float factor = mDeathTimer.GetTimePassed() / DEATH_ANIMATION;
+    for (size_t i = 0; i < mMeshComponents.size(); i++)
+    {
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+        meshComponent->SetBaseColorFactor(mOgColors[i] - float4(0.0f, 0.0f, 0.0f, math::Pow(factor, 2)));
+    }
     if (mDeathTimer.Delay(DEATH_ANIMATION))
     {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM);
-
+        mDeathParticlesHead->SetEnabled(false);
+        mDeathParticlesBody->SetEnabled(false);
+        mDeathParticlesLegs->SetEnabled(false);
         GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(false);
         GameManager::GetInstance()->SetIsFightingBoss(false);
         mGameObject->SetEnabled(false);
@@ -861,10 +893,14 @@ void EnemyBoss::TakeDamage(float damage)
         ActivateHitEffect();
         mHealth -= damage;
 
-        if (mHealth <= 0)
+        if (mHealth <= 0 and mStage == 2)
         {
             // Use Hit2 animation before Death??
             mCurrentState = EnemyState::DEATH;
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM);
+            mDeathParticlesHead->SetEnabled(true);
+            mDeathParticlesBody->SetEnabled(true);
+            mDeathParticlesLegs->SetEnabled(true);
         }
     }
 }

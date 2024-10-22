@@ -37,6 +37,7 @@ public:
 	bool IsWindowFullscreen();
 
 	void SetCursor(unsigned int resourceID, unsigned int cursorWidth = 32, unsigned int cursorHeight = 32, unsigned int hotPointX = 0, unsigned int hotPointY = 0);
+	void ShowCursor(bool show);
 
 	SDL_Window* mWindow = nullptr;
 	SDL_Surface* mScreenSurface = nullptr;
