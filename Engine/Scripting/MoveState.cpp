@@ -90,7 +90,6 @@ void MoveState::Update()
 	mPlayerController->MoveInDirection(mMoveDirection);
 
 	DoAnimation();
-	PlayAudio();
 }
 
 void MoveState::Enter()
@@ -110,6 +109,7 @@ void MoveState::DoAnimation()
 {
 	if (!mMoveDirection.Equals(float3::zero))
 	{
+		PlayAudio();
 		mMoveDirection.Normalize();
 		float2 mMovingTo = SetMovingDirection();
 		float3 mousePosition = GameManager::GetInstance()->GetPlayer()->GetFront();
@@ -305,11 +305,8 @@ std::string MoveState::GetTriggerFromAngle(float angle)
 
 void MoveState::PlayAudio()
 {
-	// TODO: play sound according the animation
-	mStepTimer += App->GetDt();
-	if (mStepTimer >= mStepCooldown)
+	if (mStepTimer.Delay(mStepCooldown))
 	{
-		mStepTimer = 0;
 		GameManager::GetInstance()->PlayPlayerFootStepSound();
 	}
 }

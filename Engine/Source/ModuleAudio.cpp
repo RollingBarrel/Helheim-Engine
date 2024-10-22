@@ -277,7 +277,7 @@ FMOD::Channel* ModuleAudio::Play(const std::string& fileName)
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
-	sound->set3DMinMaxDistance(5.0f, 30.0f);
+	sound->set3DMinMaxDistance(1.0f, 30.0f);
 	channel->setMode(FMOD_LOOP_NORMAL);
 	channel->setChannelGroup(mAudioChannelGroup);
 	return channel;

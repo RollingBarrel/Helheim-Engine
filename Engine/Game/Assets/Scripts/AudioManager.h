@@ -215,15 +215,15 @@ private:
 		{SFX::MAINMENU_START, "Assets/FMOD/Audios/sfx/gamestart.wav"},
 
 		// PLAYER
-		{SFX::PLAYER_FOOTSTEP_FLOOR1, "Assets/FMOD/Audios/sfx/stepf1.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_FLOOR2, "Assets/FMOD/Audios/sfx/stepf2.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_FLOOR3, "Assets/FMOD/Audios/sfx/stepf3.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_FLOOR4, "Assets/FMOD/Audios/sfx/stepf4.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR1, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_01.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR2, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_02.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR3, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_03.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR4, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_04.wav"}, // [X]
 
-		{SFX::PLAYER_FOOTSTEP_METAL1, "Assets/FMOD/Audios/sfx/stepm1.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_METAL2, "Assets/FMOD/Audios/sfx/stepm2.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_METAL3, "Assets/FMOD/Audios/sfx/stepm3.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_METAL4, "Assets/FMOD/Audios/sfx/stepm4.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL1, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_01.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL2, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_02.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL3, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_03.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL4, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_04.wav"}, // [X]
 
 		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
 		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
