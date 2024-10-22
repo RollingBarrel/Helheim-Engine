@@ -107,6 +107,7 @@ void Sanity::Start()
         mCard1Text = static_cast<TextComponent*>(children1[4]->GetComponent(ComponentType::TEXT));
         mCard1Btn = static_cast<ButtonComponent*>(children1[2]->GetComponent(ComponentType::BUTTON));
         mCard1Image = static_cast<ImageComponent*>(children1[2]->GetComponent(ComponentType::IMAGE));
+        mCard1Icon = static_cast<ImageComponent*>(children1[5]->GetComponent(ComponentType::IMAGE));
         mCard1Hover = children1[0];
         mCard1Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard1Click, this)));
         mCard1Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard1HoverOn, this)));
@@ -119,6 +120,7 @@ void Sanity::Start()
         mCard2Text = static_cast<TextComponent*>(children2[4]->GetComponent(ComponentType::TEXT));
         mCard2Btn = static_cast<ButtonComponent*>(children2[2]->GetComponent(ComponentType::BUTTON));
         mCard2Image = static_cast<ImageComponent*>(children2[2]->GetComponent(ComponentType::IMAGE));
+        mCard2Icon = static_cast<ImageComponent*>(children2[5]->GetComponent(ComponentType::IMAGE));
         mCard2Hover = children2[0];
         mCard2Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard2Click, this)));
         mCard2Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard2HoverOn, this)));
@@ -131,6 +133,7 @@ void Sanity::Start()
         mCard3Text = static_cast<TextComponent*>(children3[4]->GetComponent(ComponentType::TEXT));
         mCard3Btn = static_cast<ButtonComponent*>(children3[2]->GetComponent(ComponentType::BUTTON));
         mCard3Image = static_cast<ImageComponent*>(children3[2]->GetComponent(ComponentType::IMAGE));
+        mCard3Icon = static_cast<ImageComponent*>(children3[5]->GetComponent(ComponentType::IMAGE));
         mCard3Hover = children3[0];
         mCard3Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard3Click, this)));
         mCard3Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard3HoverOn, this)));
@@ -150,6 +153,7 @@ void Sanity::Start()
 void Sanity::Update()
 {
     if (mEnd && mEndTimer.Delay(2.0f)) FinishSanity();
+    //else if (mEnd) UpdateSelected();
 
     Controls();
 
@@ -336,6 +340,10 @@ void Sanity::OnCard1Click()
     mCard1Glow->SetEnabled(true);
     mCard1Selected->SetEnabled(true);
     SetDamageBoxesSelected(mDmgLvl);
+    mCard2Image->SetAlpha(0.5f);
+    mCard2Icon->SetAlpha(0.5f);
+    mCard3Image->SetAlpha(0.5f);
+    mCard3Icon->SetAlpha(0.5f);
 
     mEnd = true;
 }
@@ -352,6 +360,7 @@ void Sanity::OnCard1HoverOn()
     OnCard3HoverOff();
 
     mCard1Image->SetAlpha(1.0f);
+    mCard1Icon->SetAlpha(1.0f);
     mCard1Hover->SetEnabled(true);
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 }
@@ -360,7 +369,8 @@ void Sanity::OnCard1HoverOff()
 {
     if (mEnd) return;
     mCard1Hovered = false;
-    mCard1Image->SetAlpha(0.75f);
+    mCard1Image->SetAlpha(0.7f);
+    mCard1Icon->SetAlpha(0.7f);
     mCard1Hover->SetEnabled(false);
 }
 
@@ -381,6 +391,10 @@ void Sanity::OnCard2Click()
     mCard2Glow->SetEnabled(true);
     mCard2Selected->SetEnabled(true);
     SetSpeedBoxesSelected(mSpeedLvl);
+    mCard1Image->SetAlpha(0.5f);
+    mCard1Icon->SetAlpha(0.5f);
+    mCard3Image->SetAlpha(0.5f);
+    mCard3Icon->SetAlpha(0.5f);
 
     mEnd = true;
 }
@@ -397,6 +411,7 @@ void Sanity::OnCard2HoverOn()
     OnCard3HoverOff();
 
     mCard2Image->SetAlpha(1.0f);
+    mCard2Icon->SetAlpha(1.0f);
     mCard2Hover->SetEnabled(true);
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 }
@@ -405,7 +420,8 @@ void Sanity::OnCard2HoverOff()
 {
     if (mEnd) return;
     mCard2Hovered = false;
-    mCard2Image->SetAlpha(0.75f);
+    mCard2Image->SetAlpha(0.7f);
+    mCard2Icon->SetAlpha(0.7f);
     mCard2Hover->SetEnabled(false);
 }
 
@@ -426,6 +442,10 @@ void Sanity::OnCard3Click()
     mCard3Glow->SetEnabled(true);
     mCard3Selected->SetEnabled(true);
     SetHealthBoxesSelected(mHealthLvl);
+    mCard1Image->SetAlpha(0.5f);
+    mCard1Icon->SetAlpha(0.5f);
+    mCard2Image->SetAlpha(0.5f);
+    mCard2Icon->SetAlpha(0.5f);
 
     mEnd = true;
 }
@@ -442,6 +462,7 @@ void Sanity::OnCard3HoverOn()
     OnCard3HoverOff();
 
     mCard3Image->SetAlpha(1.0f);
+    mCard3Icon->SetAlpha(1.0f);
     mCard3Hover->SetEnabled(true);
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 }
@@ -449,7 +470,8 @@ void Sanity::OnCard3HoverOn()
 void Sanity::OnCard3HoverOff()
 {
     if (mEnd) return;
-    mCard3Image->SetAlpha(0.75f);
+    mCard3Image->SetAlpha(0.7f);
+    mCard3Icon->SetAlpha(0.7f);
     mCard3Hovered = false;
     mCard3Hover->SetEnabled(false);
 }
@@ -550,24 +572,31 @@ void Sanity::SetSpeedBoxesSelected(int value)
     {
     case 7:
         mSpeedBox7Selected->SetEnabled(true);
+        mSelected = mSpeedBox7Selected;
         break;
     case 6:
         mSpeedBox6Selected->SetEnabled(true);
+        mSelected = mSpeedBox6Selected;
         break;
     case 5:
         mSpeedBox5Selected->SetEnabled(true);
+        mSelected = mSpeedBox5Selected;
         break;
     case 4:
         mSpeedBox4Selected->SetEnabled(true);
+        mSelected = mSpeedBox4Selected;
         break;
     case 3:
         mSpeedBox3Selected->SetEnabled(true);
+        mSelected = mSpeedBox3Selected;
         break;
     case 2:
         mSpeedBox2Selected->SetEnabled(true);
+        mSelected = mSpeedBox2Selected;
         break;
     case 1:
         mSpeedBox1Selected->SetEnabled(true);
+        mSelected = mSpeedBox1Selected;
         break;
     default:
         break;
@@ -580,24 +609,31 @@ void Sanity::SetHealthBoxesSelected(int value)
     {
     case 7:
         mHealthBox7Selected->SetEnabled(true);
+        mSelected = mHealthBox7Selected;
         break;
     case 6:
         mHealthBox6Selected->SetEnabled(true);
+        mSelected = mHealthBox6Selected;
         break;
     case 5:
         mHealthBox5Selected->SetEnabled(true);
+        mSelected = mHealthBox5Selected;
         break;
     case 4:
         mHealthBox4Selected->SetEnabled(true);
+        mSelected = mHealthBox4Selected;
         break;
     case 3:
         mHealthBox3Selected->SetEnabled(true);
+        mSelected = mHealthBox3Selected;
         break;
     case 2:
         mHealthBox2Selected->SetEnabled(true);
+        mSelected = mHealthBox2Selected;
         break;
     case 1:
         mHealthBox1Selected->SetEnabled(true);
+        mSelected = mHealthBox1Selected;
         break;
     default:
         break;
@@ -610,24 +646,31 @@ void Sanity::SetDamageBoxesSelected(int value)
     {
     case 7:
         mDmgBox7Selected->SetEnabled(true);
+        mSelected = mDmgBox7Selected;
         break;
     case 6:
         mDmgBox6Selected->SetEnabled(true);
+        mSelected = mDmgBox6Selected;
         break;
     case 5:
         mDmgBox5Selected->SetEnabled(true);
+        mSelected = mDmgBox5Selected;
         break;
     case 4:
         mDmgBox4Selected->SetEnabled(true);
+        mSelected = mDmgBox4Selected;
         break;
     case 3:
         mDmgBox3Selected->SetEnabled(true);
+        mSelected = mDmgBox3Selected;
         break;
     case 2:
         mDmgBox2Selected->SetEnabled(true);
+        mSelected = mDmgBox2Selected;
         break;
     case 1:
         mDmgBox1Selected->SetEnabled(true);
+        mSelected = mDmgBox1Selected;
         break;
     default:
         break;
@@ -636,6 +679,16 @@ void Sanity::SetDamageBoxesSelected(int value)
 
 void Sanity::ResetSelected()
 {
+    mSelected = nullptr;
+    mSelectedImage = nullptr;
+
+    mCard1Image->SetAlpha(0.7f);
+    mCard1Icon->SetAlpha(0.7f);
+    mCard2Image->SetAlpha(0.7f);
+    mCard2Icon->SetAlpha(0.7f);
+    mCard3Image->SetAlpha(0.7f);
+    mCard3Icon->SetAlpha(0.7f);
+
     mCard1Glow->SetEnabled(false);
     mCard1Selected->SetEnabled(false);
     mCard2Glow->SetEnabled(false);
@@ -668,3 +721,14 @@ void Sanity::ResetSelected()
     mSpeedBox2Selected->SetEnabled(false);
     mSpeedBox1Selected->SetEnabled(false);
 }
+
+/*void Sanity::UpdateSelected()
+{
+    if (!mSelectedImage)
+    {
+        mSelectedImage = static_cast<ImageComponent*>(mSelected->GetComponent(ComponentType::IMAGE));
+        mSelectedImage->SetAlpha(1.0f);
+    }
+
+    if(*mSelectedImage->GetAlpha() > 0.0f) mSelectedImage->SetAlpha(*mSelectedImage->GetAlpha() - 0.1f * App->GetDt());
+}*/

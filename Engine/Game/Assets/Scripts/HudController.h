@@ -270,6 +270,11 @@ private:
     GameObject* mEnemy3GO = nullptr;
     GameObject* mEnemy4GO = nullptr;
     GameObject* mEnemy5GO = nullptr;
+    GameObject* mEnemyWarningGO = nullptr;
+    ImageComponent* mEnemyWarningImage = nullptr;
+    GameObject* mEnemyArrowsGO = nullptr;
+    Transform2DComponent* mEnemyArrowsTransform = nullptr;
+    float mTime;
 
 
     // Buttons change

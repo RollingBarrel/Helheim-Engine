@@ -69,6 +69,7 @@ private:
     void SetDamageBoxesSelected(int value);
 
     void ResetSelected();
+    void UpdateSelected();
 
     std::vector<std::vector<Buff>> mBuffSelection;
     std::vector<Buff> mCurrentBuffs;
@@ -78,6 +79,7 @@ private:
     ButtonComponent* mCard1Btn = nullptr;
     GameObject* mCard1Hover = nullptr;
     ImageComponent* mCard1Image = nullptr;
+    ImageComponent* mCard1Icon = nullptr;
     GameObject* mCard1Glow = nullptr;
     GameObject* mCard1Selected = nullptr;
     bool mCard1Hovered = false;
@@ -87,6 +89,7 @@ private:
     ButtonComponent* mCard2Btn = nullptr;
     GameObject* mCard2Hover = nullptr;
     ImageComponent* mCard2Image = nullptr;
+    ImageComponent* mCard2Icon = nullptr;
     GameObject* mCard2Glow = nullptr;
     GameObject* mCard2Selected = nullptr;
     bool mCard2Hovered = false;
@@ -96,6 +99,7 @@ private:
     ButtonComponent* mCard3Btn = nullptr;
     GameObject* mCard3Hover = nullptr;
     ImageComponent* mCard3Image = nullptr;
+    ImageComponent* mCard3Icon = nullptr;
     GameObject* mCard3Glow = nullptr;
     GameObject* mCard3Selected = nullptr;
     bool mCard3Hovered = false;
@@ -109,6 +113,9 @@ private:
     int mCurrentBuff = 0;
     float mTimePassed = 0.0f;
     const float mDebounceTime = 0.2f; // 200 ms delay time
+
+    GameObject* mSelected = nullptr;
+    ImageComponent* mSelectedImage = nullptr;
 
     // Speed buff
     int mSpeedLvl = 0;

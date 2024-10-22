@@ -109,6 +109,8 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mEnemy3GO);
     MEMBER(MemberType::GAMEOBJECT, mEnemy4GO);
     MEMBER(MemberType::GAMEOBJECT, mEnemy5GO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyWarningGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyArrowsGO);
 
     SEPARATOR("BINDINGS");
     MEMBER(MemberType::GAMEOBJECT, mControllerWeaponBinding);
@@ -213,6 +215,9 @@ void HudController::Start()
             mCollectibleContinueBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnCollectibleContinueBtnClick, this)));
         }
     }
+
+    if (mEnemyWarningGO) mEnemyWarningImage = static_cast<ImageComponent*>(mEnemyWarningGO->GetComponent(ComponentType::IMAGE));
+    if (mEnemyArrowsGO) mEnemyArrowsTransform = static_cast<Transform2DComponent*>(mEnemyArrowsGO->GetComponent(ComponentType::TRANSFORM2D));
 
     if (mHealthGO)
     {
@@ -328,6 +333,13 @@ void HudController::Update()
     if(mLoadlevel == true && mLoadingSlider->GetValue() < 1) mLoadingSlider->SetValue(mLoadingSlider->GetValue() + 0.01);
 
     Controls();
+
+    if (mEnemyGO->IsEnabled()) {
+        if (mEnemyArrowsTransform->GetPosition().x < -525.0f)
+            mEnemyArrowsTransform->SetPosition(float3(mEnemyArrowsTransform->GetPosition().x + 800.0f * App->GetDt(), 0.0f, 0.0f));
+        mTime += App->GetDt();
+        mEnemyWarningImage->SetAlpha((sin(mTime * 10.0f) + 1.0f) / 2.0f * (1.0f - 0.5f) + 0.5f);
+    }
 
     if (mLoseFlag == true) LoseUpdate();
     if (mWinFlag == true) WinUpdate();
@@ -597,8 +609,12 @@ void HudController::DisableCollectible()
 
 void HudController::SetEnemyScreen(bool value, int enemy)
 {
+    if (mEnemyGO->IsEnabled() && value) return;
     mEnemyGO->SetEnabled(value);
     
+    mEnemyWarningImage->SetAlpha(1.0f);
+    mEnemyArrowsTransform->SetPosition(float3(-1400.0f, 0.0f, 0.0f));
+
     if (mEnemy1GO) mEnemy1GO->SetEnabled(false);
     if (mEnemy2GO) mEnemy2GO->SetEnabled(false);
     if (mEnemy3GO) mEnemy3GO->SetEnabled(false);

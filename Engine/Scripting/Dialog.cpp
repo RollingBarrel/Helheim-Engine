@@ -253,7 +253,15 @@ void Dialog::StartAnimationToEnd()
 
 void Dialog::StartDialog()
 {
-    if (!mFirstTime) mCompletedGO->SetEnabled(true);
+    if (!mFirstTime)
+    {
+        mCompletedGO->SetEnabled(true);
+    }
+    else 
+    {
+        EnableDialog();
+        return;
+    }
 
     mStartTimeout = true;
     mStartTimer.Reset();
