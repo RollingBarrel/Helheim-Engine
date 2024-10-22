@@ -209,7 +209,7 @@
                             {
                                 "VariableName": "mUltimateChargeGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 2068811947
                             },
                             {
                                 "VariableName": "mUltiOuterChargeGO",
@@ -3284,6 +3284,288 @@
                 "Components": []
             },
             {
+                "UID": 2068811947,
+                "ParentUID": 1591821193,
+                "Name": "UltimateChargeGO",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.20000000298023225,
+                    0.05000000074505806,
+                    0.11999999731779099
+                ],
+                "Rotation": [
+                    -0.5767819881439209,
+                    -0.40905359387397768,
+                    0.6450587511062622,
+                    0.28965523838996889
+                ],
+                "Scale": [
+                    100.0,
+                    100.0,
+                    100.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 213516520,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 22.399999618530275,
+                        "MaxParticles": 199,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 3.700000047683716,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 1.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.20000000298023225,
+                            "MaxValue": 0.30000001192092898
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 1.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 1.0,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 5.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.029490232467651368,
+                                "Color": [
+                                    0.150176003575325,
+                                    0.46519795060157778,
+                                    0.9879999756813049,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6126002073287964,
+                                "Color": [
+                                    0.037586603313684466,
+                                    0.013952028006315232,
+                                    0.4359999895095825,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.97050940990448,
+                                "Color": [
+                                    0.10000002384185791,
+                                    0.09160002321004868,
+                                    0.09160002321004868,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1784664744,
+                "ParentUID": 2068811947,
+                "Name": "UltimateChargeGO_core",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 22.399999618530275,
+                        "MaxParticles": 199,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.5,
+                            "MaxValue": 0.6000000238418579
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 1.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 1.0,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": true,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 4.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.2999999523162842,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.029490232467651368,
+                                "Color": [
+                                    0.150176003575325,
+                                    0.16358141601085664,
+                                    0.9879999756813049,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6126002073287964,
+                                "Color": [
+                                    0.013952028006315232,
+                                    0.20302948355674745,
+                                    0.4359999895095825,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.97050940990448,
+                                "Color": [
+                                    0.0017279948806390167,
+                                    0.007418869528919458,
+                                    0.14399999380111695,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
                 "UID": 1599966850,
                 "ParentUID": 1591821193,
                 "Name": "LeftFinger1Metacarpal",
@@ -4243,7 +4525,7 @@
                 "Active": false,
                 "Translation": [
                     0.0,
-                    0.5,
+                    0.550000011920929,
                     0.23467564582824708
                 ],
                 "Rotation": [
@@ -4469,10 +4751,10 @@
                     2.2580509185791017
                 ],
                 "Rotation": [
-                    0.0013337077107280493,
-                    -0.0021406463347375395,
-                    0.5283833146095276,
-                    -0.8480903506278992
+                    0.0013215012149885297,
+                    -0.002148223575204611,
+                    0.5235456228256226,
+                    -0.8510913848876953
                 ],
                 "Scale": [
                     1.7897616624832154,
@@ -4489,11 +4771,11 @@
                         "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 0.30000001192092898,
+                        "Duration": 3.5999999046325685,
                         "EmissionRate": 200.0,
                         "MaxParticles": 25,
                         "Burst": 0,
-                        "Looping": true,
+                        "Looping": false,
                         "FollowEmitter": true,
                         "SpinSpeed": 16.700000762939454,
                         "StretchedBillboard": false,
@@ -4904,11 +5186,11 @@
                         "IsEnabled": false,
                         "Image": 1711944677,
                         "Delay": 0.0,
-                        "Duration": 10.0,
+                        "Duration": 3.5999999046325685,
                         "EmissionRate": 39.29999923706055,
                         "MaxParticles": 1000,
                         "Burst": 0,
-                        "Looping": true,
+                        "Looping": false,
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": true,
@@ -5177,11 +5459,11 @@
                         "IsEnabled": false,
                         "Image": 631868986,
                         "Delay": 0.0,
-                        "Duration": 10.0,
+                        "Duration": 3.5999999046325685,
                         "EmissionRate": 77.9000015258789,
                         "MaxParticles": 100,
                         "Burst": 0,
-                        "Looping": true,
+                        "Looping": false,
                         "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
@@ -5759,10 +6041,10 @@
                     0.6537387371063232
                 ],
                 "Rotation": [
-                    5.09423037087231e-9,
-                    1.506035296472419e-8,
-                    0.9466351270675659,
-                    -0.32067912817001345
+                    5.179993323167764e-9,
+                    1.5031220712558026e-8,
+                    0.9447996020317078,
+                    -0.3260689973831177
                 ],
                 "Scale": [
                     1.6660089492797852,
@@ -5779,11 +6061,11 @@
                         "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 0.30000001192092898,
+                        "Duration": 2.0,
                         "EmissionRate": 200.0,
                         "MaxParticles": 2,
                         "Burst": 0,
-                        "Looping": true,
+                        "Looping": false,
                         "FollowEmitter": true,
                         "SpinSpeed": 16.700000762939454,
                         "StretchedBillboard": false,
@@ -6103,10 +6385,10 @@
                     0.6222220659255981
                 ],
                 "Rotation": [
-                    1.0084213464267578e-8,
-                    1.2300764851147506e-8,
-                    0.7733403444290161,
-                    -0.6339389085769653
+                    1.0154167284781579e-8,
+                    1.2243177138770989e-8,
+                    0.7697213292121887,
+                    -0.6383379697799683
                 ],
                 "Scale": [
                     1.9875469207763672,
@@ -6123,11 +6405,11 @@
                         "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 0.30000001192092898,
+                        "Duration": 2.0,
                         "EmissionRate": 200.0,
                         "MaxParticles": 3,
                         "Burst": 0,
-                        "Looping": true,
+                        "Looping": false,
                         "FollowEmitter": true,
                         "SpinSpeed": 16.700000762939454,
                         "StretchedBillboard": false,
@@ -6645,11 +6927,11 @@
                         "IsEnabled": false,
                         "Image": 1171284849,
                         "Delay": 0.0,
-                        "Duration": 5.0,
+                        "Duration": 3.5999999046325685,
                         "EmissionRate": 50.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
-                        "Looping": true,
+                        "Looping": false,
                         "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": true,
@@ -7386,10 +7668,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -0.596752405166626,
-                    -0.4349198639392853,
-                    -0.3983144462108612,
-                    0.5475520491600037
+                    -0.7287201285362244,
+                    0.11872391402721405,
+                    0.10945338755846024,
+                    0.6680840253829956
                 ],
                 "Scale": [
                     0.30000007152557375,
@@ -7558,10 +7840,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    0.31187379360198977,
-                    0.6690499782562256,
-                    0.6132767200469971,
-                    -0.2865225076675415
+                    0.6950204968452454,
+                    0.2484307438135147,
+                    0.2272612750530243,
+                    -0.6375176310539246
                 ],
                 "Scale": [
                     0.30000007152557375,
@@ -7914,8 +8196,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.7153353691101074,
-                    0.7071685194969177
+                    0.6990566253662109,
+                    -0.7244544625282288
                 ],
                 "Scale": [
                     1.0,

@@ -151,7 +151,7 @@ void MoveState::DoAnimation()
 		std::string animation = GetTriggerFromAngle(ComputeMoveAnge(mousePosition));
 		mPlayerController->SetAnimation(animation, 0.01f);
 		StateType upperBodyState = mPlayerController->GetPlayerUpperState()->GetType();
-		if (upperBodyState == StateType::ULTIMATE_CHARGE || upperBodyState == StateType::ULTIMATE)
+		if (upperBodyState == StateType::ULTIMATE_CHARGE)
 		{
 			mPlayerController->SetLowerAnimationSpeed(0.6f); // TODO: Modify this with a script value?
 

@@ -2,26 +2,26 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 567290502,
-                "ParentUID": 378826455,
+                "UID": 836080793,
+                "ParentUID": 1534472946,
                 "Name": "UltimateChargeGO",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    0.2041015625,
+                    0.05322265625,
+                    0.1220703125
                 ],
                 "Rotation": [
-                    -6.392955942402523e-9,
-                    3.226087841312619e-8,
-                    0.3604207932949066,
-                    -0.9328258037567139
+                    3.111847846071214e-8,
+                    -4.635170025579782e-9,
+                    0.6349846124649048,
+                    0.7725247740745544
                 ],
                 "Scale": [
-                    1.0435763597488404,
-                    1.0435763597488404,
-                    1.0
+                    104.3306655883789,
+                    104.3307113647461,
+                    99.99998474121094
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -30,7 +30,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 213516520,
                         "Delay": 0.0,
                         "Duration": 2.0,
@@ -43,6 +43,7 @@
                         "StretchedBillboard": true,
                         "StretchedRatio": 1.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.20000000298023225,
@@ -50,6 +51,8 @@
                         },
                         "ShapeType": 3,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 1.0,
                         "ShapeSize": [
                             1.0,
@@ -59,6 +62,8 @@
                         "ShapeRandAngle": 1.0,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": true,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
@@ -138,11 +143,11 @@
                 ]
             },
             {
-                "UID": 756381138,
-                "ParentUID": 567290502,
+                "UID": 131353129,
+                "ParentUID": 836080793,
                 "Name": "UltimateChargeGO_core",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -166,7 +171,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 1711944677,
                         "Delay": 0.0,
                         "Duration": 2.0,
@@ -179,6 +184,7 @@
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -186,6 +192,8 @@
                         },
                         "ShapeType": 3,
                         "ShapeRadius": 0.20000000298023225,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 1.0,
                         "ShapeSize": [
                             1.0,
@@ -195,6 +203,8 @@
                         "ShapeRandAngle": 1.0,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": true,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
