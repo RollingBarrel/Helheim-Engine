@@ -182,6 +182,7 @@ public:
     void SetIsInElevator(bool state) { mIsInElevator = state; }
 
 private:
+    void SetPlayerEmisive(const float3& emisiveColor);
     void CheckInput();
     void CheckHitEffect();
     void StateMachine();

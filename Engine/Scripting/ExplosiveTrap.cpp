@@ -9,6 +9,7 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "PlayerController.h"
+#include "PlayerCamera.h"
 #include "Enemy.h"
 
 
@@ -64,6 +65,7 @@ void ExplosiveTrap::Update()
 
 	case TRAP_STATE::EXPLOSION_START:
 		mState = TRAP_STATE::EXPLOSION_END;
+		GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(0.5f, 0.3f);
 		DoDamage();
 		break;
 
