@@ -8,6 +8,7 @@
 #include "AudioManager.h"
 #include "ModuleScene.h"
 #include "Enemy.h"
+#include "PlayerCamera.h"
 
 
 CREATE(Grenade)
@@ -139,6 +140,7 @@ void Grenade::BlackHole()
 
 void Grenade::MakeDamage(std::vector<GameObject*> enemies)
 {
+    GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(0.5f, 0.2f);
     for (GameObject* enemy : enemies)
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
