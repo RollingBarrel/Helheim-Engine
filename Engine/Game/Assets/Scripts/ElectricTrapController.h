@@ -49,8 +49,8 @@ private:
     float mDamageAmount = 5.0f;
     float mSpeedReduction = 0.5f;
 
-    float damageTimer = 0.0f;
-    float damageDelay = 0.5f;
+    float mDamageTimer = 0.0f;
+    float mDamageDelay = 0.5f;
 
     PlayerController* mPlayer = nullptr;
 };
