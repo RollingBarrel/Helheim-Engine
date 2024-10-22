@@ -41,7 +41,7 @@ void ElectricTrapController::Start()
 
     mPlayer = GameManager::GetInstance()->GetPlayerController();
 
-    damageTimer = damageDelay;
+    mDamageTimer = mDamageDelay;
 
     ActivateTrap(false, false);
 }
