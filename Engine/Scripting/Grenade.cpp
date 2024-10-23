@@ -36,6 +36,8 @@ void Grenade::Start()
 
 void Grenade::Update()
 {   
+    if (GameManager::GetInstance()->IsPaused()) return;
+
     switch (mState)
     {
     case GRENADE_STATE::MOVE:
