@@ -22,6 +22,7 @@ void RotateObject::Start()
 
 void RotateObject::Update()
 {
+	if (GameManager::GetInstance()->IsPaused()) return;
 	mDirection.Normalize();
 
 	float3 euler = mGameObject->GetLocalEulerAngles();
