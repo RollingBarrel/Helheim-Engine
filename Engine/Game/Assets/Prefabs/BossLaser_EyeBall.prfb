@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 572802004,
+                "UID": 1419828092,
                 "ParentUID": 1,
                 "Name": "BossLaser_EyeBall",
                 "Enabled": true,
@@ -40,25 +40,25 @@
                             {
                                 "VariableName": "mLaserOrigin",
                                 "MemberType": 3,
-                                "VariableData": 1253973868
+                                "VariableData": 2085822578
                             },
                             {
                                 "VariableName": "mLaserCharge",
                                 "MemberType": 3,
-                                "VariableData": 836735215
+                                "VariableData": 1676799203
                             },
                             {
                                 "VariableName": "mLaserEnd",
                                 "MemberType": 3,
-                                "VariableData": 1660073161
+                                "VariableData": 392058988
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 836735215,
-                "ParentUID": 572802004,
+                "UID": 1676799203,
+                "ParentUID": 1419828092,
                 "Name": "CreatureRange_laser_Charging_V1",
                 "Enabled": true,
                 "Active": true,
@@ -163,8 +163,8 @@
                 ]
             },
             {
-                "UID": 1048104571,
-                "ParentUID": 836735215,
+                "UID": 1881693806,
+                "ParentUID": 1676799203,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
@@ -191,8 +191,8 @@
                 "Components": []
             },
             {
-                "UID": 1253973868,
-                "ParentUID": 572802004,
+                "UID": 2085822578,
+                "ParentUID": 1419828092,
                 "Name": "Laser_Line_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -295,8 +295,8 @@
                 ]
             },
             {
-                "UID": 1457197567,
-                "ParentUID": 1253973868,
+                "UID": 183404851,
+                "ParentUID": 2085822578,
                 "Name": "boss_laser_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -463,8 +463,8 @@
                 ]
             },
             {
-                "UID": 1660073161,
-                "ParentUID": 1253973868,
+                "UID": 392058988,
+                "ParentUID": 2085822578,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
@@ -491,8 +491,8 @@
                 "Components": []
             },
             {
-                "UID": 1869632371,
-                "ParentUID": 1660073161,
+                "UID": 596327002,
+                "ParentUID": 392058988,
                 "Name": "CreatureRange_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -519,8 +519,8 @@
                 "Components": []
             },
             {
-                "UID": 2073482659,
-                "ParentUID": 1869632371,
+                "UID": 800734258,
+                "ParentUID": 596327002,
                 "Name": "Ultimate_laser_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -585,7 +585,7 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 5.0,
+                                "MinValue": 7.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -687,8 +687,8 @@
                 ]
             },
             {
-                "UID": 129222711,
-                "ParentUID": 1869632371,
+                "UID": 1015166938,
+                "ParentUID": 596327002,
                 "Name": "End_sparks ",
                 "Enabled": true,
                 "Active": true,
@@ -832,8 +832,8 @@
                 ]
             },
             {
-                "UID": 348946587,
-                "ParentUID": 1253973868,
+                "UID": 1226188189,
+                "ParentUID": 2085822578,
                 "Name": "Creature_laser_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -1000,8 +1000,8 @@
                 ]
             },
             {
-                "UID": 554467779,
-                "ParentUID": 1253973868,
+                "UID": 1431639760,
+                "ParentUID": 2085822578,
                 "Name": "Laser_Spin",
                 "Enabled": true,
                 "Active": true,
@@ -1011,10 +1011,10 @@
                     1.9831552505493165
                 ],
                 "Rotation": [
-                    0.00025066500529646873,
-                    -0.002485919278115034,
-                    0.0993732213973999,
-                    -0.9950072765350342
+                    -0.0015162097988650203,
+                    -0.001985575072467327,
+                    -0.6075726747512817,
+                    -0.7940861582756043
                 ],
                 "Scale": [
                     1.7881439924240113,
@@ -1249,8 +1249,8 @@
                 ]
             },
             {
-                "UID": 772938477,
-                "ParentUID": 572802004,
+                "UID": 1637578678,
+                "ParentUID": 1419828092,
                 "Name": "Laser_Line_Origin (1)",
                 "Enabled": true,
                 "Active": true,
@@ -1341,8 +1341,8 @@
                 ]
             },
             {
-                "UID": 985700253,
-                "ParentUID": 772938477,
+                "UID": 1842055555,
+                "ParentUID": 1637578678,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
