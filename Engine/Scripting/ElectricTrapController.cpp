@@ -121,7 +121,7 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
     {
         if (collision->GetTag().compare("Player") == 0)
         {
-            if ((mDamageTimer > mDamageDelay))
+            if (mDamageTimer < mDamageDelay)
             {
                 mDamageTimer += App->GetDt();
             }
