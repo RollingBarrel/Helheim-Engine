@@ -69,7 +69,7 @@ void main()
 	float rough = material.rough;
 	if(material.hasMetalRoughTex)
 	{
-		vec2 metRough = texture(material.metalRoughTex, uv).gb;
+		vec2 metRough = texture(material.metalRoughTex, uv).rg;
 		rough *= metRough.x;
 		metal *= metRough.y;
 	}
@@ -80,7 +80,9 @@ void main()
 		vec3 T = normalize(tang.xyz); 
 		vec3 B = normalize(tang.w * cross(N, T));
 		mat3 TBN = mat3(T,B,N);
-		N = normalize(texture(material.normalTex, uv).rgb * 2.0 - 1.0);
+		N = vec3(texture(material.normalTex, uv).rg * 2.0f - 1.0f, 1.0f);
+		N.z = sqrt(1 - N.x * N.x - N.y * N.y);
+		N = normalize(N);
 		N = normalize(TBN * N);
 	}
 	else

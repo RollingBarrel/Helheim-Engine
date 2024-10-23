@@ -8,18 +8,38 @@
 		{
 			"name":"Scene",
 			"nodes":[
-				0
+				0,
+				1,
+				2
 			]
 		}
 	],
 	"nodes":[
 		{
 			"mesh":0,
+			"name":"OB_BB_Puerta.001",
+			"translation":[
+				444.0039367675781,
+				-0.10210366547107697,
+				-23.114744186401367
+			]
+		},
+		{
+			"mesh":1,
 			"name":"OB_Mini_Elevator",
 			"translation":[
-				84.50955200195312,
-				61.558074951171875,
-				12.703605651855469
+				439.32275390625,
+				-0.4855532944202423,
+				-23.02643394470215
+			]
+		},
+		{
+			"mesh":2,
+			"name":"OB_BB_Puerta.002",
+			"translation":[
+				435.0286865234375,
+				-0.10210364311933517,
+				-23.114744186401367
 			]
 		}
 	],
@@ -34,7 +54,7 @@
 			"emissiveTexture":{
 				"index":0
 			},
-			"name":"M_Elevator",
+			"name":"M_Barandillas_Boss",
 			"normalTexture":{
 				"index":1
 			},
@@ -52,26 +72,34 @@
 		},
 		{
 			"doubleSided":true,
-			"name":"M_Pipes_Railings",
-			"normalTexture":{
+			"emissiveFactor":[
+				1,
+				1,
+				1
+			],
+			"emissiveTexture":{
 				"index":4
 			},
-			"occlusionTexture":{
+			"name":"M_Elevator.001",
+			"normalTexture":{
 				"index":5
+			},
+			"occlusionTexture":{
+				"index":6
 			},
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":6
+					"index":7
 				},
 				"metallicRoughnessTexture":{
-					"index":5
+					"index":6
 				}
 			}
 		}
 	],
 	"meshes":[
 		{
-			"name":"Mesh.015",
+			"name":"Cylinder.029",
 			"primitives":[
 				{
 					"attributes":{
@@ -82,7 +110,12 @@
 					},
 					"indices":4,
 					"material":0
-				},
+				}
+			]
+		},
+		{
+			"name":"Mesh.064",
+			"primitives":[
 				{
 					"attributes":{
 						"POSITION":5,
@@ -92,6 +125,31 @@
 					},
 					"indices":9,
 					"material":1
+				},
+				{
+					"attributes":{
+						"POSITION":10,
+						"NORMAL":11,
+						"TEXCOORD_0":12,
+						"TANGENT":13
+					},
+					"indices":14,
+					"material":0
+				}
+			]
+		},
+		{
+			"name":"Cylinder.017",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":15,
+						"NORMAL":16,
+						"TEXCOORD_0":17,
+						"TANGENT":18
+					},
+					"indices":19,
+					"material":0
 				}
 			]
 		}
@@ -124,9 +182,33 @@
 		{
 			"sampler":0,
 			"source":6
+		},
+		{
+			"sampler":0,
+			"source":7
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"OB_Barandillas_Boss_M_Barandillas_Boss_Emissive",
+			"uri":"OB_Barandillas_Boss_M_Barandillas_Boss_Emissive.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"OB_Barandillas_Boss_M_Barandillas_Boss_Normal",
+			"uri":"OB_Barandillas_Boss_M_Barandillas_Boss_Normal.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"OB_Barandillas_Boss_M_Barandillas_Boss_OcclusionRoughnessMe",
+			"uri":"OB_Barandillas_Boss_M_Barandillas_Boss_OcclusionRoughnessMe.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"OB_Barandillas_Boss_M_Barandillas_Boss_BaseColor",
+			"uri":"OB_Barandillas_Boss_M_Barandillas_Boss_BaseColor.png"
+		},
 		{
 			"mimeType":"image/png",
 			"name":"T_Elevator_Emissive",
@@ -146,164 +228,289 @@
 			"mimeType":"image/png",
 			"name":"T_Elevator_BaseColor",
 			"uri":"T_Elevator_BaseColor.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"T_Pipes_Railings_Normal",
-			"uri":"T_Pipes_Railings_Normal.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"T_Pipes_Railings_OcclusionRoughnessMetallic",
-			"uri":"T_Pipes_Railings_OcclusionRoughnessMetallic.png"
-		},
-		{
-			"mimeType":"image/png",
-			"name":"T_Pipes_Railings_BaseColor",
-			"uri":"T_Pipes_Railings_BaseColor.png"
 		}
 	],
 	"accessors":[
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":1246,
+			"count":2273,
 			"max":[
-				4.854949951171875,
-				4.1983642578125,
-				4.343893051147461
+				0.1107177734375,
+				0.4861794114112854,
+				1.1710662841796875
 			],
 			"min":[
-				-4.854949951171875,
-				-4.198368072509766,
-				-4.3438920974731445
+				-0.1109619140625,
+				-0.6232326626777649,
+				-1.1710052490234375
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":1246,
+			"count":2273,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1246,
+			"count":2273,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5126,
-			"count":1246,
+			"count":2273,
 			"type":"VEC4"
 		},
 		{
 			"bufferView":4,
 			"componentType":5123,
-			"count":2976,
+			"count":7728,
 			"type":"SCALAR"
 		},
 		{
 			"bufferView":5,
 			"componentType":5126,
-			"count":37612,
+			"count":1682,
 			"max":[
-				4.600860595703125,
-				3.800384521484375,
-				4.190031051635742
+				5.048187255859375,
+				1.290479302406311,
+				4.115377426147461
 			],
 			"min":[
-				-4.523040771484375,
-				3.3225173950195312,
-				-3.6616764068603516
+				-4.661712646484375,
+				-7.911170482635498,
+				-5.27393913269043
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":37612,
+			"count":1682,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":7,
 			"componentType":5126,
-			"count":37612,
+			"count":1682,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":8,
 			"componentType":5126,
-			"count":37612,
+			"count":1682,
 			"type":"VEC4"
 		},
 		{
 			"bufferView":9,
 			"componentType":5123,
-			"count":155760,
+			"count":2976,
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":10,
+			"componentType":5126,
+			"count":14935,
+			"max":[
+				4.79815673828125,
+				0.8696298599243164,
+				3.6226978302001953
+			],
+			"min":[
+				-4.404052734375,
+				-0.2717730700969696,
+				-3.822002410888672
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":11,
+			"componentType":5126,
+			"count":14935,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":12,
+			"componentType":5126,
+			"count":14935,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":13,
+			"componentType":5126,
+			"count":14935,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":14,
+			"componentType":5123,
+			"count":48654,
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":15,
+			"componentType":5126,
+			"count":2275,
+			"max":[
+				0.110321044921875,
+				0.48617950081825256,
+				1.1710662841796875
+			],
+			"min":[
+				-0.111358642578125,
+				-0.6232326030731201,
+				-1.1710052490234375
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":16,
+			"componentType":5126,
+			"count":2275,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":17,
+			"componentType":5126,
+			"count":2275,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":18,
+			"componentType":5126,
+			"count":2275,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":19,
+			"componentType":5123,
+			"count":7728,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":14952,
+			"byteLength":27276,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":14952,
-			"byteOffset":14952,
+			"byteLength":27276,
+			"byteOffset":27276,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":9968,
-			"byteOffset":29904,
+			"byteLength":18184,
+			"byteOffset":54552,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":19936,
-			"byteOffset":39872,
+			"byteLength":36368,
+			"byteOffset":72736,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":15456,
+			"byteOffset":109104,
+			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":20184,
+			"byteOffset":124560,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":20184,
+			"byteOffset":144744,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":13456,
+			"byteOffset":164928,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":26912,
+			"byteOffset":178384,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":5952,
-			"byteOffset":59808,
+			"byteOffset":205296,
 			"target":34963
 		},
 		{
 			"buffer":0,
-			"byteLength":451344,
-			"byteOffset":65760,
+			"byteLength":179220,
+			"byteOffset":211248,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":451344,
-			"byteOffset":517104,
+			"byteLength":179220,
+			"byteOffset":390468,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":300896,
-			"byteOffset":968448,
+			"byteLength":119480,
+			"byteOffset":569688,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":601792,
-			"byteOffset":1269344,
+			"byteLength":238960,
+			"byteOffset":689168,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":311520,
-			"byteOffset":1871136,
+			"byteLength":97308,
+			"byteOffset":928128,
+			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":27300,
+			"byteOffset":1025436,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":27300,
+			"byteOffset":1052736,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":18200,
+			"byteOffset":1080036,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":36400,
+			"byteOffset":1098236,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":15456,
+			"byteOffset":1134636,
 			"target":34963
 		}
 	],
@@ -315,8 +522,8 @@
 	],
 	"buffers":[
 		{
-			"byteLength":2182656,
-			"uri":"OB_Mini_Elevator.bin"
+			"byteLength":1150092,
+			"uri":"OB_mini_elevator.bin"
 		}
 	]
 }

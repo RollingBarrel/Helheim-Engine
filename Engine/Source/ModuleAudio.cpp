@@ -240,6 +240,15 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	return count - 1;
 }
 
+void ModuleAudio::Restart(const FMOD::Studio::EventDescription* eventDescription, const int id)
+{
+	if (id != -1)
+	{
+		FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
+		eventInstance->start();
+	}
+}
+
 void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
@@ -406,7 +415,17 @@ void ModuleAudio::ReleaseAllAudio()
 				{
 					if (instance) 
 					{
-						instance->release();
+						FMOD_STUDIO_PLAYBACK_STATE state;
+						instance->getPlaybackState(&state);
+
+						if (state == FMOD_STUDIO_PLAYBACK_STOPPED)
+						{
+							instance->release();
+						}
+						else
+						{
+							eventsPendingRelease.push_back(instance);
+						}
 					}
 				}
 			}
@@ -549,20 +568,23 @@ void ModuleAudio::SetVolume(std::string busname, float value) const
 
 	CheckError(bus->setVolume(value));
 
+	// We can remove this +0.1 if it feels unbalances
+	float finalVolume = (value + 0.1)* GetVolume("bus:/");
+
 	if (busname.compare("bus:/music") == 0)
 	{
-		CheckError(mAudioChannelGroup->setVolume(value));
+		CheckError(mAudioChannelGroup->setVolume(finalVolume));
 	}
-	
+
 	if (busname.compare("bus:/sfx") == 0)
 	{
-		CheckError(mOneShotChannelGroup->setVolume(value));
+		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
 	}
-	
+
 	if (busname.compare("bus:/") == 0)
 	{
-		CheckError(mOneShotChannelGroup->setVolume(value));
-		CheckError(mAudioChannelGroup->setVolume(value));
+		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
+		CheckError(mAudioChannelGroup->setVolume(finalVolume));
 	}
 }
 

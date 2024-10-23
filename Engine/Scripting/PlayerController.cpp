@@ -24,6 +24,8 @@
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
+#include "Geometry/Line.h"
+#include "Geometry/LineSegment.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -54,6 +56,7 @@
 #include "Grenade.h"
 #include <LineComponent.h>
 #include "UltimateAttack.h"
+#include "PlayerCamera.h"
 
 CREATE(PlayerController)
 {
@@ -72,6 +75,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
     MEMBER(MemberType::GAMEOBJECT, mDashVFX);
+    MEMBER(MemberType::GAMEOBJECT, mCharacterMesh);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
@@ -155,6 +159,8 @@ void PlayerController::Start()
     mGodMode = mPlayerStats->GetGodMode();
     mPlayerSpeed = mPlayerStats->GetSpeed();
     mDamageModifier = mPlayerStats->GetDamageModifier();
+    mUltimateResource = mPlayerStats->GetUltimateResource();
+
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -294,7 +300,8 @@ void PlayerController::Start()
 
     //LASER
     GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
-    if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * mLaserLenght);
+    if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() - mGameObject->GetRight() * mLaserLenght);
+    
 }
 
 void PlayerController::Update()
@@ -354,6 +361,15 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
 bool PlayerController::IsPlayerDashing() const
 { 
     return mLowerState->GetType() == StateType::DASH;
+}
+
+void PlayerController::SetPlayerEmisive(const float3& emisiveColor)
+{
+    for (Component* mesh : mMeshComponents)
+    {
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
+        meshComponent->SetEmissiveColor(emisiveColor);
+    }
 }
 
 void PlayerController::CheckInput()
@@ -458,6 +474,36 @@ void PlayerController::HandleRotation()
         position.y = mGameObject->GetWorldPosition().y;
         float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
         mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
+
+        Line aimLine = Line(position, (mAimPosition - position).Normalized());
+        LineSegment lineSegment = LineSegment(aimLine, 10.0f);
+        float minimunDistance = 1.0f;
+
+        GameObject* closestEnemy = nullptr;
+        float closestDistance = FLT_MAX;
+        const std::vector<GameObject*>& allEnemies = App->GetScene()->FindGameObjectsWithTag("Enemy");
+        for (GameObject* enemy : allEnemies)
+        {
+            if (enemy->IsEnabled() && enemy->GetName().compare("OB_explosive_Barrell") != 0)
+            {
+                float distance = enemy->GetWorldPosition().Distance(lineSegment);
+
+                if (distance < minimunDistance && distance < closestDistance)
+                {
+                    if ((mAimPosition - mGameObject->GetWorldPosition()).AngleBetween(enemy->GetWorldPosition() - mGameObject->GetWorldPosition()) < DegToRad(35.0f))
+                    {
+                        closestDistance = distance;
+                        closestEnemy = enemy;
+                    }
+                }
+            } 
+        }
+
+        if (closestEnemy)
+        {
+            mAimPosition = closestEnemy->GetWorldPosition();
+            mAimPosition.y = position.y;
+        }
     }
     else
     {
@@ -735,6 +781,7 @@ void PlayerController::SetMaxShield(float percentage)
 
 void PlayerController::EnableGrenadeAim(bool value)
 {
+    EnableLaser(!value);
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
@@ -897,7 +944,12 @@ void PlayerController::CheckDebugOptions()
     }
     else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
     {
-        mUltimateResource = 100;
+        AddUltimateResource();
+        AddUltimateResource();
+        AddUltimateResource();
+        AddUltimateResource();
+        AddUltimateResource();
+        mPlayerStats->SetUltimateResource(mUltimateResource);
     }
     else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
@@ -940,7 +992,6 @@ void PlayerController::RechargeShield(float shield)
         if (mShieldSpriteSheet) 
         {
             mShieldSpriteSheet->SetEnabled(true);
-            reinterpret_cast<ImageComponent*>(mShieldSpriteSheet->GetComponent(ComponentType::IMAGE))->PlayAnimation();
         }
     }
 }
@@ -948,64 +999,57 @@ void PlayerController::RechargeShield(float shield)
 void PlayerController::RechargeBattery(EnergyType batteryType)
 {
     if(mEnergyType!= batteryType) mCurrentEnergy = 0;
-    mCurrentEnergy = Clamp(mCurrentEnergy+50,0,100);
+    mCurrentEnergy = Clamp(mCurrentEnergy+30,0,90);
     mEnergyType = batteryType;
 
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType, true);
+
+    float3 emisiveColor = float3::one;
 
     switch (mEnergyType)
     {
         case EnergyType::NONE:
             break;
         case EnergyType::BLUE:
+            emisiveColor = float3(0.0f, 0.73f, 1.0f);
+            if (mBlueBaterryParticles)
+            {
+                mBlueBaterryParticles->SetEnabled(false);
+                mBlueBaterryParticles->SetEnabled(true);
+            }
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
-                if (mBlueBaterryParticles) 
-                {
-                    mBlueBaterryParticles->SetEnabled(false);
-                    mBlueBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mMachinegun;
-
-                if(mEquippedSpecialGO)
-                    mEquippedSpecialGO->SetEnabled(true);
+                if(mEquippedSpecialGO) mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
-                if (mBlueBaterryParticles) 
-                {
-                    mBlueBaterryParticles->SetEnabled(false);
-                    mBlueBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mKatana;
             }
             break;
         case EnergyType::RED:
+            emisiveColor = float3(1.0f, 0.15f, 0.0f);
+            if (mRedBaterryParticles)
+            {
+                mRedBaterryParticles->SetEnabled(false);
+                mRedBaterryParticles->SetEnabled(true);
+            }
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
-                if (mRedBaterryParticles) 
-                {
-                    mRedBaterryParticles->SetEnabled(false);
-                    mRedBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mShootgun;
-
-                if(mEquippedSpecialGO)
-                    mEquippedSpecialGO->SetEnabled(true);
+                if(mEquippedSpecialGO) mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
-                if (mRedBaterryParticles) 
-                {
-                    mRedBaterryParticles->SetEnabled(false);
-                    mRedBaterryParticles->SetEnabled(true);
-                }
                 mSpecialWeapon = mHammer;
             }
             break;
-        default:
-            break;
     }
+
+    SetPlayerEmisive(emisiveColor);
+
+
+
 
     mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
 }
@@ -1018,6 +1062,7 @@ void PlayerController::UseEnergy(int energy)
     {
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
+        SetPlayerEmisive(float3::one);
         mSpecialWeapon = nullptr;
 
         if(mEquippedSpecialGO)
@@ -1035,12 +1080,19 @@ void PlayerController::ResetEnergy()
 
 void PlayerController::AddUltimateResource()
 {
-    if (mUltimateResource != 100)
+    if ( mUltimateResource != 100)
     {
-        mUltimateResource += 25;
+        mUltimateResource += 20;
         GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
+        mPlayerStats->SetUltimateResource(mUltimateResource);
     }
     else return;
+}
+
+void PlayerController::UseUltimateResource()
+{
+    mUltimateResource = 0;
+    mPlayerStats->SetUltimateResource(mUltimateResource);
 }
 
 void PlayerController::EnableUltimate(bool enable)
@@ -1049,7 +1101,9 @@ void PlayerController::EnableUltimate(bool enable)
     ultimateScript->ResetTimer();
     if (mUltimateGO)
     {
-        if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
+        mInUlt = enable;
+        if(enable) GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(4.0f, 0.1f);
+        else GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
         mUltimateGO->SetEnabled(enable);
     }
 }
@@ -1058,6 +1112,7 @@ void PlayerController::EnableChargeUltimate(bool enable)
 {
     if (mUltimateChargeGO)
     {
+        mInUlt = enable;
         if(enable) mUltSound = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_ULTIMATE); 
         mUltimateChargeGO->SetEnabled(enable);
         mUltiOuterChargeGO->SetEnabled(enable);
@@ -1101,7 +1156,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 void PlayerController::TakeDamage(float damage)
 {
     //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-    if (IsPlayerDashing()|| mGodMode)
+    if (IsPlayerDashing()|| mGodMode || mInUlt)
     {
         return;
     }
@@ -1189,7 +1244,7 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
         return;
     }
 
-    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge" || collisionData->collidedWith->GetTag() == "Enemy")
     {
         mCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")

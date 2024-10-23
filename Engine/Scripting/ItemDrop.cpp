@@ -25,17 +25,13 @@ ItemDrop::ItemDrop(GameObject* owner) : Script(owner) {}
 
 void ItemDrop::Init()
 {
-    std::vector<Component*> components;
-    mGameObject->GetComponentsInChildren(ComponentType::ANIMATION, components);
     mAlreadyUsed = false;
-    if (!components.empty())
+
+    if (mAnimation)
     {
-        mAnimation = static_cast<AnimationComponent*>(*components.begin());
-        if (mAnimation)
-        {
-            mAnimation->SetIsPlaying(true);
-        }
-    }
+        mAnimation->ResetAnimationComponent();
+        mAnimation->SetIsPlaying(true);
+    } 
 
     mDespawnTimer = 60.0f;
 
@@ -51,6 +47,7 @@ void ItemDrop::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ItemDrop::OnCollisionEnter, this, std::placeholders::_1)));
     }
+    mAnimation = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
 
     Init();
 }
@@ -63,9 +60,9 @@ void ItemDrop::Update()
         mGameObject->SetEnabled(false);
     }
 
-    if (mInteractTimer.Delay(mUIDeactivateTimer))
+    if (mCollided)
     {
-        GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
+        CheckDistance();
     }
 }
 
@@ -74,6 +71,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
         PlayerController* playerScript = static_cast<PlayerController*>(static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        mCollided = true; 
         if (playerScript != nullptr && !mAlreadyUsed)
         {
             switch (mDropId)
@@ -138,7 +136,16 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
             }
         }
 
+    }
+}
 
-
+void ItemDrop::CheckDistance()
+{
+    float3 playerPosition = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
+    float distanceToPickUp = (playerPosition - mGameObject->GetWorldPosition()).Length();
+    if (distanceToPickUp > 2.0f)
+    {
+        GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
+        mCollided = false;
     }
 }

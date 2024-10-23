@@ -165,6 +165,7 @@ void GameManager::Update()
     {
         mController = App->GetInput()->isGamepadAvailable();
         mHudController->ChangeBindings(mController);
+        App->GetWindow()->ShowCursor(!mController);
     }
 }
 
@@ -294,7 +295,7 @@ void GameManager::HandleBossAudio(int stage)
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
     }
-    if (mIsFightingBoss && mBackgroundAudioID == -1 && stage >= 0)
+    if (mIsFightingBoss && mBackgroundAudioID != -1 && stage >= 0)
     {
         if (mLastAudioID != 2 && stage == 2)
         {

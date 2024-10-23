@@ -300,6 +300,8 @@ void HudController::Start()
     {
         SetDialog();
     }
+
+    SetUltimateCooldown(App->GetScene()->GetPlayerStats()->GetUltimateResource());
 }
 
 void HudController::Update()
@@ -980,7 +982,7 @@ void HudController::SetBossInvulnerable(bool value)
     LOG("Change color: " + value)
     if (value)
     {
-        mBossHealthImage->SetColor(float3(77.0f / 255.f, 94.0f / 255.f, 114.0f / 255.f));
+        mBossHealthImage->SetColor(float3(150.0f / 255.f, 5.0f / 255.f, 150.0f / 255.f));
     }
     else 
     {

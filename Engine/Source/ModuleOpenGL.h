@@ -86,6 +86,7 @@ public:
 	unsigned int GetGBufferPos() const { return mGPosition; }
 	unsigned int GetGBufferSSAO() const { return mSSAO; }
 	unsigned int GetBluredTexture() const { return mBlurTex[0]; }
+	unsigned int GetVolumetricTexture() const { return mVolTexId; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -108,6 +109,7 @@ public:
 	unsigned int GetSpecPrefilteredProgramId() const { return mSpecPrefilteredProgramId; }
 	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
 	unsigned int GetScreenTexProgramId() const { return mGameProgramId; }
+	unsigned int GetBGRChannelsProgramId() const { return mBGRChannelsProgramId; }
 
 	float GetAoRange() const { return mAoRange; };
 	float GetAoBias() const { return mAoBias; };
@@ -151,7 +153,7 @@ public:
 	float mAoRange = 1.0f;
 	float mAoBias = 0.0001f;
 	
-	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0) const;
+	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0, unsigned int startIdx = 0) const;
 	void GaussianBlurTexture(unsigned int texId, unsigned int passes);
 	unsigned int SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize);
 	//Set the intensity between 0 and 1
@@ -179,6 +181,8 @@ public:
 	void SetVolStepSize(float volStepSize);
 	int GetVolMaxSteps() const { return mVolMaxSteps; }
 	void SetVolMaxSteps(int volMaxSteps);
+	unsigned int GetVolInvScale() const { return mVolInvScale; }
+	void SetVolInvScale(int volInvScale);
 
 	unsigned int GetQuadVBO() const { return mQuadVBO; }
 	unsigned int GetQuadVAO() const { return mQuadVAO; }
@@ -255,11 +259,11 @@ private:
 	unsigned int mUpsampleProgramId = 0;
 	unsigned int mGaussianBlurProgramId = 0;
 	unsigned int mSimpleBlurProgramId = 0;
-	unsigned int mFogProgramId = 0;
 	unsigned int mGameProgramId = 0;
 	unsigned int mNoiseProgramId = 0;
 	unsigned int mVolLightProgramId = 0;
-	unsigned int mPostpoProgramId = 0;
+	unsigned int mVolFogPostpoProgramId = 0;
+	unsigned int mBGRChannelsProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
@@ -294,8 +298,8 @@ private:
 	unsigned int mPLightListImgBuffer;
 	unsigned int mSLightListImgTex;
 	unsigned int mSLightListImgBuffer;
-	unsigned int mVolPLightListImgTex;
-	unsigned int mVolPLightListImgBuffer;
+	//unsigned int mVolPLightListImgTex;
+	//unsigned int mVolPLightListImgBuffer;
 	unsigned int mVolSLightListImgTex;
 	unsigned int mVolSLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
@@ -320,11 +324,13 @@ private:
 
 	unsigned int mNoiseTexId = 0;
 
+	unsigned int mVolTexId = 0;
+	unsigned int mVolInvScale = 2;
 	float mBaseExtCoeff = 0.04f;
 	float mNoiseAmount = 1.0f;
 	float mVolIntensity = 1.0f;
 	float mVolAnisotropy = 0.35f;
-	float mVolStepSize = 1.0f;
+	float mVolStepSize = 0.245f;
 	int mVolMaxSteps = 16;
 
 	unsigned int mQuadVBO = 0;

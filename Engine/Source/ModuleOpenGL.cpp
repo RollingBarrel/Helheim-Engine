@@ -126,6 +126,11 @@ bool ModuleOpenGL::Init()
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
+	glGenTextures(1, &mVolTexId);
+	glBindTexture(GL_TEXTURE_2D, mVolTexId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 	//Initialize scene framebuffer
 	glGenFramebuffers(1, &sFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
@@ -304,18 +309,20 @@ bool ModuleOpenGL::Init()
 	mSelectSkinsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "TileLightCulling.comp";
 	mTileLightCullingProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-	sourcesPaths[0] = "Fog.comp";
-	mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	//sourcesPaths[0] = "Fog.comp";
+	//mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "Noise.comp";
 	mNoiseProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-	sourcesPaths[0] = "Volumetric.comp";
+	sourcesPaths[0] = "Volumetric2.comp";
 	mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-	sourcesPaths[0] = "Postpo.comp";
-	mPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-
-	//sourcesPaths[0] = "GameVertex.glsl";
+	//sourcesPaths[0] = "Postpo.comp";
+	//mPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	//sourcesPaths[1] = "Fog.glsl";
 	//mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "VolFogPostpo.comp";
+	mVolFogPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "GBRChannels.comp";
+	mBGRChannelsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
@@ -408,8 +415,8 @@ bool ModuleOpenGL::Init()
 	glGenBuffers(1, &mPLightListImgBuffer);
 	glGenTextures(1, &mSLightListImgTex);
 	glGenBuffers(1, &mSLightListImgBuffer);
-	glGenTextures(1, &mVolPLightListImgTex);
-	glGenBuffers(1, &mVolPLightListImgBuffer);
+	//glGenTextures(1, &mVolPLightListImgTex);
+	//glGenBuffers(1, &mVolPLightListImgBuffer);
 	glGenTextures(1, &mVolSLightListImgTex);
 	glGenBuffers(1, &mVolSLightListImgBuffer);
 	LightCullingLists(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
@@ -477,7 +484,7 @@ bool ModuleOpenGL::Init()
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
 
 	//fog
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform3fv(1, 1, mFogColor);
 	glUniform1f(2, mMaxFog);
 	glUniform1f(3, mFogDensity);
@@ -507,6 +514,7 @@ bool ModuleOpenGL::Init()
 	glUniform1f(4, mVolAnisotropy);
 	glUniform1f(8, mVolStepSize);
 	glUniform1ui(9, mVolMaxSteps);
+	glUniform1ui(10, mVolInvScale);
 	glUseProgram(0);
 
 	
@@ -699,6 +707,8 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
+	glBindTexture(GL_TEXTURE_2D, mVolTexId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width/mVolInvScale, height/mVolInvScale, 0, GL_RGBA, GL_FLOAT, NULL);
 	glUseProgram(mSSAOPassProgramId);
 	glUniform2ui(glGetUniformLocation(mSSAOPassProgramId, "screenSize"), width, height);
 	glUseProgram(0);
@@ -715,10 +725,10 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glBindBuffer(GL_TEXTURE_BUFFER, mSLightListImgBuffer);
 	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, mSLightListImgBuffer);
-	glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
-	glBindBuffer(GL_TEXTURE_BUFFER, mVolPLightListImgBuffer);
-	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, mVolPLightListImgBuffer);
+	//glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
+	//glBindBuffer(GL_TEXTURE_BUFFER, mVolPLightListImgBuffer);
+	//glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
+	//glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, mVolPLightListImgBuffer);
 	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
 	glBindBuffer(GL_TEXTURE_BUFFER, mVolSLightListImgBuffer);
 	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
@@ -959,13 +969,20 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
-unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes, unsigned int startIdx) const
 {
-	if (passes > mBlurPasses || passes == 0)
-		passes = mBlurPasses;
+	if ((passes + startIdx) > mBlurPasses || passes == 0)
+		passes = mBlurPasses - startIdx;
+
 
 	float w = mSceneWidth;
 	float h = mSceneHeight;
+	int it = startIdx;
+	while (it-- > 0)
+	{
+		w /= 2;
+		h /= 2;
+	}
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
 	glActiveTexture(GL_TEXTURE0);
@@ -977,9 +994,9 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		w /= 2;
 		h /= 2;
 		glViewport(0, 0, w, h);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1 + startIdx], 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1 + startIdx]);
 	}
 	glUseProgram(mUpsampleProgramId);
 	for (int i = passes - 1; i >= 0; --i)
@@ -990,15 +1007,15 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		if (i == 0 && modifyTex)
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
 		else
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i + startIdx], 0);
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i + startIdx]);
 	}
 	glBindVertexArray(0);
 	glViewport(0 , 0, mSceneWidth, mSceneHeight);
 	glPopDebugGroup();
-	return mBlurTex[0];
+	return mBlurTex[startIdx];
 }
 
 void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
@@ -1058,15 +1075,15 @@ void ModuleOpenGL::SetBloomIntensity(float intensity)
 	else if (intensity > 1.0f)
 		intensity = 1.0f;
 	mBloomIntensity = intensity;
-	glUseProgram(mPostpoProgramId);
-	glUniform1f(glGetUniformLocation(mPostpoProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(mVolFogPostpoProgramId);
+	glUniform1f(glGetUniformLocation(mVolFogPostpoProgramId, "bloomIntensity"), mBloomIntensity);
 	glUseProgram(0);
 }
 
 void ModuleOpenGL::SetFogColor(float fogColor[3])
 {
 	memcpy(mFogColor, fogColor, sizeof(float) * 3);
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform3fv(1, 1, fogColor);
 	glUseProgram(0);
 }
@@ -1074,7 +1091,7 @@ void ModuleOpenGL::SetFogColor(float fogColor[3])
 void ModuleOpenGL::SetFogDensity(float density)
 {
 	mFogDensity = density;
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform1f(3, density);
 	glUseProgram(0);
 }
@@ -1082,7 +1099,7 @@ void ModuleOpenGL::SetFogDensity(float density)
 void ModuleOpenGL::SetFogHeightFallof(float heightFallof)
 {
 	mHeightFallof = heightFallof;
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform1f(4, heightFallof);
 	glUseProgram(0);
 }
@@ -1090,7 +1107,7 @@ void ModuleOpenGL::SetFogHeightFallof(float heightFallof)
 void ModuleOpenGL::SetMaxFog(float maxFog)
 {
 	mMaxFog = maxFog;
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform1f(2, maxFog);
 	glUseProgram(0);
 }
@@ -1140,6 +1157,14 @@ void ModuleOpenGL::SetVolMaxSteps(int volMaxSteps)
 	mVolMaxSteps = volMaxSteps;
 	glUseProgram(mVolLightProgramId);
 	glUniform1ui(9, mVolMaxSteps);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolInvScale(int volInvScale)
+{
+	mVolInvScale = volInvScale;
+	glUseProgram(mVolLightProgramId);
+	glUniform1ui(10, mVolInvScale);
 	glUseProgram(0);
 }
 
@@ -1364,7 +1389,7 @@ void ModuleOpenGL::Draw()
 	glUseProgram(mTileLightCullingProgramId);
 	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
 	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
-	glBindImageTexture(2, mVolPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
+	//glBindImageTexture(2, mVolPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
 	glBindImageTexture(3, mVolSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
 	//glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
 	glActiveTexture(GL_TEXTURE0);
@@ -1575,7 +1600,7 @@ void ModuleOpenGL::Draw()
 	}
 
 	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive, false, 2);
+	unsigned int blurredTex = BlurTexture(mGEmissive, false, 3);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
@@ -1638,16 +1663,16 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
+	//glActiveTexture(GL_TEXTURE2);
+	//glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
 	static float time = App->GetDt();
 	glUniform1f(1, time);
 	time += App->GetDt();
 	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	glBindImageTexture(0, mVolTexId, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+	glDispatchCompute((mSceneWidth / mVolInvScale + 8) / 8, (mSceneHeight / mVolInvScale + 8) / 8, 1);
 	glPopDebugGroup();
 
 
@@ -1667,21 +1692,16 @@ void ModuleOpenGL::Draw()
 	//glDepthMask(GL_TRUE);
 	//glPopDebugGroup();
 
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Fog");
-	glUseProgram(mFogProgramId);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
-	glPopDebugGroup();
-
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Postprocessing");
-	glUseProgram(mPostpoProgramId);
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Vol&Fog&Postpo");
+	glUseProgram(mVolFogPostpoProgramId);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, blurredTex);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, mVolTexId);
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 

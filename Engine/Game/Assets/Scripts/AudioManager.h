@@ -133,6 +133,7 @@ public:
 
 	void Pause(BGM bgm, int id, bool pause);
 	void Pause(SFX sfx, int id, bool pause);
+	void Restart(SFX sfx, int id);
 
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);

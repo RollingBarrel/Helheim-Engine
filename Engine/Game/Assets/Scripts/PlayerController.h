@@ -119,6 +119,7 @@ public:
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
     GameObject* GetDashVFX() const { return mDashVFX; }
+    GameObject* GetCharacterMesh() const { return mCharacterMesh; }
 
     // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
@@ -160,7 +161,7 @@ public:
     float GetUltimateChargeDuration() const { return mUltimateChargeDuration; }
     float GetUltimateDamageInterval() const { return mUltimateDamageInterval; };
     float GetUltimateDamageTick() const { return mUltimateDamageTick; };
-    void UseUltimateResource() { mUltimateResource = 0; }
+    void UseUltimateResource();
     void EnableUltimate(bool enable);
     void EnableChargeUltimate(bool enable);
     void InterpolateLookAt(const float3& target, float speed); 
@@ -181,6 +182,7 @@ public:
     void SetIsInElevator(bool state) { mIsInElevator = state; }
 
 private:
+    void SetPlayerEmisive(const float3& emisiveColor);
     void CheckInput();
     void CheckHitEffect();
     void StateMachine();
@@ -299,6 +301,7 @@ private:
     float mUltimateAimSpeed = 1.0f;
     TimerScript UltimateRotationTimer;
     int mUltSound = -1;
+    bool mInUlt = false;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
@@ -327,6 +330,7 @@ private:
 
     //Dash VFX
     GameObject* mDashVFX = nullptr;
+    GameObject* mCharacterMesh = nullptr;
 
     //UNLOCKED ABILITIES
     bool mGrenadeUnlocked = true;

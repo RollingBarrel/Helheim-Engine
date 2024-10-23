@@ -101,7 +101,7 @@ void Rat::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
 	{
-		mAiAgentComponent->FleeFromTarget(collisionData->collidedWith->GetWorldPosition());
+	if(mAiAgentComponent)mAiAgentComponent->FleeFromTarget(collisionData->collidedWith->GetWorldPosition());
 		mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		mIsFleeing = true;
 	}

@@ -8,6 +8,7 @@ public:
 	~Pistol() {}
 
 	void Enter() override;
+	void Exit() override;
 	void Attack(float time) override;
 	void Reload();
 

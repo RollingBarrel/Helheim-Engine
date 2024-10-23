@@ -75,9 +75,9 @@ private:
         },
         { 
             "Elios! The personnel are completely out of control! What's happening?!", 
-            "I don't know what the hell is wrong... But something triggered the RCP !", 
-            "The RCP?? You mean the Robot Quarantine Protocol?" ,
-            "That's the one, Robot Containing Protocol - or Internal Protocol \"GORT\", Red Level. You remember, right?",
+            "I don't know what the hell is wrong... But something triggered the RQP !", 
+            "The RQP?? You mean the Robot Quarantine Protocol?" ,
+            "That's the one. You remember, right?",
             "Yes, it has the \"Highest Priority\" label. You need to be careful, not even your permissions can't stop them now.",
             "And they are going to try to eliminate any lifeform before they can leave the building, including us.",
             "I know you are better than them but stay on your guard.",
@@ -119,9 +119,8 @@ private:
             "..."
         },
         {
-            "I think that was the last of them. Next should be your room.",
             "Finally! Just get me out of here quickly please! Get me out!",
-            "I'm almost there already honey. Just hold on for a moment.",
+            "I'm almost there already. Just hold on for a moment.",
             "Yes, come get me out now. GET ME OUT!",
             "Calm down, the worst part is already over. We Will get out of here.",
             "GET ME OUT, GET ME OUT, GET ME OUT.",

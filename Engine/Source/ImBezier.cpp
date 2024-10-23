@@ -45,6 +45,9 @@ namespace tween
 
         SINPI2,          // tomas cepeda's
         SWING,           // tomas cepeda's & lquery's
+
+        CUBICRETURN,
+        CUBICRETURNSOFT,
     };
 
     // }
@@ -340,6 +343,12 @@ namespace tween
         case TYPE::SINPI2: {
             return sin(p * pi2);
         }
+        case TYPE::CUBICRETURN: {
+            return - 8 * (p - 0.5) * (p - 0.5) * (p - 0.5);
+        }
+        case TYPE::CUBICRETURNSOFT: {
+            return - 4.5 * ( -3 * (p - 0.5) * (p - 0.5) * (p - 0.5) + p - 0.5);
+        }
         }
     }
 }
@@ -487,7 +496,7 @@ namespace ImGui
                 modified = 1;
                 ImVec2 ImPos = (g.IO.MousePos - bb.Min) / (bb.Max - bb.Min);
                 float2 pos(ImPos.x, ImPos.y);
-                pos.y = 1 - pos.y;
+                pos.y = 1 -  2 * pos.y;
 
                 int left = 0;
                 while (left < max && points[left].x < pos.x) left++;
@@ -523,22 +532,24 @@ namespace ImGui
             }
         }
 
+        for (i = 1; i < 8; i++)
+        {
+            if (i == 4) 
+            {
+                window->DrawList->AddLine(
+                    ImVec2(bb.Min.x, bb.Min.y + ht / 8 * i),
+                    ImVec2(bb.Max.x, bb.Min.y + ht / 8 * i),
+                    GetColorU32(ImGuiCol_TextDisabled), 3);
+            }
+            else
+            {
+                window->DrawList->AddLine(
+                    ImVec2(bb.Min.x, bb.Min.y + ht / 8 * i),
+                    ImVec2(bb.Max.x, bb.Min.y + ht / 8 * i),
+                    GetColorU32(ImGuiCol_TextDisabled));
+            }
 
-        // bg grid
-        window->DrawList->AddLine(
-            ImVec2(bb.Min.x, bb.Min.y + ht / 2),
-            ImVec2(bb.Max.x, bb.Min.y + ht / 2),
-            GetColorU32(ImGuiCol_TextDisabled), 3);
-
-        window->DrawList->AddLine(
-            ImVec2(bb.Min.x, bb.Min.y + ht / 4),
-            ImVec2(bb.Max.x, bb.Min.y + ht / 4),
-            GetColorU32(ImGuiCol_TextDisabled));
-
-        window->DrawList->AddLine(
-            ImVec2(bb.Min.x, bb.Min.y + ht / 4 * 3),
-            ImVec2(bb.Max.x, bb.Min.y + ht / 4 * 3),
-            GetColorU32(ImGuiCol_TextDisabled));
+        }
 
         for (i = 0; i < 9; i++)
         {
@@ -553,8 +564,8 @@ namespace ImGui
         for (i = 0; i <= (smoothness - 1); ++i) {
             float px = (i + 0) / float(smoothness);
             float qx = (i + 1) / float(smoothness);
-            float py = 1 - CurveValueSmooth(px, points);
-            float qy = 1 - CurveValueSmooth(qx, points);
+            float py = 0.5f - 0.5f * CurveValueSmooth(px, points);
+            float qy = 0.5f - 0.5f * CurveValueSmooth(qx, points);
             ImVec2 p(px * (bb.Max.x - bb.Min.x) + bb.Min.x, py * (bb.Max.y - bb.Min.y) + bb.Min.y);
             ImVec2 q(qx * (bb.Max.x - bb.Min.x) + bb.Min.x, qy * (bb.Max.y - bb.Min.y) + bb.Min.y);
             window->DrawList->AddLine(p, q, GetColorU32(ImGuiCol_PlotLines));
@@ -565,8 +576,8 @@ namespace ImGui
         {
             ImVec2 a = ImVec2(points[i - 1].x, points[i - 1].y);
             ImVec2 b = ImVec2(points[i].x, points[i].y);
-            a.y = 1 - a.y;
-            b.y = 1 - b.y;
+            a.y = 0.5f - 0.5f * a.y;
+            b.y = 0.5f - 0.5f * b.y;
             a = a * (bb.Max - bb.Min) + bb.Min;
             b = b * (bb.Max - bb.Min) + bb.Min;
             window->DrawList->AddLine(a, b, GetColorU32(ImGuiCol_PlotLinesHovered));
@@ -578,7 +589,7 @@ namespace ImGui
             for (i = 0; i < max; i++)
             {
                 ImVec2 p = ImVec2(points[i].x, points[i].y);
-                p.y = 1 - p.y;
+                p.y = 0.5f - 0.5f * p.y;
                 p = p * (bb.Max - bb.Min) + bb.Min;
                 ImVec2 a = p - ImVec2(2, 2);
                 ImVec2 b = p + ImVec2(2, 2);
@@ -638,7 +649,9 @@ namespace ImGui
             "Schubring3",
 
             "SinPi2",
-            "Swing"
+            "Swing",
+            "Cubic Return",
+            "Cubic Return Soft"
         };
         static int item = 0;
         if (modified) {
