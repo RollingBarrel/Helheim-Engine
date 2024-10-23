@@ -2158,5 +2158,11 @@
     <None Include="..\Game\Assets\Shaders\GBRChannels.comp">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\MinParallelReduction.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\MaxParallelReduction.comp">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

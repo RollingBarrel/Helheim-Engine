@@ -238,7 +238,7 @@ bool ModuleOpenGL::Init()
 	}
 	glGenFramebuffers(1, &mBlurFBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-	InitBloomTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+	InitBlurTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
 	const GLenum att3 = GL_COLOR_ATTACHMENT0;
 	glDrawBuffers(1, &att3);
@@ -323,6 +323,10 @@ bool ModuleOpenGL::Init()
 	mVolFogPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "GBRChannels.comp";
 	mBGRChannelsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "MaxParallelReduction.comp";
+	mMinParallelReductionProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "MinParallelReduction.comp";
+	mMaxParallelReductionProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
@@ -700,7 +704,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	//glBindTexture(GL_TEXTURE_2D, depthStencil);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
-	InitBloomTextures(width, height);
+	InitBlurTextures(width, height);
 	glBindTexture(GL_TEXTURE_2D, mSSAO);
 	//VOLVER A PONER EL RED
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
@@ -761,7 +765,7 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ModuleOpenGL::InitBloomTextures(unsigned int width, unsigned int height)
+void ModuleOpenGL::InitBlurTextures(unsigned int width, unsigned int height)
 {
 	float w = width;
 	float h = height;
@@ -1339,37 +1343,6 @@ void ModuleOpenGL::Draw()
 	mRenderFrustums.push_back(&App->GetCamera()->GetCurrentCamera()->GetFrustum());
 	mBatchManager.Update(mRenderFrustums);
 	//START THE DRAW
-	
-	//Draw Shadowmaps
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");
-	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
-	for (unsigned int i = 0; i < chosenLights.size(); ++i)
-	{
-		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
-	
-	
-		const Frustum& frustum = chosenLights[i]->GetFrustum();
-		glClear(GL_DEPTH_BUFFER_BIT);
-		glViewport(0, 0, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE);
-		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
-		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-	
-		const_cast<SpotLightComponent*>(chosenLights[i])->SetShadowIndex(i);
-		Shadow shadow;
-		shadow.shadowMapHandle = mShadowMapsHandle[i];
-		shadow.viewProjMatrix = frustum.ViewProjMatrix().Transposed();
-		shadow.bias = chosenLights[i]->GetBias();
-	
-		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
-	
-		mBatchManager.Draw(mPassThroughProgramId, frustum);
-	}
-
-	glViewport(0, 0, mSceneWidth, mSceneHeight);
-	App->GetCamera()->SetAspectRatio((float)mSceneWidth / (float)mSceneHeight);
-	SetOpenGlCameraUniforms();
-	glPopDebugGroup();
 
 	//GaometryPass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GeometryPass");
@@ -1598,6 +1571,51 @@ void ModuleOpenGL::Draw()
 
 		glPopDebugGroup();
 	}
+
+	//Min/Max depths for shadow frustums
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glUseProgram(mMinParallelReductionProgramId);
+	unsigned int dWidth = mSceneWidth;
+	unsigned int dHeight = mSceneHeight;
+	for (int i = 0; dWidth != 0 && dHeight != 0; ++i)
+	{
+		glUniform2i(0, dWidth, dHeight);
+		glBindImageTexture(0, mBlurTex[i%2], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+		glDispatchCompute((dWidth + 8) / 8, (dHeight + 4) / 4, 1);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i%2]);
+		dWidth /= 8;
+		dHeight /= 4;
+	}
+
+	//Draw Shadowmaps
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	for (unsigned int i = 0; i < chosenLights.size(); ++i)
+	{
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
+
+		glViewport(0, 0, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		const Frustum& frustum = chosenLights[i]->GetFrustum();
+		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+
+		const_cast<SpotLightComponent*>(chosenLights[i])->SetShadowIndex(i);
+		Shadow shadow;
+		shadow.shadowMapHandle = mShadowMapsHandle[i];
+		shadow.viewProjMatrix = frustum.ViewProjMatrix().Transposed();
+		shadow.bias = chosenLights[i]->GetBias();
+
+		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
+
+		mBatchManager.Draw(mPassThroughProgramId, frustum);
+	}
+
+	glViewport(0, 0, mSceneWidth, mSceneHeight);
+	App->GetCamera()->SetAspectRatio((float)mSceneWidth / (float)mSceneHeight);
+	SetOpenGlCameraUniforms();
+	glPopDebugGroup();
 
 	//Bloom
 	unsigned int blurredTex = BlurTexture(mGEmissive, false, 3);

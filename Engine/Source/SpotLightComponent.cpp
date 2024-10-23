@@ -133,8 +133,11 @@ void SpotLightComponent::SetBias(float bias)
 
 inline void SpotLightComponent::SetShadowIndex(int index)
 { 
-	mData.shadowIndex = index;
-	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	if (mData.shadowIndex != index)
+	{
+		mData.shadowIndex = index;
+		App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	}
 }
 
 void SpotLightComponent::SetVolumetric(bool newValue)

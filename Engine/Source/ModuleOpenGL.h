@@ -219,7 +219,7 @@ private:
 	float mBloomIntensity = 0.5f;
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);
-	void InitBloomTextures(unsigned int width, unsigned int height);
+	void InitBlurTextures(unsigned int width, unsigned int height);
 	//void Draw();
 
 	//Camera
@@ -264,6 +264,8 @@ private:
 	unsigned int mVolLightProgramId = 0;
 	unsigned int mVolFogPostpoProgramId = 0;
 	unsigned int mBGRChannelsProgramId = 0;
+	unsigned int mMinParallelReductionProgramId = 0;
+	unsigned int mMaxParallelReductionProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
