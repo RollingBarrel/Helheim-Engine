@@ -1,0 +1,173 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 555313314,
+                "ParentUID": 1,
+                "Name": "Ult_Boss_Collide_V1",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.3820655941963196,
+                    1.7441469430923463,
+                    -0.005434964783489704
+                ],
+                "Rotation": [
+                    -0.2223123461008072,
+                    -0.7026288509368897,
+                    -0.6464785933494568,
+                    0.19737133383750916
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 213516520,
+                        "Delay": 0.0,
+                        "Duration": 0.5,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 21,
+                        "Burst": 21,
+                        "Looping": false,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 2.4000000953674318,
+                        "Gravity": 0.0,
+                        "ShapeFollowZAxis": false,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 2.299999952316284
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 1.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 8.0,
+                                "MaxValue": 11.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.8400000333786011
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.17000001668930055
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.8100000023841858
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.010723858140408993,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.21983914077281953,
+                                "Color": [
+                                    0.02799999713897705,
+                                    0.23017597198486329,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9839141368865967,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
