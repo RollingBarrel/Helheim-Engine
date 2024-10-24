@@ -97,8 +97,6 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mWinFade);
     MEMBER(MemberType::GAMEOBJECT, mWinBackText);
     MEMBER(MemberType::GAMEOBJECT, mWinText);
-    MEMBER(MemberType::GAMEOBJECT, mWinLineRight);
-    MEMBER(MemberType::GAMEOBJECT, mWinLineLeft);
     
     SEPARATOR("Video");
     MEMBER(MemberType::GAMEOBJECT, mVideoGO);
@@ -169,8 +167,6 @@ void HudController::Start()
         mWinBackImage = static_cast<ImageComponent*>(mWinBackText->GetComponent(ComponentType::IMAGE));
         mWinFadeImage = static_cast<ImageComponent*>(mWinFade->GetComponent(ComponentType::IMAGE));
         mWinTextImage = static_cast<ImageComponent*>(mWinText->GetComponent(ComponentType::IMAGE));
-        mWinLineRightTransfrom = static_cast<Transform2DComponent*>(mWinLineRight->GetComponent(ComponentType::TRANSFORM2D));
-        mWinLineLeftTransfrom = static_cast<Transform2DComponent*>(mWinLineLeft->GetComponent(ComponentType::TRANSFORM2D));
     }
     if (mLoseScreen)
     {
@@ -433,22 +429,22 @@ void HudController::Update()
 
 void HudController::LoseUpdate()
 {
-    if (*mLoseFadeImage->GetAlpha() < 1.0f) mLoseFadeImage->SetAlpha(*mLoseFadeImage->GetAlpha() + 0.30f * App->GetDt());
+    if (*mLoseFadeImage->GetAlpha() < 1.0f) mLoseFadeImage->SetAlpha(*mLoseFadeImage->GetAlpha() + 0.70f * App->GetDt());
 
     if (mLoseAnimationTimer.DelayWithoutReset(0.5f))
     {
-        if (*mLoseBackImage->GetAlpha() < 1.0f) mLoseBackImage->SetAlpha(*mLoseBackImage->GetAlpha() + 0.30f * App->GetDt());
+        if (*mLoseBackImage->GetAlpha() < 1.0f) mLoseBackImage->SetAlpha(*mLoseBackImage->GetAlpha() + 0.70f * App->GetDt());
     }
     if (mLoseAnimationTimer.DelayWithoutReset(1.0f))
     {
-        if (*mLoseTextImage->GetAlpha() < 0.8f) mLoseTextImage->SetAlpha(*mLoseTextImage->GetAlpha() + 0.30f * App->GetDt());
+        if (*mLoseTextImage->GetAlpha() < 1.0f) mLoseTextImage->SetAlpha(*mLoseTextImage->GetAlpha() + 0.70f * App->GetDt());
     }
     if (mLoseAnimationTimer.DelayWithoutReset(1.5f))
     {
         if (mLoseLineRightTransfrom->GetPosition().x > 300)
-            mLoseLineRightTransfrom->SetPosition(mLoseLineRightTransfrom->GetPosition() - float3(400.0f, 0.0f, 0.0f) * App->GetDt());
+            mLoseLineRightTransfrom->SetPosition(mLoseLineRightTransfrom->GetPosition() - float3(750.0f, 0.0f, 0.0f) * App->GetDt());
         if (mLoseLineLeftTransfrom->GetPosition().x < -300)
-            mLoseLineLeftTransfrom->SetPosition(mLoseLineLeftTransfrom->GetPosition() + float3(400.0f, 0.0f, 0.0f) * App->GetDt());
+            mLoseLineLeftTransfrom->SetPosition(mLoseLineLeftTransfrom->GetPosition() + float3(750.0f, 0.0f, 0.0f) * App->GetDt());
     }
 }
 
@@ -463,13 +459,6 @@ void HudController::WinUpdate()
     if (mWinAnimationTimer.DelayWithoutReset(1.0f))
     {
         if (*mWinTextImage->GetAlpha() < 0.8f) mWinTextImage->SetAlpha(*mWinTextImage->GetAlpha() + 0.30f * App->GetDt());
-    }
-    if (mWinAnimationTimer.DelayWithoutReset(1.5f))
-    {
-        if (mWinLineRightTransfrom->GetPosition().x > 300)
-            mWinLineRightTransfrom->SetPosition(mWinLineRightTransfrom->GetPosition() - float3(400.0f, 0.0f, 0.0f) * App->GetDt());
-        if (mWinLineLeftTransfrom->GetPosition().x < -300)
-            mWinLineLeftTransfrom->SetPosition(mWinLineLeftTransfrom->GetPosition() + float3(400.0f, 0.0f, 0.0f) * App->GetDt());
     }
 }
 
@@ -506,9 +495,6 @@ void HudController::WinAnimation()
     mWinBackImage->SetAlpha(0.0f);
     mWinFadeImage->SetAlpha(0.0f);
     mWinTextImage->SetAlpha(0.0f);
-
-    mWinLineRightTransfrom->SetPosition(float3(950.0f, 0.0f, 0.0f));
-    mWinLineLeftTransfrom->SetPosition(float3(-950.0f, 0.0f, 0.0f));
 }
 
 void HudController::PlayVideoAssociatedAudio()

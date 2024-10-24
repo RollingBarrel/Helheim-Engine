@@ -229,10 +229,6 @@ private:
     ImageComponent* mWinFadeImage = nullptr;
     GameObject* mWinText = nullptr;
     ImageComponent* mWinTextImage = nullptr;
-    GameObject* mWinLineRight = nullptr;
-    Transform2DComponent* mWinLineRightTransfrom = nullptr;
-    GameObject* mWinLineLeft = nullptr;
-    Transform2DComponent* mWinLineLeftTransfrom = nullptr;
     
     // Video
     GameObject* mVideoGO = nullptr;
