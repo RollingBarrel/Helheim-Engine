@@ -1,6 +1,5 @@
 #include "ElectricTrapController.h"
 #include "GameManager.h"
-#include "AudioManager.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
@@ -100,26 +99,7 @@ void ElectricTrapController::ActivateTrap(bool active, bool vfxOnly)
     {
         if (mSfx)
         {
-            int randomValue = std::rand() % 3;
-            switch (randomValue)
-            {
-            case 0:
-                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
-
-                break;
-            case 1:
-                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP2, mGameObject->GetWorldPosition());
-
-                break;
-            case 2:
-                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP3, mGameObject->GetWorldPosition());
-
-                break;
-            default:
-                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
-
-                break;
-            }
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(mTrapSound, mGameObject->GetWorldPosition());
 
             mSfx->SetEnabled(true);
         }
@@ -149,26 +129,8 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
             {
                 mDamageTimer = 0;
 
-                int randomValue = std::rand() % 3;
-                switch (randomValue)
-                {
-                case 0:
-                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
-
-                    break;
-                case 1:
-                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP2, mGameObject->GetWorldPosition());
-
-                    break;
-                case 2:
-                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP3, mGameObject->GetWorldPosition());
-
-                    break;
-                default:
-                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
-
-                    break;
-                }                
+                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
+ 
                 mPlayer = GameManager::GetInstance()->GetPlayerController();
                 mPlayer->Paralyzed(mSpeedReduction, true);
                 mPlayer->TakeDamage(mDamageAmount);

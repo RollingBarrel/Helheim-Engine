@@ -4,6 +4,7 @@
 #include "Macros.h"
 #include "TimerScript.h"
 #include "PlayerController.h"
+#include "AudioManager.h"
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -22,6 +23,7 @@ public:
     void OnCollisionEnter(CollisionData* collisionData);
 
     void SetAwake(bool awake) { mIsAwake = awake; }
+    void SetTrapSound(SFX sound) { mTrapSound = sound; }
 
 private:
 
@@ -50,7 +52,9 @@ private:
     float mSpeedReduction = 0.5f;
 
     float mDamageTimer = 0.0f;
-    float mDamageDelay = 0.5f;
+    float mDamageDelay = 1.0f;
 
     PlayerController* mPlayer = nullptr;
+
+    SFX mTrapSound = SFX::ELECTRICAL_TRAP1;
 };
