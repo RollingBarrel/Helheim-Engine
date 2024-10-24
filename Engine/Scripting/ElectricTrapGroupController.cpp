@@ -28,6 +28,26 @@ void ElectricTrapGroupController::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ElectricTrapGroupController::OnCollisionEnter, this, std::placeholders::_1)));
     }
+
+    std::vector<GameObject*> traps = mTraps->GetChildren();
+    for (int i = 0; i < traps.size(); ++i) 
+    {
+        const ScriptComponent* script = static_cast<ScriptComponent*>(traps[i]->GetComponent(ComponentType::SCRIPT));
+        ElectricTrapController* electricTrap = static_cast<ElectricTrapController*>(script->GetScriptInstance());
+
+        if (i % 3 == 0)
+        {
+            electricTrap->SetTrapSound(SFX::ELECTRICAL_TRAP1);
+        }
+        else if (i % 3 == 1)
+        {
+            electricTrap->SetTrapSound(SFX::ELECTRICAL_TRAP2);
+        }
+        else if (i % 3 == 2)
+        {
+            electricTrap->SetTrapSound(SFX::ELECTRICAL_TRAP3);
+        }
+    }
 }
 
 void ElectricTrapGroupController::Update()

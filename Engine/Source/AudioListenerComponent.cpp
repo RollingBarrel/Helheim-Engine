@@ -28,7 +28,7 @@ void AudioListenerComponent::Update()
 
 	attributes.position.x = gameobjectPosition.x;
 	attributes.position.z = gameobjectPosition.z;
-	attributes.forward.z = -1.0f;
+	attributes.forward.z = 1.0f;
 	attributes.up.y = 1.0f;
 	system->setListenerAttributes(0, &attributes);
 

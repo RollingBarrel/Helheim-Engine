@@ -1,6 +1,5 @@
 #include "ElectricTrapController.h"
 #include "GameManager.h"
-#include "AudioManager.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
@@ -100,9 +99,10 @@ void ElectricTrapController::ActivateTrap(bool active, bool vfxOnly)
     {
         if (mSfx)
         {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(mTrapSound, mGameObject->GetWorldPosition());
+
             mSfx->SetEnabled(true);
         }
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
     }
     else
     {
@@ -129,7 +129,8 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
             {
                 mDamageTimer = 0;
 
-                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
+                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP1, mGameObject->GetWorldPosition());
+ 
                 mPlayer = GameManager::GetInstance()->GetPlayerController();
                 mPlayer->Paralyzed(mSpeedReduction, true);
                 mPlayer->TakeDamage(mDamageAmount);

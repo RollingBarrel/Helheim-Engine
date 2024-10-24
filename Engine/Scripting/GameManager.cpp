@@ -325,11 +325,57 @@ void GameManager::PlayPlayerFootStepSound()
     std::string sceneName = App->GetScene()->GetName();
     if (sceneName == "Level1Scene" || sceneName == "Level2Scene")
     {
-        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR, mPlayerController->GetPlayerPosition());
+        int randomValue = std::rand() % 4;
+        switch (randomValue)
+        {
+        case 0:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR1, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 1:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR2, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 2:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR3, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 3:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR4, mPlayerController->GetPlayerPosition());
+
+            break;
+        default:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR1, mPlayerController->GetPlayerPosition());
+
+            break;
+        }
     }
     else if (sceneName == "Level3Scene")
     {
-        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL, mPlayerController->GetPlayerPosition());
+        int randomValue = std::rand() % 4;
+        switch (randomValue)
+        {
+        case 0:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL1, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 1:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL2, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 2:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL3, mPlayerController->GetPlayerPosition());
+
+            break;
+        case 3:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL4, mPlayerController->GetPlayerPosition());
+
+            break;
+        default:
+            mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL1, mPlayerController->GetPlayerPosition());
+
+            break;
+        }
     }
 }
 
