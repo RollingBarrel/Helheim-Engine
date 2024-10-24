@@ -17,6 +17,10 @@ CREATE(UltimateAttack)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mLinesGO);
+    MEMBER(MemberType::GAMEOBJECT, mFinalPoint1);
+    MEMBER(MemberType::GAMEOBJECT, mFinalPoint2);
+    MEMBER(MemberType::GAMEOBJECT, mFinalPoint3);
+    
     END_CREATE;
 }
 UltimateAttack::UltimateAttack(GameObject* owner) : Script(owner)
@@ -38,14 +42,15 @@ void UltimateAttack::Start()
 
 void UltimateAttack::Update()
 {
-    if (!mExpansionTimer.DelayWithoutReset(3.8f)) 
+    if (!mExpansionTimer.DelayWithoutReset(3.9f)) 
     {
         SetLength(100.0f, 25.0f);
+        SetFinalPoint();
     }
     else
     {
-        SetLength(10.0f,15.0f);/*
-        if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();*/
+        //mLinesGO->SetLocalScale(float3(1.0f,1.0f,0.01f));/*
+       // if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();*/
     }
     
 }
@@ -61,6 +66,51 @@ void UltimateAttack::SetLength(float targetPercent, float speed)
         scale.z = length * (mLengthPercent/100.0f);
         mLinesGO->SetLocalScale(scale);
     }
+
+    //else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));a
+}
+
+void UltimateAttack::SetFinalPoint()
+{
+    float3 currentFinalpoint = mFinalPoint1->GetWorldPosition();
+    Hit hit;
+    Ray ray;
+    ray.dir = mGameObject->GetFront();
+    ray.pos = mGameObject->GetWorldPosition();
+    std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy"};
+    Physics::Raycast(hit, ray, 35.0f, &ignoreTags);
+    if (hit.IsValid()) {
+
+        currentFinalpoint.x = hit.mHitPoint.x;
+        currentFinalpoint.z = hit.mHitPoint.z;
+        mFinalPoint1->SetWorldPosition(currentFinalpoint);
+        mFinalPoint2->SetWorldPosition(currentFinalpoint);
+        mFinalPoint3->SetWorldPosition(currentFinalpoint);
+
+        float3 forwardDirection = ray.dir;
+
+        float distanceForward = 30.0f;
+
+        float3 areaCenter = hit.mHitPoint + forwardDirection * (distanceForward / 2);
+
+        float3 halfExtents(distanceForward / 2, distanceForward / 2, distanceForward / 2);
+
+        float3 minPoint = areaCenter - halfExtents;
+        float3 maxPoint = areaCenter + halfExtents;
+
+
+        AABB exclusionArea(minPoint, maxPoint);
+
+        mNoDamageArea = exclusionArea;
+    } 
+    else
+    {
+        mNoDamageArea = AABB(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
+        mFinalPoint1->SetLocalPosition(float3(0.0f, 0.0f, 35.f));
+        mFinalPoint2->SetLocalPosition(float3(0.0f, 0.0f, 35.f));
+        mFinalPoint3->SetLocalPosition(float3(0.0f, 0.0f, 35.f));
+    }
+ 
 }
 
 void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
@@ -71,8 +121,9 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
     ray.dir = mGameObject->GetFront();
     ray.pos = mGameObject->GetWorldPosition();
 
+    bool isBehind = mNoDamageArea.Contains(collisionGO->GetWorldPosition());
 
-    if (collisionGO->GetTag() == "Enemy")
+    if (collisionGO->GetTag() == "Enemy" && !isBehind )
     {
         Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(collisionGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (enemyScript)
@@ -86,17 +137,6 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
             }
         }
     }
-    else 
-    {
-        float3 currentScale = mGameObject->GetLocalScale();
-        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy"};
-        Physics::Raycast(hit, ray, 10.0f, &ignoreTags);
-        if (hit.IsValid()) {
-            float distance = Distance(float2(hit.mHitPoint.x, hit.mHitPoint.z), float2(mGameObject->GetWorldPosition().x, mGameObject->GetWorldPosition().z)) / 10;
-            
-            mGameObject->SetLocalScale(float3(currentScale.x, currentScale.y,distance + 0.1));
-        }
-        else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));
-    }
+
     
 }

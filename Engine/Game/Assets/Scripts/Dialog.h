@@ -79,9 +79,9 @@ private:
         },
         { 
             "Elios! The personnel are completely out of control! What's happening?!", 
-            "I don't know what the hell is wrong... But something triggered the RCP !", 
-            "The RCP?? You mean the Robot Quarantine Protocol?" ,
-            "That's the one, Robot Containing Protocol - or Internal Protocol \"GORT\", Red Level. You remember, right?",
+            "I don't know what the hell is wrong... But something triggered the RQP !", 
+            "The RQP?? You mean the Robot Quarantine Protocol?" ,
+            "That's the one. You remember, right?",
             "Yes, it has the \"Highest Priority\" label. You need to be careful, not even your permissions can't stop them now.",
             "And they are going to try to eliminate any lifeform before they can leave the building, including us.",
             "I know you are better than them but stay on your guard.",

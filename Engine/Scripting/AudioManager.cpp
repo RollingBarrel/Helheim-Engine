@@ -385,7 +385,9 @@ bool AudioManager::IsPlayeble(SFX sfx)
         case SFX::PLAYER_KATANA:
         case SFX::PLAYER_HAMMER:
         case SFX::ENEMY_ROBOT_GUNFIRE:
-        case SFX::ELECTRICAL_TRAP:
+        case SFX::ELECTRICAL_TRAP1:
+        case SFX::ELECTRICAL_TRAP2:
+        case SFX::ELECTRICAL_TRAP3:
         case SFX::BOSS_LASER:
         case SFX::BOSS_FIRE:
             return true;

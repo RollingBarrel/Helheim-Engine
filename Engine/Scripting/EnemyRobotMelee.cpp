@@ -124,5 +124,20 @@ void EnemyRobotMelee::TakeDamage(float damage)
 
 void EnemyRobotMelee::PlayMeleeAudio()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_SLASH, mGameObject->GetWorldPosition());
+    int randomValue = std::rand() % 2;
+    switch (randomValue)
+    {
+    case 0:
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_SLASH1, mGameObject->GetWorldPosition());
+
+        break;
+    case 1:
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_SLASH2, mGameObject->GetWorldPosition());
+
+        break;
+    default:
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_SLASH1, mGameObject->GetWorldPosition());
+
+        break;
+    }
 }

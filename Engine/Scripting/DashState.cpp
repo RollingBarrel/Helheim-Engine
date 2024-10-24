@@ -76,8 +76,27 @@ void DashState::Update()
 void DashState::Enter()
 {
 	mDashTimer = 0.0f;
-	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
+	int randomValue = std::rand() % 3;
+	switch (randomValue)
+	{
+	case 0:
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH1, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+		break;
+	case 1:
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH2, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+		break;
+	case 2:
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH3, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+		break;
+	default:
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH1, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+		break;
+	}
 	//Pause Animation -> Set animation time -> Pause player rotation(Already done in PlayerController::HandleRotation() -> rotate player in dash direction
 	//Option 2: Pause Animation -> Set animation time (look at current animation from lower state machine 8 move states)
 	

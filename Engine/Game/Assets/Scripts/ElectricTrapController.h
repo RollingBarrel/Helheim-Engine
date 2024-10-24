@@ -3,6 +3,8 @@
 #include <vector>
 #include "Macros.h"
 #include "TimerScript.h"
+#include "PlayerController.h"
+#include "AudioManager.h"
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -21,13 +23,13 @@ public:
     void OnCollisionEnter(CollisionData* collisionData);
 
     void SetAwake(bool awake) { mIsAwake = awake; }
+    void SetTrapSound(SFX sound) { mTrapSound = sound; }
 
 private:
-    bool IsInTrap(const GameObject* target);
+
     void ActivateTrap(bool active, bool vfxOnly);
 
     BoxColliderComponent* mCollider = nullptr;
-    std::vector<GameObject*> mInTrap;
 
     float mArea = 1.0f;
     GameObject* mSfx = nullptr;
@@ -39,14 +41,20 @@ private:
     bool mFirstActivation = true;
     float mFirstActivationInterval = 1.0f;
 
-    float mActivationInterval = 4.0f;
-    float mActivationDuration = 2.0f;
-    float mVFXWarningDuration = 0.5f;
+    float mActivationInterval = 2.0f;
+    float mActivationDuration = 3.0f;
+
     TimerScript mActivationIntervalTimer;
     TimerScript mActivationDurationTimer;
-    TimerScript mVFXWarningTimer;
 
     // Damage
     float mDamageAmount = 5.0f;
     float mSpeedReduction = 0.5f;
+
+    float mDamageTimer = 0.0f;
+    float mDamageDelay = 1.0f;
+
+    PlayerController* mPlayer = nullptr;
+
+    SFX mTrapSound = SFX::ELECTRICAL_TRAP1;
 };

@@ -29,8 +29,15 @@ enum class SFX
 	MAINMENU_CANCEL,
 
 	// PLAYER
-	PLAYER_FOOTSTEP_FLOOR,
-	PLAYER_FOOTSTEP_METAL,
+	PLAYER_FOOTSTEP_FLOOR1,
+	PLAYER_FOOTSTEP_FLOOR2,
+	PLAYER_FOOTSTEP_FLOOR3,
+	PLAYER_FOOTSTEP_FLOOR4,
+
+	PLAYER_FOOTSTEP_METAL1,
+	PLAYER_FOOTSTEP_METAL2,
+	PLAYER_FOOTSTEP_METAL3,
+	PLAYER_FOOTSTEP_METAL4,
 
 	PLAYER_PISTOL,
 	PLAYER_MACHINEGUN,
@@ -46,7 +53,9 @@ enum class SFX
 	PLAYER_BROKEN,
 	PLAYER_DANGER,
 
-	PLAYER_DASH,
+	PLAYER_DASH1,
+	PLAYER_DASH2,
+	PLAYER_DASH3,
 	PLAYER_INTERACT,
 	PLAYER_PICK,
 	PLAYER_HEAL,
@@ -64,7 +73,9 @@ enum class SFX
 
 	// SCEENE
 	DOOR,
-	ELECTRICAL_TRAP,
+	ELECTRICAL_TRAP1,
+	ELECTRICAL_TRAP2,
+	ELECTRICAL_TRAP3,
 	ELEVATOR_OPEN_CLOSE,
 	ELEVATOR,
 
@@ -72,7 +83,8 @@ enum class SFX
 	ENEMY_DEATH,
 	ENEMY_ROBOT_FOOTSTEP,
 	ENEMY_ROBOT_GUNFIRE,
-	ENEMY_ROBOT_SLASH,
+	ENEMY_ROBOT_SLASH1,
+	ENEMY_ROBOT_SLASH2,
 	ENEMY_ROBOT_HIT,
 	ENEMY_ROBOT_DEATH,
 
@@ -203,8 +215,15 @@ private:
 		{SFX::MAINMENU_START, "Assets/FMOD/Audios/sfx/gamestart.wav"},
 
 		// PLAYER
-		{SFX::PLAYER_FOOTSTEP_FLOOR, "Assets/FMOD/Audios/sfx/footstep.wav"}, // [X]
-		{SFX::PLAYER_FOOTSTEP_METAL, "Assets/FMOD/Audios/sfx/footstepmetal.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR1, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_01.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR2, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_02.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR3, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_03.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR4, "Assets/FMOD/Audios/sfx/Footstep Concrete Walking 1_04.wav"}, // [X]
+
+		{SFX::PLAYER_FOOTSTEP_METAL1, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_01.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL2, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_02.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL3, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_03.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL4, "Assets/FMOD/Audios/sfx/Footstep Metal Waking 1_04.wav"}, // [X]
 
 		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
 		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
@@ -216,8 +235,11 @@ private:
 		{SFX::PLAYER_BROKEN, "Assets/FMOD/Audios/sfx/broken.wav"},
 		{SFX::PLAYER_DANGER, "Assets/FMOD/Audios/sfx/danger.wav"},
 
+		{SFX::PLAYER_DASH1, "Assets/FMOD/Audios/sfx/dash.wav"},
+		{SFX::PLAYER_DASH2, "Assets/FMOD/Audios/sfx/dash2.wav"},
+		{SFX::PLAYER_DASH3, "Assets/FMOD/Audios/sfx/dash3.wav"},
+
 		{SFX::PLAYER_PICK, "Assets/FMOD/Audios/sfx/pick.wav"},
-		{SFX::PLAYER_DASH, "Assets/FMOD/Audios/sfx/dash.wav"},
 		{SFX::PLAYER_INTERACT, "Assets/FMOD/Audios/sfx/pick.wav"},
 		{SFX::PLAYER_HEAL, "Assets/FMOD/Audios/sfx/heal.wav"},
 
@@ -235,7 +257,9 @@ private:
 
 		// SCENE
 		{SFX::DOOR, "Assets/FMOD/Audios/sfx/door.wav"},
-		{SFX::ELECTRICAL_TRAP, "Assets/FMOD/Audios/sfx/electric.wav"},
+		{SFX::ELECTRICAL_TRAP1, "Assets/FMOD/Audios/sfx/electric.wav"},
+		{SFX::ELECTRICAL_TRAP2, "Assets/FMOD/Audios/sfx/electric2.wav"},
+		{SFX::ELECTRICAL_TRAP3, "Assets/FMOD/Audios/sfx/electric3.wav"},
 		{SFX::ELEVATOR, "Assets/FMOD/Audios/sfx/elevator.wav"},
 		{SFX::ELEVATOR_OPEN_CLOSE, "Assets/FMOD/Audios/sfx/elevatorstop.wav"},
 
@@ -243,7 +267,8 @@ private:
 		{SFX::ENEMY_DEATH, "Assets/FMOD/Audios/sfx/generalenemydeath.wav"}, // [X]
 		{SFX::ENEMY_ROBOT_FOOTSTEP, "Assets/FMOD/Audios/sfx/robotfootstep.wav"}, // [X]
 		{SFX::ENEMY_ROBOT_GUNFIRE, "event:/SFX/NPC/robot_distance"},
-		{SFX::ENEMY_ROBOT_SLASH, "Assets/FMOD/Audios/sfx/slash.wav"},
+		{SFX::ENEMY_ROBOT_SLASH1, "Assets/FMOD/Audios/sfx/slash.wav"},
+		{SFX::ENEMY_ROBOT_SLASH2, "Assets/FMOD/Audios/sfx/slash2.wav"},
 		{SFX::ENEMY_ROBOT_HIT, "Assets/FMOD/Audios/sfx/enemyrobothit.wav"},
 		{SFX::ENEMY_ROBOT_DEATH, "Assets/FMOD/Audios/sfx/robotdeath.wav"}, // [X]
 

@@ -182,6 +182,7 @@ public:
     void SetIsInElevator(bool state) { mIsInElevator = state; }
 
 private:
+    void SetPlayerEmisive(const float3& emisiveColor);
     void CheckInput();
     void CheckHitEffect();
     void StateMachine();
@@ -300,6 +301,7 @@ private:
     float mUltimateAimSpeed = 1.0f;
     TimerScript UltimateRotationTimer;
     int mUltSound = -1;
+    bool mInUlt = false;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;

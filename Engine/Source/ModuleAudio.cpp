@@ -277,7 +277,7 @@ FMOD::Channel* ModuleAudio::Play(const std::string& fileName)
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
-	sound->set3DMinMaxDistance(5.0f, 30.0f);
+	sound->set3DMinMaxDistance(1.0f, 30.0f);
 	channel->setMode(FMOD_LOOP_NORMAL);
 	channel->setChannelGroup(mAudioChannelGroup);
 	return channel;
@@ -569,22 +569,28 @@ void ModuleAudio::SetVolume(std::string busname, float value) const
 	CheckError(bus->setVolume(value));
 
 	// We can remove this +0.1 if it feels unbalances
-	float finalVolume = (value + 0.1)* GetVolume("bus:/");
 
 	if (busname.compare("bus:/music") == 0)
 	{
+		float finalVolume = (value + 0.1f) * GetVolume("bus:/");
+
 		CheckError(mAudioChannelGroup->setVolume(finalVolume));
 	}
 
 	if (busname.compare("bus:/sfx") == 0)
 	{
+		float finalVolume = (value + 0.1f) * GetVolume("bus:/");
+
 		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
 	}
 
 	if (busname.compare("bus:/") == 0)
 	{
-		CheckError(mOneShotChannelGroup->setVolume(finalVolume));
-		CheckError(mAudioChannelGroup->setVolume(finalVolume));
+		float oneShotfinalVolume = value * GetVolume("bus:/sfx");
+		float AudiofinalVolume = value * GetVolume("bus:/music");
+
+		CheckError(mOneShotChannelGroup->setVolume(oneShotfinalVolume));
+		CheckError(mAudioChannelGroup->setVolume(AudiofinalVolume));
 	}
 }
 
