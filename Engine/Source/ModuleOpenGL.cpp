@@ -1576,17 +1576,24 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glUseProgram(mMinParallelReductionProgramId);
-	unsigned int dWidth = mSceneWidth;
-	unsigned int dHeight = mSceneHeight;
-	for (int i = 0; dWidth != 0 && dHeight != 0; ++i)
+	unsigned int texSize = mSceneWidth * mSceneHeight;
+	unsigned int rWidth = mSceneWidth;
+	unsigned int rHeight = mSceneHeight;
+	int ii = 0;
+	for (; texSize; ++ii)
 	{
-		glUniform2i(0, dWidth, dHeight);
-		glBindImageTexture(0, mBlurTex[i%2], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
-		glDispatchCompute((dWidth + 8) / 8, (dHeight + 4) / 4, 1);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i%2]);
-		dWidth /= 8;
-		dHeight /= 4;
+		const unsigned int numThreads = (texSize + 1) / 2;
+		glUniform2i(0, rWidth, rHeight);
+		glBindImageTexture(0, mBlurTex[ii%2], 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+		glDispatchCompute((numThreads + 64) / 64, 1, 1);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[ii%2]);
+		texSize = numThreads / 64;
+		//rWidth /= 8;
+		//rHeight /= 8;
 	}
+	static float* data = new float[4096*4096];
+	glBindTexture(GL_TEXTURE_2D, mBlurTex[ii % 2]);
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_R32F, GL_FLOAT, data);
 
 	//Draw Shadowmaps
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");

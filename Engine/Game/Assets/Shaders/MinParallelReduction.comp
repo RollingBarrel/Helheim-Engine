@@ -1,23 +1,36 @@
 #version 460 core
 
-layout(local_size_x = 8, local_size_y = 4, local_size_z = 1) in;
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
 
 uniform layout(binding = 0) sampler2D inTex;
 uniform layout(r32f, binding = 0) restrict image2D outImage;
-shared float values[gl_WorkGroupSize.x*gl_WorkGroupSize.y];
+shared float values[gl_WorkGroupSize.x];
 uniform layout(location = 0) ivec2 inTexSize;
 
 void main()
 {
-	if(gl_GlobalInvocationID.x < inTexSize.x && gl_GlobalInvocationID.y < inTexSize.y)
-		values[gl_LocalInvocationIndex] = texelFetch(inTex, ivec2(gl_GlobalInvocationID.xy), 0).r;
+	const uint y = gl_GlobalInvocationID.x / inTexSize.y;
+	const uint x = gl_GlobalInvocationID.x % inTexSize.y;
+	if (x < inTexSize.x && y < inTexSize.y)
+		values[gl_LocalInvocationIndex] = texelFetch(inTex, ivec2(x,y), 0).r;
+	const uint y2 = (gl_GlobalInvocationID.x + gl_WorkGroupSize.x) % inTexSize.x;
+	const uint x2 = (gl_GlobalInvocationID.x + gl_WorkGroupSize.x) / inTexSize.x;
+	if(x2 < inTexSize.x && y2 < inTexSize.y)
+		values[gl_LocalInvocationIndex] = min(values[gl_LocalInvocationIndex],texelFetch(inTex, ivec2(x2,y2), 0).r);
 	memoryBarrierShared();
 	//barrier();
-	if(gl_LocalInvocationIndex == 0)
+	uint workingThreads = gl_WorkGroupSize.x / 2;
+	while (workingThreads > 1)
 	{
-		float minValue = 1.0f;
-		for(int i = 0; i < int(gl_WorkGroupSize.x*gl_WorkGroupSize.y); ++i)
-			minValue = min(minValue, values[i]);
-		imageStore(outImage, ivec2(gl_WorkGroupID.xy), vec4(minValue));
+		if(gl_LocalInvocationIndex < workingThreads)
+			values[gl_LocalInvocationIndex] = min(values[gl_LocalInvocationIndex*2], values[gl_LocalInvocationIndex*2+1]);
+		workingThreads /= 2;
+		memoryBarrierShared();
+	}
+	if (gl_LocalInvocationIndex == 0)
+	{
+		const uint x3 = gl_WorkGroupID.x / inTexSize.x;
+		const uint y3 = gl_WorkGroupID.x % inTexSize.x;
+		imageStore(outImage, ivec2(x3,y3), vec4(values[gl_LocalInvocationIndex]));
 	}
 }
