@@ -203,7 +203,7 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 	{
 		if (mIsTutorialArea)
 		{
-			GameManager::GetInstance()->ActivateSecondTutorial();
+			//GameManager::GetInstance()->ActivateSecondTutorial();
 		}
  		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);

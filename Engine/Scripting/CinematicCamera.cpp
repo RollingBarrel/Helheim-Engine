@@ -130,7 +130,9 @@ void CinematicCamera::Start()
 
 void CinematicCamera::Update()
 {
+    
     HandleEscape();
+    if (mEscape) return;
 
     if (mBattleArea1)
     {
@@ -261,7 +263,7 @@ void CinematicCamera::StartCinematic(GameObject* cameraObject, GameObject* dummy
 
 void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
 {
-    if ((!GameManager::GetInstance()->IsPaused()) && (!mEscape))
+    if (!mEscape)
     {
         if (mPlayingCinematic)
         {
@@ -461,8 +463,16 @@ void CinematicCamera::EndCinematic()
 
     if (App->GetScene()->GetName() == "Level1Scene")
     {
+        if (mCinematicIndex == 1) 
+        {
+            mPlayingCinematic = false;
+            mHudGO->SetEnabled(true);
+            ActivateBattleArea(mBattleArea1, true);
+            GameManager::GetInstance()->ActivateSecondTutorial();
+        }
         if (mPlayer)
         {
+            
             //Locates the player in a correct position behind the doors
             //float3 position = mPlayer->GetWorldPosition();
             //position.x -= 2.6f;

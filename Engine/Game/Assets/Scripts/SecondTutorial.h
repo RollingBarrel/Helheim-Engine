@@ -19,6 +19,7 @@ public:
 	void Update() override;
 
 	void Tutorial();
+	void CheckKill();
 	void UltTutorial();
 	void DisableFirstPart();
 
@@ -30,13 +31,15 @@ private:
 	GameObject* mUltimateTutorial = nullptr;
 	GameObject* mCollectibleTut = nullptr;
 	GameObject* mSkipTutorial = nullptr;
+	GameObject* mContinue = nullptr;
 	//CONTROLLER
 	GameObject* mShootTutorialCon = nullptr;
 	GameObject* mSecondaryTutorialCon = nullptr;
 	GameObject* mGrenadeTutorialCon = nullptr;
 	GameObject* mUltimateTutorialCon = nullptr;
 	GameObject* mCollectibleTutCon = nullptr;
-	GameObject* mSkipTutorialCon = nullptr;
+	GameObject* mSkipTutorialCon = nullptr; 
+	GameObject* mContinueCon = nullptr;
 
 	TimerScript mTutorialTimer;
 
@@ -44,8 +47,9 @@ private:
 	BattleArea* mTutorialArea = nullptr;
 
 	int mCurrentStep = 0;
+	int mKills = 4; 
 
-	bool mPart1Completed = false;\
+	bool mPart1Completed = false;
 	bool mPart2Completed = false;
 	bool mActiveCon = false;
 	bool mController = false;

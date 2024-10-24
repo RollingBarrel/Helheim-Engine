@@ -292,7 +292,7 @@ void HudController::Start()
     {
         mVideoComponent->Play();
         PlayVideoAssociatedAudio();
-        GameManager::GetInstance()->SetPaused(true, false);
+        GameManager::GetInstance()->SetPaused(true, false, true);
         GameManager::GetInstance()->PauseBackgroundAudio(true);
         mIsVideoPlaying = true;
     }
@@ -951,7 +951,7 @@ void HudController::OnCollectibleContinueBtnClick()
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
         SetScreen(SCREEN::COLLECTIBLE, false);
-        GameManager::GetInstance()->SetPaused(false, false);
+        GameManager::GetInstance()->SetPaused(false, false, true);
     }
 }
 

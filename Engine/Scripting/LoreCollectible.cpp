@@ -72,7 +72,7 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 			if (GameManager::GetInstance()->GetHud())
 			{
 				GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_INTERACT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-				GameManager::GetInstance()->SetPaused(true, false);
+				GameManager::GetInstance()->SetPaused(true, false, true);
 				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data(), mTitleText->data(), mSubtitleText->data());
 				GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
 			}
