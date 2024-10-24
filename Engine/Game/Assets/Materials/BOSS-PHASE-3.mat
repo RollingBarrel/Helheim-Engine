@@ -1,0 +1,24 @@
+{
+  "Name": "BOSS-PHASE-3",
+  "BaseColorFactor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "MetallicFactor": 1.0,
+  "RoughnessFactor": 1.0,
+  "EmissiveFactor": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "BaseColorTex": 659521296,
+  "MetallicRoughTex": 1346179820,
+  "NormalTex": 1346179821,
+  "EmissiveTex": 96179363,
+  "BaseColorEnabled": true,
+  "MetallicRoughnessEnabled": true,
+  "NormalMapEnabled": true,
+  "EmissiveEnabled": true
+}

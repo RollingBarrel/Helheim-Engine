@@ -49,6 +49,7 @@ private:
 	void SetupBomb(GameObject* bombGO, const math::float3& position);
 	void Rotate();
 	void InterruptAttacks();
+	void SwitchMaterial(int uuid);
 
 	void CheckHitEffect() override;
 	void  Death() override;
@@ -104,6 +105,7 @@ private:
 	GameObject* mDeathParticlesHead = nullptr;
 	GameObject* mDeathParticlesBody = nullptr;
 	GameObject* mDeathParticlesLegs = nullptr;
-
+	const int mPhase2MatId = 1639454952;
+	const int mPhase3MatId = 577614609;
 };
 

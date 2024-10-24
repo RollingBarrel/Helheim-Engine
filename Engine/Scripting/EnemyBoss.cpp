@@ -18,6 +18,7 @@
 #include "BossBattleArea.h"
 #include "ImageComponent.h"
 #include <algorithm>
+#include "ModuleResource.h"
 
 
 #define LASER_WIND_UP 2.625f
@@ -133,8 +134,16 @@ void EnemyBoss::Update()
         //Phase change
         phaseChange = 0;
         ++mStage;
-        if (mStage == 1) mHealth = mMaxHealth * mPhase1Hp;
-        else if (mStage == 2) mHealth = mMaxHealth * mPhase2Hp;
+        if (mStage == 1)
+        {
+            mHealth = mMaxHealth * mPhase1Hp;
+            SwitchMaterial(mPhase2MatId);
+        }
+        else if (mStage == 2)
+        {
+            mHealth = mMaxHealth * mPhase2Hp;
+            SwitchMaterial(mPhase3MatId);
+        }
         mCurrentState = EnemyState::PHASE;
         InterruptAttacks();
         mInvulnerable = true;
@@ -916,5 +925,15 @@ void EnemyBoss::InterruptAttacks()
     for (GameObject* bombGO : mTemplates)
     {
         bombGO->SetEnabled(false);
+    }
+}
+
+void EnemyBoss::SwitchMaterial(int uuid)
+{
+    for (size_t i = 0; i < mMeshComponents.size(); i++)
+    {
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+        //meshComponent->SetEnableBaseColorTexture(false);
+        meshComponent->SetMaterial(uuid);
     }
 }
